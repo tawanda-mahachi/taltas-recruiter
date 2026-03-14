@@ -1,0 +1,762 @@
+'use client';
+import { useRouter, useParams } from 'next/navigation';
+import { useState } from 'react';
+import { SiteFooter } from '@/components/shared/site-footer';
+
+/* ━━━ PUB NAV — matches landing page nav fonts exactly ━━━ */
+function PubNav({ router }: { router: ReturnType<typeof useRouter> }) {
+  return (
+    <nav style={{ position: 'sticky', top: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px 48px', background: 'rgba(250,251,253,.96)', backdropFilter: 'blur(20px)', borderBottom: '1px solid rgba(0,0,0,.07)' }}>
+      <div style={{ fontFamily: 'var(--font-serif)', fontSize: 30, fontWeight: 400, color: '#0f172a', letterSpacing: '-.01em', cursor: 'pointer' }} onClick={() => router.push('/')}>Tal<span style={{ color: '#4f46e5' }}>tas</span></div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
+        <button onClick={() => router.push('/')} style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: '#94a3b8', textDecoration: 'none', letterSpacing: '.08em', textTransform: 'uppercase' as const, transition: 'color .2s', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>Home</button>
+        <button onClick={() => router.push('/info/blog')} style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: '#94a3b8', textDecoration: 'none', letterSpacing: '.08em', textTransform: 'uppercase' as const, transition: 'color .2s', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>Blog</button>
+        <button onClick={() => router.push('/info/about')} style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: '#94a3b8', textDecoration: 'none', letterSpacing: '.08em', textTransform: 'uppercase' as const, transition: 'color .2s', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>About</button>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        <button onClick={() => router.push('/login')} style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: '#94a3b8', textDecoration: 'none', letterSpacing: '.08em', textTransform: 'uppercase' as const, transition: 'color .2s', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>Sign in</button>
+        <button onClick={() => router.push('/register')} style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: '#0f172a', textDecoration: 'none', letterSpacing: '.08em', textTransform: 'uppercase' as const, border: '1px solid rgba(0,0,0,.14)', padding: '9px 20px', borderRadius: 6, transition: 'all .2s', cursor: 'pointer', background: 'transparent' }}>Get started</button>
+      </div>
+    </nav>
+  );
+}
+
+/* ━━━ REUSABLE STYLES ━━━ */
+const S = {
+  eyebrow: { fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '.18em', textTransform: 'uppercase' as const, color: '#6366f1', marginBottom: 16 } as React.CSSProperties,
+  h1: { fontFamily: 'var(--font-serif)', fontSize: 'clamp(36px, 5vw, 60px)', fontWeight: 400, lineHeight: 1.1, letterSpacing: '-.02em', color: '#0f172a', margin: '16px 0 20px' } as React.CSSProperties,
+  h2: { fontFamily: 'var(--font-serif)', fontSize: 'clamp(22px, 3vw, 32px)', fontWeight: 400, lineHeight: 1.2, letterSpacing: '-.02em', color: '#0f172a', marginBottom: 20 } as React.CSSProperties,
+  sub: { fontSize: 16, color: '#64748b', lineHeight: 1.7, maxWidth: 540 } as React.CSSProperties,
+  body: { fontSize: 14, color: '#475569', lineHeight: 1.8, marginBottom: 16 } as React.CSSProperties,
+  hero: { padding: '100px 48px 64px', maxWidth: 1200, margin: '0 auto' } as React.CSSProperties,
+  container: { maxWidth: 1200, margin: '0 auto', padding: '0 48px 100px' } as React.CSSProperties,
+  btnPrimary: { fontFamily: 'var(--font-mono)', fontSize: 11, letterSpacing: '.1em', textTransform: 'uppercase' as const, color: '#fff', background: '#4f46e5', border: 'none', padding: '14px 28px', borderRadius: 8, cursor: 'pointer', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 8, transition: 'all .2s' } as React.CSSProperties,
+  mono: { fontFamily: 'var(--font-mono)' },
+  serif: { fontFamily: 'var(--font-serif)' },
+};
+
+/* ━━━ HELP CENTER ━━━ */
+const HC_SECTIONS = [
+  { icon: '🚀', title: 'Getting Started', desc: 'Set up your workspace, connect your ATS, and launch your first Explorer Agent.', articles: ['Creating your first Explorer Agent', 'Connecting Greenhouse, Lever, or Workday', 'Understanding the Deep Match score', 'Inviting your team to Taltas'] },
+  { icon: '🤖', title: 'Explorer Agents', desc: 'Configure, train, and manage your screening agents.', articles: ['Configuring evaluation focus areas', 'Setting compensation bands for negotiation', 'Assist vs. Auto mode explained', 'Reviewing and editing agent conversations', 'Pausing and archiving agents'] },
+  { icon: '📊', title: 'Pipeline & Reports', desc: 'Understand your pipeline data and export insights.', articles: ['Reading the Pipeline dashboard', 'Exporting candidate reports', 'Setting up bottleneck alerts', 'Sharing shortlists with hiring managers'] },
+  { icon: '🔗', title: 'Integrations', desc: 'Connect Taltas to your existing stack.', articles: ['Supported ATS integrations', 'Setting up Rippling sync', 'Webhook configuration', 'Troubleshooting sync errors'] },
+  { icon: '🔒', title: 'Security & Compliance', desc: 'Data handling, GDPR, and account security.', articles: ['Enabling SSO / SAML', 'Responding to candidate data requests', 'Downloading your data export', 'Managing team permissions'] },
+  { icon: '💬', title: 'Billing & Plans', desc: 'Subscriptions, invoices, and plan changes.', articles: ['Upgrading or downgrading your plan', 'Understanding usage limits', 'Downloading invoices', 'Cancellation and data retention'] },
+];
+
+function HelpCenterPage({ router }: { router: ReturnType<typeof useRouter> }) {
+  const [search, setSearch] = useState('');
+  const q = search.toLowerCase();
+  const filtered = q ? HC_SECTIONS.filter(s => s.title.toLowerCase().includes(q) || s.articles.some(a => a.toLowerCase().includes(q))) : HC_SECTIONS;
+  return (
+    <>
+      <div style={S.hero}><div style={S.eyebrow}>Support</div><h1 style={S.h1}>Help Center</h1><p style={S.sub}>Guides, walkthroughs, and answers to common questions.</p></div>
+      <div style={{ ...S.container, paddingTop: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, background: '#fff', border: '1px solid rgba(0,0,0,.1)', borderRadius: 10, padding: '14px 20px', marginBottom: 48, boxShadow: '0 1px 4px rgba(0,0,0,.04)' }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ color: '#94a3b8', flexShrink: 0 }}><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="text" placeholder="Search the help center…" value={search} onChange={e => setSearch(e.target.value)} style={{ border: 'none', outline: 'none', fontSize: 14, color: '#0f172a', background: 'transparent', flex: 1, fontFamily: 'var(--font-sans)' }}/>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 1, background: 'rgba(0,0,0,.07)', border: '1px solid rgba(0,0,0,.07)', marginBottom: 48 }}>
+          {filtered.map((s, i) => (
+            <div key={i} style={{ background: '#fff', padding: 32, transition: 'background .15s' }}>
+              <div style={{ fontSize: 22, marginBottom: 12 }}>{s.icon}</div>
+              <div style={{ fontSize: 15, fontWeight: 600, color: '#0f172a', marginBottom: 8 }}>{s.title}</div>
+              <div style={{ fontSize: 12.5, color: '#94a3b8', lineHeight: 1.6, marginBottom: 16 }}>{s.desc}</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                {s.articles.map((a, j) => <div key={j} style={{ fontSize: 13, color: '#2563eb', cursor: 'pointer', transition: 'color .15s' }}>{a}</div>)}
+              </div>
+            </div>
+          ))}
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: 12, padding: '24px 28px', gap: 24 }}>
+          <div><div style={{ fontWeight: 600, color: '#0f172a', marginBottom: 4 }}>Can&apos;t find what you need?</div><div style={{ fontSize: 13, color: '#64748b' }}>Our support team responds within 4 hours on business days.</div></div>
+          <button style={{ ...S.btnPrimary, fontSize: 10, padding: '12px 24px' }} onClick={() => router.push('/info/contact')}>Contact support</button>
+        </div>
+      </div>
+    </>
+  );
+}
+
+/* ━━━ API REFERENCE ━━━ */
+function ApiRefPage() {
+  return (
+    <>
+      <div style={{ ...S.hero, paddingBottom: 32 }}><div style={S.eyebrow}>Developers</div><h1 style={S.h1}>API Reference</h1><p style={S.sub}>REST API for integrating Taltas into your own workflows and systems.</p></div>
+      <div style={{ ...S.container, paddingTop: 0 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '200px 1fr', gap: 56 }}>
+          <div style={{ position: 'sticky', top: 100, alignSelf: 'start' }}>
+            {[{ h: 'Overview', items: ['Authentication', 'Rate limits', 'Errors', 'Webhooks'] }, { h: 'Candidates', items: ['List candidates', 'Get candidate', 'Get scores', 'Get transcript'] }, { h: 'Explorer Agents', items: ['List agents', 'Create agent', 'Update agent', 'Invite candidate'] }, { h: 'Pipeline', items: ['Get pipeline', 'Advance candidate', 'Reject candidate'] }].map(g => (
+              <div key={g.h} style={{ marginBottom: 28 }}>
+                <div style={{ ...S.mono, fontSize: 9, textTransform: 'uppercase', letterSpacing: '.14em', color: '#94a3b8', marginBottom: 10 }}>{g.h}</div>
+                {g.items.map(item => <div key={item} style={{ fontSize: 13, color: '#64748b', padding: '5px 0', cursor: 'pointer', transition: 'color .15s' }}>{item}</div>)}
+              </div>
+            ))}
+          </div>
+          <div>
+            <h2 style={{ ...S.h2, marginBottom: 8 }}>Authentication</h2>
+            <p style={S.body}>All API requests require a secret key passed in the <code style={{ ...S.mono, fontSize: 12, background: '#f1f5f9', color: '#0f172a', padding: '1px 5px', borderRadius: 4 }}>Authorization</code> header. Keys are scoped to your workspace and can be created in Settings → API Keys.</p>
+            <div style={{ margin: '20px 0' }}><div style={{ ...S.mono, fontSize: 9, textTransform: 'uppercase', letterSpacing: '.12em', color: '#94a3b8', marginBottom: 8 }}>Base URL</div><div style={{ background: '#0f172a', color: '#e2e8f0', ...S.mono, fontSize: 12.5, padding: '16px 20px', borderRadius: 8 }}>https://api.taltas.ai/v1</div></div>
+            <div style={{ margin: '20px 0' }}><div style={{ ...S.mono, fontSize: 9, textTransform: 'uppercase', letterSpacing: '.12em', color: '#94a3b8', marginBottom: 8 }}>Authentication header</div><div style={{ background: '#0f172a', color: '#e2e8f0', ...S.mono, fontSize: 12.5, padding: '16px 20px', borderRadius: 8 }}>Authorization: Bearer sk_live_••••••••••••••••</div></div>
+            <h2 style={{ ...S.h2, marginTop: 48, marginBottom: 16 }}>List Candidates</h2>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}><span style={{ ...S.mono, fontSize: 11, fontWeight: 700, letterSpacing: '.06em', padding: '4px 10px', borderRadius: 5, background: '#dcfce7', color: '#16a34a' }}>GET</span><span style={{ ...S.mono, fontSize: 14, color: '#0f172a' }}>/v1/candidates</span></div>
+            <p style={S.body}>Returns a paginated list of candidates across all active Explorer Agents in your workspace.</p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 1, background: 'rgba(0,0,0,.07)', border: '1px solid rgba(0,0,0,.07)', margin: '16px 0 24px' }}>
+              {[['limit', 'integer', 'Results per page. Default 20, max 100.'], ['after', 'string', 'Cursor for pagination.'], ['agent_id', 'string', 'Filter by Explorer Agent.'], ['status', 'string', 'One of: screened, shortlisted, advanced, rejected.']].map(([name, type, desc]) => (
+                <div key={name} style={{ background: '#fff', padding: '12px 16px', display: 'flex', alignItems: 'baseline', gap: 10, flexWrap: 'wrap' }}>
+                  <code style={{ ...S.mono, fontSize: 12, background: '#f1f5f9', color: '#0f172a', padding: '1px 5px', borderRadius: 4 }}>{name}</code>
+                  <span style={{ ...S.mono, fontSize: 10, color: '#6366f1', background: '#eff0ff', padding: '1px 6px', borderRadius: 4 }}>{type}</span>
+                  <span style={{ fontSize: 13, color: '#64748b' }}>{desc}</span>
+                </div>
+              ))}
+            </div>
+            <div style={{ margin: '20px 0' }}><div style={{ ...S.mono, fontSize: 9, textTransform: 'uppercase', letterSpacing: '.12em', color: '#94a3b8', marginBottom: 8 }}>Example response</div><pre style={{ background: '#0f172a', color: '#e2e8f0', ...S.mono, fontSize: 12.5, padding: '16px 20px', borderRadius: 8, overflowX: 'auto', lineHeight: 1.6, whiteSpace: 'pre' }}>{`{
+  "data": [{
+    "id": "cnd_01HX4K2M...",
+    "name": "Alex Chen",
+    "email": "alex@example.com",
+    "agent_id": "agt_01HX2...",
+    "status": "shortlisted",
+    "scores": { "overall": 0.84, "technical_fit": 0.91, "motivation": 0.82, "communication": 0.88, "constraints": 1.0, "curiosity": 0.79, "behavioural_fit": 0.71 },
+    "created_at": "2026-02-14T09:23:11Z"
+  }],
+  "has_more": true,
+  "next_cursor": "cnd_01HX3..."
+}`}</pre></div>
+            <h2 style={{ ...S.h2, marginTop: 48, marginBottom: 16 }}>Webhooks</h2>
+            <p style={S.body}>Taltas sends webhook events when key things happen. Configure your endpoint in Settings → Webhooks.</p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 1, background: 'rgba(0,0,0,.07)', border: '1px solid rgba(0,0,0,.07)' }}>
+              {[['candidate.screened', 'Explorer Agent completed a candidate conversation.'], ['candidate.shortlisted', 'Candidate scored above your shortlist threshold.'], ['candidate.advanced', 'Candidate manually advanced by a recruiter.'], ['negotiation.aligned', 'Agent-to-Agent negotiation reached alignment.'], ['agent.paused', 'Explorer Agent paused due to quota or manual action.']].map(([code, desc]) => (
+                <div key={code} style={{ background: '#fff', padding: '12px 16px', display: 'flex', alignItems: 'baseline', gap: 10, flexWrap: 'wrap' }}>
+                  <code style={{ ...S.mono, fontSize: 12, background: '#f1f5f9', color: '#0f172a', padding: '1px 5px', borderRadius: 4 }}>{code}</code>
+                  <span style={{ fontSize: 13, color: '#64748b' }}>{desc}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+/* ━━━ STATUS ━━━ */
+const INCIDENTS = [
+  { date: 'Dec 3, 2025', title: 'Rippling sync delay — Resolved', body: 'A race condition in the Rippling webhook handler caused candidate status updates to lag by up to 4 minutes under high load. Resolved with a queue-backed retry mechanism. Duration: 2h 14m. No data was lost.' },
+  { date: 'Nov 11, 2025', title: 'Elevated Explorer Agent response times — Resolved', body: 'An upstream model provider experienced elevated latency between 14:22–16:05 UTC, causing Explorer Agent conversations to load slowly for some users. Candidate scoring was unaffected. Duration: 1h 43m.' },
+  { date: 'Oct 28, 2025', title: 'Deep Match scores delayed on shortlist — Resolved', body: 'A database migration introduced a caching bug that caused newly screened candidates to appear on the shortlist without Deep Match scores populated for up to 12 minutes. Duration: 52m.' },
+  { date: 'Oct 9, 2025', title: 'Greenhouse webhook delivery failures — Resolved', body: 'Greenhouse updated their webhook signature algorithm without advance notice, causing our verification layer to reject valid payloads. All missed events were backfilled after the fix. Duration: 3h 31m.' },
+  { date: 'Sep 14, 2025', title: 'Email notification delivery degraded — Resolved', body: 'Our email delivery provider experienced an incident affecting transactional email for all customers. Shortlist notifications and candidate rejection emails were delayed by 20–90 minutes. Duration: 1h 08m.' },
+  { date: 'Aug 22, 2025', title: 'Dashboard intermittently unavailable — Resolved', body: 'A bad deploy introduced a null-pointer exception in the pipeline data aggregation layer, causing the dashboard to return 500 errors for approximately 18% of page loads. Rolled back within 24 minutes. Duration: 24m.' },
+];
+
+function StatusPage() {
+  return (
+    <>
+      <div style={{ ...S.hero, paddingBottom: 32 }}><div style={S.eyebrow}>System Status</div><h1 style={S.h1}>All systems operational.</h1><p style={S.sub}>Last checked Feb 20, 2026 at 19:41 UTC</p></div>
+      <div style={{ ...S.container, paddingTop: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 14, background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 12, padding: '20px 24px', marginBottom: 32 }}>
+          <div style={{ width: 12, height: 12, borderRadius: '50%', background: '#22c55e', boxShadow: '0 0 0 3px rgba(34,197,94,.2)', flexShrink: 0 }}/>
+          <div><div style={{ fontWeight: 600, color: '#0f172a' }}>All systems operational</div><div style={{ fontSize: 13, color: '#64748b', marginTop: 2 }}>Last checked Feb 20, 2026 at 19:41 UTC</div></div>
+        </div>
+        <div style={{ marginTop: 56 }}>
+          <div style={{ ...S.eyebrow, marginBottom: 24 }}>Incident history — last 6 months</div>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            {INCIDENTS.map((inc, i) => (
+              <div key={i} style={{ display: 'grid', gridTemplateColumns: '120px 1fr', gap: 24, padding: '24px 0', borderBottom: '1px solid rgba(0,0,0,.07)' }}>
+                <div style={{ ...S.mono, fontSize: 11, color: '#94a3b8', letterSpacing: '.04em', paddingTop: 2 }}>{inc.date}</div>
+                <div><div style={{ fontSize: 14, fontWeight: 600, color: '#0f172a', marginBottom: 6 }}>{inc.title}</div><div style={{ fontSize: 13, color: '#64748b', lineHeight: 1.7 }}>{inc.body}</div></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+/* ━━━ COMMUNITY ━━━ */
+const COMM_POSTS = [
+  { initials: 'MR', name: 'Maya Rosenberg', role: 'Head of Talent · Fintech', time: '2h ago', text: "We've been running Explorer Agents in assist mode for 4 weeks before switching to auto. Big recommend — gives your team time to calibrate trust in the scores before handing over full control.", replies: 12 },
+  { initials: 'DK', name: 'David Kim', role: 'Recruiter · Series B SaaS', time: '5h ago', text: 'Anyone else found that weighting Curiosity Signal higher than default significantly improves engineer hire quality? We bumped it to 1.4x and the shortlist got noticeably better.', replies: 8 },
+  { initials: 'SL', name: 'Sophie Laurent', role: 'TA Lead · Healthcare', time: 'Yesterday', text: "For anyone integrating with Greenhouse: make sure you set up the webhook before you create your first agent, not after. Learned this the hard way — candidates screened before the webhook is live won't sync automatically.", replies: 5 },
+  { initials: 'TN', name: 'Tom Nakamura', role: 'Recruiter · Consumer Tech', time: '2 days ago', text: "Just had our first Agent-to-Agent negotiation session complete. The alignment summary was surprisingly good — it surfaced a start date conflict that would have delayed the offer by two weeks if we'd caught it at the offer stage.", replies: 19 },
+];
+
+function CommunityPage({ router }: { router: ReturnType<typeof useRouter> }) {
+  return (
+    <>
+      <div style={{ ...S.hero, paddingBottom: 32 }}><div style={S.eyebrow}>Community</div><h1 style={S.h1}>Where talent teams share what works.</h1><p style={S.sub}>Ask questions, share workflows, and connect with recruiters building with Taltas.</p></div>
+      <div style={{ ...S.container, paddingTop: 0 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '180px 1fr 220px', gap: 32 }}>
+          <div>
+            <div style={{ ...S.mono, fontSize: 9, textTransform: 'uppercase', letterSpacing: '.14em', color: '#94a3b8', marginBottom: 12 }}>Channels</div>
+            {['💬 General', '🤖 Explorer Agent Config', '📊 Pipeline & Reporting', '🔗 Integrations', '💡 Feature Requests', '🐛 Bug Reports'].map((ch, i) => (
+              <div key={i} style={{ fontSize: 13, color: i === 0 ? '#2563eb' : '#64748b', padding: '7px 10px', borderRadius: 7, cursor: 'pointer', marginBottom: 2, background: i === 0 ? '#eff6ff' : 'transparent' }}>{ch}</div>
+            ))}
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', border: '1px solid rgba(0,0,0,.07)', borderRadius: 12, overflow: 'hidden' }}>
+            {COMM_POSTS.map((p, i) => (
+              <div key={i} style={{ display: 'flex', gap: 14, padding: 24, borderBottom: '1px solid rgba(0,0,0,.07)' }}>
+                <div style={{ width: 36, height: 36, borderRadius: 10, background: '#eff6ff', border: '1px solid #bfdbfe', display: 'flex', alignItems: 'center', justifyContent: 'center', ...S.mono, fontSize: 11, color: '#2563eb', flexShrink: 0 }}>{p.initials}</div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 8, flexWrap: 'wrap' }}>
+                    <span style={{ fontSize: 13, fontWeight: 600, color: '#0f172a' }}>{p.name}</span>
+                    <span style={{ fontSize: 11, color: '#94a3b8' }}>{p.role}</span>
+                    <span style={{ ...S.mono, fontSize: 10, color: '#cbd5e1', marginLeft: 'auto' }}>{p.time}</span>
+                  </div>
+                  <div style={{ fontSize: 13.5, color: '#374151', lineHeight: 1.7, marginBottom: 10 }}>{p.text}</div>
+                  <div style={{ ...S.mono, fontSize: 10, color: '#2563eb', cursor: 'pointer', letterSpacing: '.04em' }}>{p.replies} replies</div>
+                </div>
+              </div>
+            ))}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, padding: '16px 20px', background: '#f8f9fb', borderTop: '1px solid rgba(0,0,0,.07)' }}>
+              <span style={{ fontSize: 13, color: '#64748b' }}>Sign in to join the conversation</span>
+              <div style={{ display: 'flex', gap: 8 }}>
+                <button onClick={() => router.push('/login')} style={{ ...S.mono, fontSize: 10, letterSpacing: '.08em', textTransform: 'uppercase' as const, background: '#fff', border: '1px solid rgba(0,0,0,.12)', padding: '9px 16px', borderRadius: 7, cursor: 'pointer', color: '#374151' }}>Sign in</button>
+                <button onClick={() => router.push('/register')} style={{ ...S.btnPrimary, fontSize: 10, padding: '9px 18px' }}>Join free</button>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div style={{ background: '#0f172a', borderRadius: 12, padding: 24, marginBottom: 16 }}>
+              <div style={{ ...S.mono, fontSize: 9, textTransform: 'uppercase', letterSpacing: '.2em', color: '#4f46e5', marginBottom: 12 }}>Community</div>
+              <div style={{ ...S.serif, fontSize: 17, fontWeight: 400, color: '#fff', letterSpacing: '-.01em', marginBottom: 6, lineHeight: 1.25 }}>Join 1,840 talent professionals.</div>
+              <p style={{ fontSize: 12, color: 'rgba(255,255,255,.4)', lineHeight: 1.6, marginBottom: 18 }}>Free with any Taltas account.</p>
+              <button onClick={() => router.push('/register')} style={{ ...S.btnPrimary, width: '100%', justifyContent: 'center', fontSize: 10, padding: 12 }}>Create free account</button>
+            </div>
+            <div style={{ background: '#fff', border: '1px solid rgba(0,0,0,.07)', borderRadius: 10, padding: 20, marginBottom: 16 }}>
+              <div style={{ ...S.mono, fontSize: 9, textTransform: 'uppercase', letterSpacing: '.14em', color: '#94a3b8', marginBottom: 16 }}>Top contributors</div>
+              {[{ i: 'MR', n: 'Maya Rosenberg', s: '142 posts' }, { i: 'DK', n: 'David Kim', s: '98 posts' }, { i: 'SL', n: 'Sophie Laurent', s: '76 posts' }].map(c => (
+                <div key={c.i} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+                  <div style={{ width: 28, height: 28, borderRadius: 7, background: '#eff6ff', border: '1px solid #bfdbfe', display: 'flex', alignItems: 'center', justifyContent: 'center', ...S.mono, fontSize: 9, color: '#2563eb', flexShrink: 0 }}>{c.i}</div>
+                  <div><div style={{ fontSize: 12.5, fontWeight: 600, color: '#0f172a' }}>{c.n}</div><div style={{ ...S.mono, fontSize: 10, color: '#94a3b8' }}>{c.s}</div></div>
+                </div>
+              ))}
+            </div>
+            <div style={{ background: '#fff', border: '1px solid rgba(0,0,0,.07)', borderRadius: 10, padding: 20 }}>
+              <div style={{ ...S.mono, fontSize: 9, textTransform: 'uppercase', letterSpacing: '.14em', color: '#94a3b8', marginBottom: 16 }}>Community stats</div>
+              <div style={{ ...S.mono, fontSize: 11, color: '#64748b', lineHeight: 2 }}>1,840 members<br/>312 posts this month<br/>~4h avg response time</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+/* ━━━ CONTACT ━━━ */
+function ContactPage() {
+  return (
+    <>
+      <div style={S.hero}><div style={S.eyebrow}>Contact</div><h1 style={S.h1}>Get in touch.</h1><p style={S.sub}>We respond to all support queries within 4 hours on business days.</p></div>
+      <div style={S.container}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: 72, alignItems: 'start' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+            {[['Your name', 'text', 'Jordan Rivera'], ['Work email', 'email', 'jordan@company.com']].map(([label, type, ph]) => (
+              <div key={label as string} style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
+                <label style={{ ...S.mono, fontSize: 10, textTransform: 'uppercase', letterSpacing: '.1em', color: '#64748b' }}>{label}</label>
+                <input type={type as string} placeholder={ph as string} style={{ border: '1px solid rgba(0,0,0,.12)', borderRadius: 8, padding: '12px 14px', fontSize: 14, color: '#0f172a', background: '#fff', outline: 'none' }}/>
+              </div>
+            ))}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
+              <label style={{ ...S.mono, fontSize: 10, textTransform: 'uppercase', letterSpacing: '.1em', color: '#64748b' }}>Topic</label>
+              <select style={{ border: '1px solid rgba(0,0,0,.12)', borderRadius: 8, padding: '12px 14px', fontSize: 14, color: '#0f172a', background: '#fff', outline: 'none' }}>
+                {['Technical support', 'Billing & plans', 'Integration help', 'Sales inquiry', 'Press & media', 'Partnership', 'Other'].map(o => <option key={o}>{o}</option>)}
+              </select>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
+              <label style={{ ...S.mono, fontSize: 10, textTransform: 'uppercase', letterSpacing: '.1em', color: '#64748b' }}>Message</label>
+              <textarea rows={5} placeholder="Describe what you need…" style={{ border: '1px solid rgba(0,0,0,.12)', borderRadius: 8, padding: '12px 14px', fontSize: 14, color: '#0f172a', background: '#fff', outline: 'none', resize: 'vertical', fontFamily: 'inherit' }}/>
+            </div>
+            <button style={{ ...S.btnPrimary, width: '100%', justifyContent: 'center', fontSize: 11, padding: 14 }}>Send message</button>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            {[{ icon: '📧', title: 'Support', detail: 'help@taltas.ai', note: '4h response, business days' }, { icon: '🤝', title: 'Sales', detail: 'sales@taltas.ai', note: 'Enterprise & team plans' }, { icon: '📰', title: 'Press', detail: 'press@taltas.ai', note: 'Media & analyst inquiries' }, { icon: '📍', title: 'Office', detail: '340 Pine Street', note: 'San Francisco, CA 94104' }].map(c => (
+              <div key={c.title} style={{ background: '#fff', border: '1px solid rgba(0,0,0,.07)', borderRadius: 10, padding: '20px 24px' }}>
+                <div style={{ fontSize: 20, marginBottom: 8 }}>{c.icon}</div>
+                <div style={{ fontSize: 13, fontWeight: 600, color: '#0f172a', marginBottom: 4 }}>{c.title}</div>
+                <div style={{ ...S.mono, fontSize: 12, color: '#2563eb', marginBottom: 2 }}>{c.detail}</div>
+                <div style={{ fontSize: 12, color: '#94a3b8' }}>{c.note}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+/* ━━━ SECURITY ━━━ */
+function SecurityPage() {
+  const cards = [
+    { icon: '🔒', title: 'Encryption', body: 'All data encrypted in transit via TLS 1.3 and at rest via AES-256. Conversation transcripts are stored in per-tenant isolated data stores with no cross-tenant access.' },
+    { icon: '✅', title: 'SOC 2 Type II', body: 'Annually audited by a Big Four firm. Current certificate available on request. Covers security, availability, and confidentiality trust service criteria.' },
+    { icon: '🛡️', title: 'Access controls', body: 'Role-based access control with SSO/SAML support. MFA enforced for all accounts. Privileged access requires just-in-time approval with full audit logging.' },
+    { icon: '🔍', title: 'Vulnerability disclosure', body: 'Responsible disclosure programme at security@taltas.ai. We aim to triage reports within 24 hours and patch critical vulnerabilities within 72 hours.' },
+    { icon: '🌐', title: 'Infrastructure', body: 'Hosted on AWS with multi-region redundancy. No shared infrastructure between tenants. Network segmentation and WAF on all public endpoints.' },
+    { icon: '📋', title: 'Penetration testing', body: 'Bi-annual penetration tests conducted by independent third parties. Findings and remediation timelines shared with Enterprise customers under NDA.' },
+  ];
+  return (
+    <>
+      <div style={S.hero}><div style={S.eyebrow}>Security</div><h1 style={S.h1}>Security at Taltas.</h1><p style={S.sub}>How we protect your data and candidate information.</p></div>
+      <div style={S.container}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 1, background: 'rgba(0,0,0,.07)', border: '1px solid rgba(0,0,0,.07)' }}>
+          {cards.map(c => (
+            <div key={c.title} style={{ background: '#fff', padding: '40px 32px', transition: 'background .2s' }}>
+              <div style={{ fontSize: 24, marginBottom: 18 }}>{c.icon}</div>
+              <div style={{ fontSize: 15, fontWeight: 600, color: '#0f172a', marginBottom: 10 }}>{c.title}</div>
+              <div style={{ fontSize: 13, color: '#64748b', lineHeight: 1.75 }}>{c.body}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </>
+  );
+}
+
+/* ━━━ INVESTORS ━━━ */
+function InvestorsPage() {
+  return (
+    <>
+      <div style={S.hero}><div style={S.eyebrow}>Investors</div><h1 style={S.h1}>Backed by people who care about the problem.</h1></div>
+      <div style={S.container}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'center', marginBottom: 72 }}>
+          <div>
+            <h2 style={S.h2}>Our investors</h2>
+            <p style={S.body}>Taltas has raised $22M to date from investors with deep experience in enterprise software, AI infrastructure, and HR technology. Our investors are active partners — they&apos;ve made introductions, challenged our assumptions, and helped us build a business designed to last.</p>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginTop: 24 }}>
+              {['Benchmark', 'Index Ventures', 'Workday Ventures', 'Andreessen Horowitz', 'AIX Ventures'].map(v => (
+                <div key={v} style={{ ...S.mono, fontSize: 11, letterSpacing: '.06em', color: '#374151', background: '#f8f9fb', border: '1px solid rgba(0,0,0,.09)', padding: '8px 16px', borderRadius: 6 }}>{v}</div>
+              ))}
+            </div>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 0, background: '#2563eb', border: 'none', borderRadius: 0 }}>
+            {[['$22M', 'Raised to date'], ['Series A', 'Current stage'], ['2023', 'Founded']].map(([num, label]) => (
+              <div key={num} style={{ padding: '38px 28px' }}>
+                <div style={{ ...S.serif, fontSize: 42, fontWeight: 400, color: '#fff', letterSpacing: '-.02em', lineHeight: 1, marginBottom: 8 }}>{num}</div>
+                <div style={{ ...S.mono, fontSize: 9, textTransform: 'uppercase', letterSpacing: '.12em', color: 'rgba(255,255,255,.6)' }}>{label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div style={{ borderTop: '1px solid rgba(0,0,0,.07)', paddingTop: 56 }}>
+          <p style={{ ...S.mono, fontSize: 11, color: '#94a3b8', letterSpacing: '.04em' }}>For investor relations enquiries: investors@taltas.ai</p>
+        </div>
+      </div>
+    </>
+  );
+}
+
+/* ━━━ CASE STUDIES ━━━ */
+function CaseStudiesPage() {
+  return (
+    <>
+      <div style={S.hero}><div style={S.eyebrow}>Case Studies</div><h1 style={S.h1}>Real teams. Real results.</h1></div>
+      <div style={S.container}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 1, background: 'rgba(0,0,0,.07)', border: '1px solid rgba(0,0,0,.07)' }}>
+          <div style={{ gridColumn: '1 / -1', background: '#eff6ff', padding: '44px 40px' }}>
+            <div style={{ ...S.mono, fontSize: 10, color: '#94a3b8', letterSpacing: '.06em', textTransform: 'uppercase', marginBottom: 12 }}>Fintech · Series C · 420 employees</div>
+            <div style={{ ...S.serif, fontSize: 22, fontWeight: 400, letterSpacing: '-.01em', color: '#0f172a', marginBottom: 14, lineHeight: 1.3 }}>How Meridian Pay cut time-to-offer by 61%</div>
+            <p style={{ fontSize: 13.5, color: '#64748b', lineHeight: 1.75, marginBottom: 20 }}>Meridian&apos;s talent team was spending 22 hours per week on phone screens for a single engineering role. After deploying Explorer Agents, they reduced that to 3 hours — while improving offer acceptance from 48% to 71%.</p>
+            <div style={{ display: 'flex', gap: 32 }}>
+              {[['61%', 'Faster time-to-offer'], ['71%', 'Offer acceptance rate']].map(([n, l]) => (
+                <div key={n}><div style={{ ...S.serif, fontSize: 32, fontWeight: 400, color: '#0f172a', letterSpacing: '-.02em', lineHeight: 1, marginBottom: 4 }}>{n}</div><div style={{ ...S.mono, fontSize: 9, textTransform: 'uppercase', letterSpacing: '.1em', color: '#94a3b8' }}>{l}</div></div>
+              ))}
+            </div>
+            <button style={{ ...S.btnPrimary, fontSize: 10, padding: '10px 22px', marginTop: 24 }}>Read case study</button>
+          </div>
+          {[
+            { co: 'Healthcare SaaS · Enterprise · 1,800 employees', title: 'NovaCare Health scales recruiting 4x without adding headcount', body: 'With 340 open roles and a 3-person talent team, NovaCare deployed Taltas across all non-executive roles. Explorer Agents handled 94% of first-round screening.', stats: [['94%', 'Screening automated'], ['4x', 'Hiring throughput']] },
+            { co: 'Consumer Tech · Seed · 28 employees', title: "How Loom-Up's first 20 hires were its best", body: "At seed stage with no dedicated recruiter, Loom-Up used Taltas to evaluate 1,200 applicants for their first engineering cohort. Deep Match scoring surfaced candidates who didn't match the job spec on paper — but outperformed peers by month three.", stats: [] },
+          ].map(c => (
+            <div key={c.title} style={{ background: '#fff', padding: '44px 40px', transition: 'background .2s' }}>
+              <div style={{ ...S.mono, fontSize: 10, color: '#94a3b8', letterSpacing: '.06em', textTransform: 'uppercase', marginBottom: 12 }}>{c.co}</div>
+              <div style={{ ...S.serif, fontSize: 22, fontWeight: 400, letterSpacing: '-.01em', color: '#0f172a', marginBottom: 14, lineHeight: 1.3 }}>{c.title}</div>
+              <p style={{ fontSize: 13.5, color: '#64748b', lineHeight: 1.75, marginBottom: 20 }}>{c.body}</p>
+              {c.stats.length > 0 && <div style={{ display: 'flex', gap: 32, marginBottom: 20 }}>{c.stats.map(([n, l]) => <div key={n}><div style={{ ...S.serif, fontSize: 32, fontWeight: 400, color: '#0f172a', letterSpacing: '-.02em', lineHeight: 1, marginBottom: 4 }}>{n}</div><div style={{ ...S.mono, fontSize: 9, textTransform: 'uppercase', letterSpacing: '.1em', color: '#94a3b8' }}>{l}</div></div>)}</div>}
+              <button style={{ ...S.btnPrimary, fontSize: 10, padding: '10px 22px' }}>Read case study</button>
+            </div>
+          ))}
+        </div>
+      </div>
+    </>
+  );
+}
+
+/* ━━━ PRESS KIT ━━━ */
+function PressKitPage() {
+  return (
+    <>
+      <div style={S.hero}><div style={S.eyebrow}>Press Kit</div><h1 style={S.h1}>Everything you need to cover Taltas.</h1><p style={S.sub}>Assets, boilerplate, and contacts for journalists and media partners.</p></div>
+      <div style={S.container}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'start', marginBottom: 72 }}>
+          <div>
+            <h2 style={S.h2}>Company boilerplate</h2>
+            <div style={{ background: '#f8f9fb', border: '1px solid rgba(0,0,0,.07)', borderRadius: 8, padding: '20px 24px', fontSize: 13.5, color: '#374151', lineHeight: 1.8, marginBottom: 16 }}>Taltas is a recruitment intelligence platform that uses AI Explorer Agents to screen candidates, score on six fit dimensions, and surface the hidden gems traditional ATS systems miss. Founded in 2023 and headquartered in San Francisco, Taltas serves talent teams at companies ranging from seed-stage startups to enterprise organisations.</div>
+            <h2 style={{ ...S.h2, marginTop: 40 }}>Press contact</h2>
+            <p style={S.body}>For media enquiries, interviews, and embargoed briefings:</p>
+            <div style={{ background: '#fff', border: '1px solid rgba(0,0,0,.07)', borderRadius: 10, padding: '20px 24px', marginTop: 12 }}>
+              <div style={{ fontWeight: 600, color: '#0f172a', marginBottom: 4 }}>Press Team</div>
+              <div style={{ ...S.mono, fontSize: 11, color: '#64748b', letterSpacing: '.04em', marginBottom: 2 }}>press@taltas.ai</div>
+              <div style={{ ...S.mono, fontSize: 11, color: '#64748b', letterSpacing: '.04em' }}>Response within 4 hours on business days</div>
+            </div>
+          </div>
+          <div>
+            <h2 style={S.h2}>Downloads</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 1, background: 'rgba(0,0,0,.07)', border: '1px solid rgba(0,0,0,.07)' }}>
+              {[['Logo Pack', 'SVG, PNG — Light & Dark variants'], ['Brand Guidelines', 'PDF · 24 pages'], ['Product Screenshots', 'ZIP · Hi-res PNG'], ['Executive Headshots', 'ZIP · Hi-res JPG'], ['Company Fact Sheet', 'PDF · 2 pages']].map(([name, meta]) => (
+                <div key={name} style={{ background: '#fff', padding: '16px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
+                  <div><div style={{ fontSize: 13.5, fontWeight: 600, color: '#0f172a', marginBottom: 2 }}>{name}</div><div style={{ ...S.mono, fontSize: 10, color: '#94a3b8', letterSpacing: '.04em' }}>{meta}</div></div>
+                  <button style={{ ...S.mono, fontSize: 10, letterSpacing: '.08em', textTransform: 'uppercase', background: 'none', border: '1px solid rgba(0,0,0,.12)', padding: '7px 14px', borderRadius: 6, cursor: 'pointer', color: '#374151', whiteSpace: 'nowrap' }}>↓ Download</button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+        <div style={{ borderTop: '1px solid rgba(0,0,0,.07)', paddingTop: 72 }}>
+          <h2 style={{ ...S.h2, marginBottom: 32 }}>Recent coverage</h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 1, background: 'rgba(0,0,0,.07)', border: '1px solid rgba(0,0,0,.07)' }}>
+            {[['TechCrunch', '"Taltas raises $18M to bring AI agents to talent acquisition"', 'Jan 2026'], ['The Information', '"The startups turning hiring into an AI negotiation"', 'Dec 2025'], ['Forbes', '"HR Tech\'s next wave: agents that interview, score, and negotiate"', 'Nov 2025']].map(([pub, title, date]) => (
+              <div key={pub} style={{ background: '#fff', padding: '20px 24px', display: 'flex', alignItems: 'center', gap: 20 }}>
+                <div style={{ ...S.mono, fontSize: 10, textTransform: 'uppercase', letterSpacing: '.1em', color: '#2563eb', minWidth: 110 }}>{pub}</div>
+                <div style={{ fontSize: 13.5, color: '#374151', flex: 1 }}>{title}</div>
+                <div style={{ ...S.mono, fontSize: 10, color: '#94a3b8', whiteSpace: 'nowrap' }}>{date}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+/* ━━━ PARTNERS ━━━ */
+function PartnersPage({ router }: { router: ReturnType<typeof useRouter> }) {
+  const tracks = [
+    { label: 'HR Platforms', speed: 28, logos: ['Workday', 'Rippling', 'BambooHR', 'ADP', 'Gusto', 'HiBob', 'Ceridian', 'UKG'] },
+    { label: 'ATS & Job Sites', speed: 36, logos: ['Greenhouse', 'Lever', 'Bullhorn', 'LinkedIn', 'Indeed', 'Glassdoor', 'Ashby', 'SmartRecruiters', 'iCIMS'] },
+    { label: 'Staffing Companies', speed: 22, logos: ['Adecco', 'ManpowerGroup', 'Randstad', 'Robert Half', 'Heidrick & Struggles', 'Spencer Stuart', 'Korn Ferry', 'Michael Page'] },
+  ];
+  return (
+    <>
+      <div style={S.hero}><div style={S.eyebrow}>Partners</div><h1 style={S.h1}>The ecosystem around Taltas.</h1><p style={S.sub}>Taltas integrates with the platforms your team already uses — from HR systems and ATS to job boards and staffing networks.</p></div>
+      <div style={{ ...S.container, paddingTop: 0 }}>
+        {tracks.map(t => (
+          <div key={t.label} style={{ marginBottom: 56 }}>
+            <div style={{ ...S.mono, fontSize: 10, textTransform: 'uppercase', letterSpacing: '.16em', color: '#94a3b8', marginBottom: 20 }}>{t.label}</div>
+            <div style={{ position: 'relative', overflow: 'hidden' }}>
+              <div style={{ display: 'flex', gap: 12, animation: `partnerScroll ${t.speed}s linear infinite`, width: 'max-content' }}>
+                {[...t.logos, ...t.logos].map((logo, i) => (
+                  <div key={`${logo}-${i}`} style={{ width: 160, height: 72, background: '#fff', border: '1px solid rgba(0,0,0,.07)', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 20px', flexShrink: 0 }}>
+                    <span style={{ ...S.mono, fontSize: 11, color: '#94a3b8', letterSpacing: '.04em' }}>{logo}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
+        <div style={{ marginTop: 72, paddingTop: 64, borderTop: '1px solid rgba(0,0,0,.07)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 40, flexWrap: 'wrap' }}>
+          <div>
+            <h2 style={{ ...S.h2, marginBottom: 8 }}>Want to be listed here?</h2>
+            <p style={{ ...S.body, margin: 0, maxWidth: 440 }}>If you&apos;re an HR platform, ATS, job site, or staffing company interested in a deeper integration with Taltas, get in touch.</p>
+          </div>
+          <button style={{ ...S.btnPrimary, fontSize: 10, padding: '14px 28px', whiteSpace: 'nowrap' }} onClick={() => router.push('/info/contact')}>Apply to partner</button>
+        </div>
+      </div>
+    </>
+  );
+}
+
+/* ━━━ ABOUT ━━━ */
+function AboutPage({ router }: { router: ReturnType<typeof useRouter> }) {
+  return (
+    <>
+      <div style={S.hero}><div style={S.eyebrow}>Company</div><h1 style={S.h1}>Making hiring human again.</h1><p style={S.sub}>Taltas exists because the recruiting industry is broken — not by the people in it, but by the tools they&apos;re forced to use.</p></div>
+      <div style={S.container}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'start', marginBottom: 72 }}>
+          <div>
+            <h2 style={S.h2}>Our story</h2>
+            <p style={S.body}>The average recruiter spends 23 hours per week on phone screens. Most of those conversations end in rejection within the first five minutes. The candidates who survive often aren&apos;t the best — they&apos;re the best at interviewing.</p>
+            <p style={S.body}>We built Taltas to change that. Our Explorer Agents don&apos;t just screen — they listen. They evaluate candidates across six dimensions of fit, surface hidden strengths traditional methods miss, and give every candidate a fair, consistent experience.</p>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 0, background: '#2563eb' }}>
+            {[['380+', 'Companies'], ['94%', 'Screening automated'], ['6', 'Fit dimensions'], ['4h', 'Avg response time']].map(([n, l]) => (
+              <div key={n} style={{ padding: '38px 28px' }}><div style={{ ...S.serif, fontSize: 42, fontWeight: 400, color: '#fff', letterSpacing: '-.02em', lineHeight: 1, marginBottom: 8 }}>{n}</div><div style={{ ...S.mono, fontSize: 9, textTransform: 'uppercase', letterSpacing: '.12em', color: 'rgba(255,255,255,.6)' }}>{l}</div></div>
+            ))}
+          </div>
+        </div>
+        <div style={{ marginBottom: 72 }}>
+          <h2 style={S.h2}>Leadership</h2>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 32 }}>
+            {[{ i: 'JC', n: 'James Chen', r: 'CEO', b: 'Former VP Engineering at Lever. Built recruiting tools used by 10,000+ companies.' }, { i: 'AP', n: 'Amara Patel', r: 'CTO', b: 'Ex-DeepMind researcher. Led the team behind the original Explorer Agent architecture.' }, { i: 'MK', n: 'Marcus Kim', r: 'CPO', b: 'Previously Head of Product at Rippling. Designed the HRIS integration layer.' }, { i: 'SR', n: 'Sofia Rodriguez', r: 'COO', b: 'Scaled operations at three YC companies from seed to Series C.' }].map(t => (
+              <div key={t.i}>
+                <div style={{ width: 48, height: 48, borderRadius: 12, background: '#eff6ff', border: '1px solid #bfdbfe', display: 'flex', alignItems: 'center', justifyContent: 'center', ...S.mono, fontSize: 12, color: '#2563eb', marginBottom: 14 }}>{t.i}</div>
+                <div style={{ fontSize: 14, fontWeight: 600, color: '#0f172a', marginBottom: 3 }}>{t.n}</div>
+                <div style={{ ...S.mono, fontSize: 10, color: '#94a3b8', letterSpacing: '.06em', textTransform: 'uppercase', marginBottom: 12 }}>{t.r}</div>
+                <div style={{ fontSize: 13, color: '#64748b', lineHeight: 1.7 }}>{t.b}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div>
+          <h2 style={S.h2}>Values</h2>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 40 }}>
+            {[['01', 'Candidates are people', 'Every interaction should leave someone better informed, not worse off.'], ['02', 'Bias is a bug', 'We actively measure and reduce bias in every scoring dimension.'], ['03', 'Recruiters know best', 'AI should augment human judgment, not replace it.'], ['04', 'Ship with conviction', "We'd rather ship something good and iterate than wait for perfect."]].map(([num, title, body]) => (
+              <div key={num}><div style={{ ...S.mono, fontSize: 10, color: '#2563eb', letterSpacing: '.12em', marginBottom: 12 }}>{num}</div><div style={{ fontSize: 15, fontWeight: 600, color: '#0f172a', marginBottom: 10 }}>{title}</div><div style={{ fontSize: 13, color: '#64748b', lineHeight: 1.75 }}>{body}</div></div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+/* ━━━ CAREERS ━━━ */
+function CareersPage() {
+  const jobs = [
+    { title: 'Senior Backend Engineer', meta: 'Engineering · San Francisco · Full-time' },
+    { title: 'ML Research Engineer', meta: 'AI Team · Remote · Full-time' },
+    { title: 'Product Designer', meta: 'Design · San Francisco · Full-time' },
+    { title: 'Solutions Engineer', meta: 'Go-to-market · New York · Full-time' },
+    { title: 'Developer Advocate', meta: 'DevRel · Remote · Full-time' },
+  ];
+  return (
+    <>
+      <div style={S.hero}><div style={S.eyebrow}>Careers</div><h1 style={S.h1}>Help us fix hiring.</h1><p style={S.sub}>We&apos;re a small team building something ambitious. If you care about making recruiting more human, we&apos;d love to hear from you.</p></div>
+      <div style={S.container}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'start', marginBottom: 72 }}>
+          <div>
+            <h2 style={S.h2}>Why Taltas</h2>
+            <p style={S.body}>We&apos;re backed by $22M from Benchmark, Index, and Workday Ventures. Our product is live with 380+ companies. And we&apos;re just getting started.</p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12, padding: 32, background: '#fff', border: '1px solid rgba(0,0,0,.07)', borderRadius: 12, marginTop: 24 }}>
+              {['Competitive salary + meaningful equity', 'Full health, dental, vision', 'Unlimited PTO (genuinely used)', 'Home office stipend', '$2,000/yr learning budget', 'Annual team offsite'].map(p => <div key={p} style={{ fontSize: 13.5, color: '#374151' }}>{p}</div>)}
+            </div>
+          </div>
+          <div>
+            <h2 style={S.h2}>Open roles</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 1, background: 'rgba(0,0,0,.07)', border: '1px solid rgba(0,0,0,.07)' }}>
+              {jobs.map(j => (
+                <div key={j.title} style={{ background: '#fff', padding: '24px 28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 24, cursor: 'pointer', transition: 'background .15s' }}>
+                  <div><div style={{ fontSize: 14, fontWeight: 600, color: '#0f172a', marginBottom: 4 }}>{j.title}</div><div style={{ ...S.mono, fontSize: 10, color: '#94a3b8', letterSpacing: '.06em', textTransform: 'uppercase' }}>{j.meta}</div></div>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+/* ━━━ CHANGELOG ━━━ */
+function ChangelogPage() {
+  const entries = [
+    { date: 'Feb 18, 2026', tag: 'new', title: 'Agent-to-Agent negotiation (Beta)', body: 'Explorer Agents can now negotiate compensation and start dates with candidate-side agents. Early results show 40% faster offer alignment.', details: ['Negotiation session transcripts available in Pipeline view', 'Configurable guard-rails for compensation bands', 'Manual override at any point in the negotiation'] },
+    { date: 'Feb 4, 2026', tag: 'improved', title: 'Deep Match scoring v3', body: 'Scoring model retrained on 2.4M anonymised conversations. Curiosity Signal accuracy improved by 18%.', details: ['New behavioural-fit sub-dimension', 'Score explanation cards now include confidence intervals', 'Historical score recalculation available on request'] },
+    { date: 'Jan 22, 2026', tag: 'new', title: 'Rippling integration', body: 'Connect Taltas to Rippling for seamless HRIS sync. Employee data, org charts, and compensation bands flow into your workspace automatically.', details: ['One-click OAuth connection', 'Bi-directional sync every 15 minutes', 'Supports custom fields'] },
+    { date: 'Jan 10, 2026', tag: 'fix', title: 'Pipeline export fix', body: 'Resolved an issue where exporting pipeline data to CSV would occasionally truncate candidate notes longer than 2,000 characters.', details: [] },
+  ];
+  const tagColors: Record<string, { bg: string; color: string; border: string }> = { new: { bg: '#eff6ff', color: '#2563eb', border: '#bfdbfe' }, improved: { bg: '#f0fdf4', color: '#16a34a', border: '#bbf7d0' }, fix: { bg: '#fff7ed', color: '#ea580c', border: '#fed7aa' } };
+  return (
+    <>
+      <div style={S.hero}><div style={S.eyebrow}>Changelog</div><h1 style={S.h1}>What&apos;s new in Taltas.</h1><p style={S.sub}>Product updates, improvements, and fixes — shipped roughly every two weeks.</p></div>
+      <div style={{ ...S.container, maxWidth: 780, margin: '0 auto' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+          {entries.map((e, i) => {
+            const tc = tagColors[e.tag] || tagColors.new;
+            return (
+              <div key={i} style={{ padding: '48px 0', borderBottom: '1px solid rgba(0,0,0,.07)', ...(i === 0 ? { paddingTop: 0 } : {}) }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+                  <div style={{ ...S.mono, fontSize: 11, color: '#94a3b8', letterSpacing: '.06em' }}>{e.date}</div>
+                  <div style={{ ...S.mono, fontSize: 9, letterSpacing: '.1em', textTransform: 'uppercase', padding: '3px 8px', borderRadius: 4, background: tc.bg, color: tc.color, border: `1px solid ${tc.border}` }}>{e.tag}</div>
+                </div>
+                <div style={{ ...S.serif, fontSize: 22, fontWeight: 400, letterSpacing: '-.01em', color: '#0f172a', marginBottom: 12, lineHeight: 1.3 }}>{e.title}</div>
+                <div style={{ fontSize: 14, color: '#475569', lineHeight: 1.8, marginBottom: 16, maxWidth: 680 }}>{e.body}</div>
+                {e.details.length > 0 && <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>{e.details.map((d, j) => <div key={j} style={{ ...S.mono, fontSize: 11, color: '#64748b', letterSpacing: '.03em' }}>• {d}</div>)}</div>}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </>
+  );
+}
+
+/* ━━━ BLOG ━━━ */
+function BlogPage() {
+  return (
+    <>
+      <div style={S.hero}><div style={S.eyebrow}>Blog</div><h1 style={S.h1}>Thinking out loud.</h1><p style={S.sub}>Research, product updates, and perspectives on the future of talent acquisition.</p></div>
+      <div style={S.container}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: 1, background: 'rgba(0,0,0,.07)', border: '1px solid rgba(0,0,0,.07)', marginBottom: 48 }}>
+          <div style={{ background: '#fff', padding: '48px 44px' }}>
+            <div style={{ ...S.mono, fontSize: 9, textTransform: 'uppercase', letterSpacing: '.12em', color: '#2563eb', marginBottom: 10 }}>Research</div>
+            <div style={{ ...S.serif, fontSize: 26, fontWeight: 400, letterSpacing: '-.01em', lineHeight: 1.25, color: '#0f172a', marginBottom: 14, cursor: 'pointer' }}>Why phone screens fail: a study of 14,000 recruiter conversations</div>
+            <p style={{ fontSize: 13.5, color: '#64748b', lineHeight: 1.75, marginBottom: 16 }}>We analysed 14,000 phone screen transcripts from 120 companies and found that 73% of rejections happen in the first 4 minutes — before any substantive evaluation occurs.</p>
+            <div style={{ ...S.mono, fontSize: 11, color: '#94a3b8', letterSpacing: '.04em' }}>Feb 12, 2026 · 8 min read</div>
+          </div>
+          <div style={{ background: 'rgba(0,0,0,.03)', display: 'flex', flexDirection: 'column' }}>
+            {[{ cat: 'Product', title: 'Introducing Agent-to-Agent negotiation', date: 'Feb 18, 2026' }, { cat: 'Engineering', title: 'How we built Deep Match scoring v3', date: 'Feb 4, 2026' }, { cat: 'Culture', title: 'What we learned from our first 100 customers', date: 'Jan 28, 2026' }].map(p => (
+              <div key={p.title} style={{ padding: '28px 32px', borderBottom: '1px solid rgba(0,0,0,.07)', cursor: 'pointer', transition: 'background .15s' }}>
+                <div style={{ ...S.mono, fontSize: 9, textTransform: 'uppercase', letterSpacing: '.12em', color: '#2563eb', marginBottom: 10 }}>{p.cat}</div>
+                <div style={{ fontSize: 14, fontWeight: 600, color: '#0f172a', lineHeight: 1.4, marginBottom: 10 }}>{p.title}</div>
+                <div style={{ ...S.mono, fontSize: 10, color: '#94a3b8', letterSpacing: '.04em' }}>{p.date}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+/* ━━━ INSIGHTS ━━━ */
+function InsightsPage() {
+  return (
+    <>
+      <div style={S.hero}><div style={S.eyebrow}>Insights &amp; Reports</div><h1 style={S.h1}>Data-driven hiring intelligence.</h1><p style={S.sub}>Original research from the Taltas team on recruiting trends, candidate behaviour, and AI-assisted hiring.</p></div>
+      <div style={S.container}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 1, background: 'rgba(0,0,0,.07)', border: '1px solid rgba(0,0,0,.07)' }}>
+          {[
+            { tag: 'Annual Report', title: 'State of AI Recruiting 2026', body: 'How 380+ companies are using AI agents in their hiring workflows — and what the data says about outcomes.', featured: true },
+            { tag: 'Research', title: 'The Curiosity Signal: why it predicts performance', body: 'Our analysis of 42,000 Explorer Agent conversations reveals that candidate curiosity is the strongest single predictor of 90-day performance.' },
+            { tag: 'Benchmark', title: 'Time-to-hire benchmarks by industry', body: 'How long does it take to fill a role in SaaS vs. healthcare vs. fintech? We break down the numbers.' },
+            { tag: 'Whitepaper', title: 'Bias in AI recruiting: measurement and mitigation', body: 'A transparent look at how we measure and reduce bias across all six scoring dimensions.' },
+          ].map(r => (
+            <div key={r.title} style={{ background: r.featured ? '#eff6ff' : '#fff', padding: '44px 40px', ...(r.featured ? { gridColumn: '1 / -1' } : {}), transition: 'background .2s' }}>
+              <div style={{ ...S.mono, fontSize: 10, color: '#94a3b8', letterSpacing: '.06em', textTransform: 'uppercase', marginBottom: 12 }}>{r.tag}</div>
+              <div style={{ ...S.serif, fontSize: 22, fontWeight: 400, letterSpacing: '-.01em', color: '#0f172a', marginBottom: 14, lineHeight: 1.3 }}>{r.title}</div>
+              <p style={{ fontSize: 13.5, color: '#64748b', lineHeight: 1.75, marginBottom: 20 }}>{r.body}</p>
+              <button style={{ ...S.btnPrimary, fontSize: 10, padding: '10px 22px' }}>Read report</button>
+            </div>
+          ))}
+        </div>
+      </div>
+    </>
+  );
+}
+
+/* ━━━ RESEARCH PAPERS ━━━ */
+function PapersPage() {
+  const papers = [
+    { title: 'Deep Match: Multi-dimensional candidate scoring through conversational AI', authors: 'Patel, A., Chen, J., Okafor, E. — Taltas Research, 2026', abstract: 'We present Deep Match, a scoring framework that evaluates candidates across six orthogonal dimensions using structured conversational signals. On a held-out set of 8,400 hire/no-hire outcomes, Deep Match achieves 0.91 AUC.' },
+    { title: 'Measuring the Curiosity Signal in unstructured interviews', authors: 'Patel, A., Kim, M. — Taltas Research, 2025', abstract: 'We introduce a method for extracting and scoring candidate curiosity from free-form conversation transcripts. Our approach combines turn-taking analysis with semantic probing to identify genuine intellectual engagement.' },
+    { title: 'Bias auditing in AI-assisted hiring: a framework for continuous measurement', authors: 'Rodriguez, S., Patel, A. — Taltas Research, 2025', abstract: 'We propose a bias auditing framework that continuously measures demographic parity, equalised odds, and calibration across all six Deep Match scoring dimensions.' },
+  ];
+  return (
+    <>
+      <div style={S.hero}><div style={S.eyebrow}>Research Papers</div><h1 style={S.h1}>Open research from Taltas.</h1><p style={S.sub}>Peer-reviewed and pre-print papers from our research team.</p></div>
+      <div style={S.container}>
+        {papers.map((p, i) => (
+          <div key={i} style={{ paddingBottom: 48, marginBottom: 48, borderBottom: i < papers.length - 1 ? '1px solid rgba(0,0,0,.07)' : 'none' }}>
+            <div style={{ ...S.serif, fontSize: 22, fontWeight: 400, letterSpacing: '-.01em', color: '#0f172a', marginBottom: 10, lineHeight: 1.3 }}>{p.title}</div>
+            <div style={{ ...S.mono, fontSize: 11, color: '#94a3b8', letterSpacing: '.04em', marginBottom: 14 }}>{p.authors}</div>
+            <p style={{ fontSize: 13.5, color: '#64748b', lineHeight: 1.8, maxWidth: 720, marginBottom: 16 }}>{p.abstract}</p>
+            <div style={{ display: 'flex', gap: 12 }}>
+              {['PDF', 'arXiv'].map(l => <a key={l} style={{ ...S.mono, fontSize: 10, letterSpacing: '.08em', textTransform: 'uppercase', color: '#2563eb', textDecoration: 'none', padding: '5px 12px', border: '1px solid #bfdbfe', borderRadius: 5, cursor: 'pointer' }}>{l}</a>)}
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
+
+/* ━━━ STANDARD LEGAL PAGES ━━━ */
+type StdPage = { label: string; title: string; subtitle?: string; content: { heading?: string; body: string }[] };
+const STANDARD_PAGES: Record<string, StdPage> = {
+  privacy: { label: 'Legal', title: 'Privacy Policy', subtitle: 'Last updated: February 1, 2026', content: [
+    { heading: '1. Information we collect', body: 'Taltas collects information you provide directly (account registration, job descriptions, recruiter preferences), information generated through platform use (candidate conversation transcripts, scoring data, pipeline events), and technical information (IP addresses, browser type, usage logs).\n\nWe do not collect sensitive personal characteristics (race, religion, health status, sexual orientation) from candidates, and our systems are designed to prevent such data from influencing scoring decisions.' },
+    { heading: '2. How we use your information', body: 'We use collected information to provide and improve the Taltas platform, generate candidate evaluations and scores, facilitate integrations with your ATS, send service communications, and comply with legal obligations.\n\nWe do not sell personal data to third parties. We do not use candidate data to train models used by other customers without explicit consent.' },
+    { heading: '3. Data retention', body: 'Recruiter workspace data is retained for the duration of your subscription plus 90 days. Candidate conversation data is retained for 24 months unless you request earlier deletion. You may export all data at any time via the Integrations dashboard.' },
+    { heading: '4. Your rights', body: 'Depending on your jurisdiction, you may have the right to access, correct, delete, or port your personal data. To exercise these rights, contact privacy@taltas.ai. We respond to verified requests within 30 days.' },
+    { heading: '5. Security', body: 'All data is encrypted in transit (TLS 1.3) and at rest (AES-256). We undergo annual SOC 2 Type II audits. Conversation transcripts are stored in isolated, per-tenant data stores.' },
+    { heading: '6. Contact', body: 'Privacy questions: privacy@taltas.ai · Data Protection Officer: dpo@taltas.ai · Taltas Inc., 340 Pine Street, San Francisco, CA 94104' },
+  ]},
+  terms: { label: 'Legal', title: 'Terms of Service', subtitle: 'Last updated: February 1, 2026', content: [
+    { heading: '1. Acceptance of terms', body: 'By accessing or using the Taltas platform, you agree to be bound by these Terms of Service. If you are using Taltas on behalf of an organisation, you represent that you have authority to bind that organisation to these terms.' },
+    { heading: '2. Platform licence', body: 'Subject to your compliance with these terms and payment of applicable fees, Taltas grants you a limited, non-exclusive, non-transferable licence to access and use the platform for your internal recruiting operations.' },
+    { heading: '3. Acceptable use', body: 'You may not use Taltas to make hiring decisions based on protected characteristics, to collect data on candidates without their knowledge, to circumvent employment law in any jurisdiction, or to reverse-engineer our scoring models.' },
+    { heading: '4. Data ownership', body: 'You retain ownership of all data you bring to Taltas. Candidate conversation data generated through your Explorer Agents is owned by you. Taltas retains the right to use anonymised, aggregated data to improve the platform.' },
+    { heading: '5. Liability', body: 'Taltas provides scoring and evaluation as informational tools to assist human decision-makers. Hiring decisions remain your sole responsibility. Taltas is not liable for employment decisions made using platform outputs.' },
+    { heading: '6. Termination', body: 'You may cancel your subscription at any time. Upon cancellation, you have 90 days to export your data before it is permanently deleted. Taltas may terminate accounts that violate these terms with 30 days notice.' },
+    { heading: '7. Governing law', body: 'These terms are governed by the laws of the State of California. Disputes will be resolved by binding arbitration in San Francisco, California.' },
+  ]},
+  cookie: { label: 'Legal', title: 'Cookie Policy', subtitle: 'Last updated: February 1, 2026', content: [
+    { heading: 'What are cookies?', body: 'Cookies are small text files stored on your device when you visit a website. We use cookies to keep you signed in, remember your preferences, and understand how you use the platform.' },
+    { heading: 'Cookies we use', body: 'Essential cookies — Required for the platform to function. These include session tokens, CSRF protection, and authentication state. You cannot opt out of these.\n\nPreference cookies — Remember your settings, such as dashboard layout and notification preferences. Retained for 12 months.\n\nAnalytics cookies — Help us understand usage patterns to improve the product. We use privacy-first analytics (no cross-site tracking, no fingerprinting). You can opt out in Account Settings.' },
+    { heading: 'Third-party cookies', body: 'We use Stripe for payment processing (their cookies are covered by Stripe\'s privacy policy) and Intercom for in-app support. We do not use advertising cookies or allow third-party ad networks on the platform.' },
+    { heading: 'Managing cookies', body: 'You can manage cookie preferences in your Account Settings under Privacy. Browser-level cookie controls will also work, though disabling essential cookies will prevent you from signing in.' },
+  ]},
+  gdpr: { label: 'Legal', title: 'GDPR Compliance', subtitle: 'Taltas is designed to help you comply with the General Data Protection Regulation. Here\'s how.', content: [
+    { heading: 'Our role under GDPR', body: 'When you use Taltas to evaluate candidates, you are the data controller — you determine the purposes and means of processing candidate data. Taltas acts as a data processor, processing candidate data only on your instructions.\n\nWe have a Data Processing Agreement (DPA) available for all customers. Enterprise customers can request a signed DPA from their account manager.' },
+    { heading: 'Lawful basis', body: 'Taltas supports two lawful bases for candidate data processing: legitimate interests (evaluating candidates for a role they applied to) and consent (where you configure Explorer Agents to obtain explicit consent at the start of screening conversations). We recommend documenting your chosen basis.' },
+    { heading: 'Data subject rights', body: 'The Taltas platform includes tools to help you respond to data subject requests. From the Candidates dashboard, you can export all data held on a candidate (Article 20), delete a candidate record (Article 17), or view and correct stored information (Article 16).' },
+    { heading: 'Data transfers', body: 'Taltas processes data in the EU (AWS eu-west-1) and the US (AWS us-east-1). Cross-border transfers are covered by Standard Contractual Clauses. EU customers can request EU-only data residency (Enterprise plan).' },
+    { heading: 'DPA & contact', body: 'To request a Data Processing Agreement or reach our DPO: dpo@taltas.ai · Taltas Inc., 340 Pine Street, San Francisco, CA 94104' },
+  ]},
+};
+
+function StandardPage({ slug }: { slug: string }) {
+  const page = STANDARD_PAGES[slug];
+  if (!page) return null;
+  return (
+    <>
+      <div style={S.hero}><div style={S.eyebrow}>{page.label}</div><h1 style={S.h1}>{page.title}</h1>{page.subtitle && <p style={S.sub}>{page.subtitle}</p>}</div>
+      <div style={{ maxWidth: 780, margin: '0 auto', padding: '0 48px 100px' }}>
+        {page.content.map((s, i) => (
+          <div key={i} style={{ marginBottom: i === 0 ? 40 : undefined, marginTop: i > 0 ? 40 : undefined }}>
+            {s.heading && <h2 style={{ ...S.serif, fontSize: 20, fontWeight: 400, color: '#0f172a', marginBottom: 12, letterSpacing: '-.01em' }}>{s.heading}</h2>}
+            <p style={{ fontSize: 14, color: '#475569', lineHeight: 1.85, whiteSpace: 'pre-line', maxWidth: 760 }}>{s.body}</p>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
+
+/* ━━━ MAIN PAGE COMPONENT ━━━ */
+const CUSTOM_PAGES = ['about', 'careers', 'contact', 'changelog', 'blog', 'insights', 'helpcenter', 'apiref', 'status', 'community', 'partners', 'security', 'investors', 'casestudies', 'presskit', 'papers'];
+
+export default function InfoPage() {
+  const router = useRouter();
+  const params = useParams();
+  const slug = params.slug as string;
+
+  const hasPage = CUSTOM_PAGES.includes(slug) || STANDARD_PAGES[slug];
+
+  return (
+    <div style={{ minHeight: '100vh', background: '#fafbfd', display: 'flex', flexDirection: 'column' }}>
+      <PubNav router={router} />
+      <div style={{ flex: 1 }}>
+        {slug === 'about' ? <AboutPage router={router} /> :
+         slug === 'careers' ? <CareersPage /> :
+         slug === 'contact' ? <ContactPage /> :
+         slug === 'changelog' ? <ChangelogPage /> :
+         slug === 'blog' ? <BlogPage /> :
+         slug === 'insights' ? <InsightsPage /> :
+         slug === 'helpcenter' ? <HelpCenterPage router={router} /> :
+         slug === 'apiref' ? <ApiRefPage /> :
+         slug === 'status' ? <StatusPage /> :
+         slug === 'community' ? <CommunityPage router={router} /> :
+         slug === 'partners' ? <PartnersPage router={router} /> :
+         slug === 'security' ? <SecurityPage /> :
+         slug === 'investors' ? <InvestorsPage /> :
+         slug === 'casestudies' ? <CaseStudiesPage /> :
+         slug === 'presskit' ? <PressKitPage /> :
+         slug === 'papers' ? <PapersPage /> :
+         STANDARD_PAGES[slug] ? <StandardPage slug={slug} /> :
+         (
+           <div style={{ textAlign: 'center', paddingTop: 120, paddingBottom: 80 }}>
+             <h1 style={{ ...S.serif, fontSize: 28, color: '#0f172a', marginBottom: 8 }}>Page not found</h1>
+             <p style={{ fontSize: 14, color: '#94a3b8', marginBottom: 20 }}>The page you&apos;re looking for doesn&apos;t exist.</p>
+             <button onClick={() => router.push('/')} style={{ ...S.mono, fontSize: 11, padding: '10px 24px', borderRadius: 8, background: '#2563eb', color: '#fff', border: 'none', cursor: 'pointer', letterSpacing: '.04em' }}>Back to home</button>
+           </div>
+         )}
+      </div>
+      <SiteFooter variant="full" />
+    </div>
+  );
+}

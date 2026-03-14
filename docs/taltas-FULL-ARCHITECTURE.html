@@ -1,0 +1,560 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Taltas Recruiter Portal — Full Architecture</title><style>
+
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; max-width: 900px; margin: 40px auto; padding: 0 24px; color: #1f2937; line-height: 1.7; font-size: 14px; }
+h1 { font-size: 28px; color: #0f172a; border-bottom: 2px solid #2563eb; padding-bottom: 12px; }
+h2 { font-size: 20px; color: #0f172a; margin-top: 40px; border-bottom: 1px solid #e5e7eb; padding-bottom: 8px; }
+h3 { font-size: 16px; color: #374151; margin-top: 24px; }
+code { font-family: 'Roboto Mono', monospace; font-size: 12px; background: #f1f5f9; padding: 1px 5px; border-radius: 3px; }
+pre { background: #0f172a; color: #e2e8f0; padding: 16px 20px; border-radius: 8px; overflow-x: auto; font-size: 12px; line-height: 1.5; }
+pre code { background: none; padding: 0; }
+table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+th, td { border: 1px solid #e5e7eb; padding: 8px 12px; text-align: left; font-size: 13px; }
+th { background: #f8fafc; font-weight: 600; }
+strong { color: #0f172a; }
+hr { border: none; border-top: 1px solid #e5e7eb; margin: 32px 0; }
+a { color: #2563eb; }
+
+</style></head><body>
+<h1>Taltas Recruiter Portal — Full Architecture</h1>
+<br>
+<p style="margin:4px 0"><strong>Version:</strong> 3.0 · <strong>Last Updated:</strong> February 25, 2026</p>
+<p style="margin:4px 0"><strong>Status:</strong> Recruiter Portal MVP — UI complete, backend API integration ready</p>
+<br>
+<hr>
+<br>
+<h2>1. Executive Summary</h2>
+<br>
+<p style="margin:4px 0">Taltas is an AI-powered recruitment intelligence platform. The <strong>Recruiter Portal</strong> is the first of three planned frontend platforms (Recruiter → Candidate → Admin), all sharing the same backend API at <code>https://api.taltas.ai/api/v1</code>.</p>
+<br>
+<p style="margin:4px 0">The recruiter portal is a Next.js 14 application with 51 source files, ~7,990 lines of code, featuring a complete dashboard UI with mock data, full API integration layer (ready for backend connection), authentication with JWT refresh flow, 20 fully-built public/info pages ported 1:1 from the marketing HTML source, and a dark blue footer with exact font matching.</p>
+<br>
+<hr>
+<br>
+<h2>2. Tech Stack</h2>
+<br>
+<table>
+<tr><th>Layer</th><th>Technology</th><th>Version</th></tr>
+<tr><td>Framework</td><td>Next.js (App Router)</td><td>14.2.x</td></tr>
+<tr><td>UI Library</td><td>React</td><td>18.3.x</td></tr>
+<tr><td>Language</td><td>TypeScript</td><td>5.5.x</td></tr>
+<tr><td>Styling</td><td>Tailwind CSS + globals.css</td><td>3.4.x</td></tr>
+<tr><td>State (server)</td><td>TanStack React Query</td><td>5.50.x</td></tr>
+<tr><td>State (client)</td><td>Zustand</td><td>4.5.x</td></tr>
+<tr><td>HTTP Client</td><td>Axios (with interceptors)</td><td>1.7.x</td></tr>
+<tr><td>Real-time</td><td>socket.io-client</td><td>4.7.x</td></tr>
+<tr><td>Forms</td><td>react-hook-form + zod</td><td>7.52 / 3.23</td></tr>
+<tr><td>Icons</td><td>Lucide React + custom SVGs</td><td>0.400.x</td></tr>
+<tr><td>Charts</td><td>Hand-drawn SVG (reports)</td><td>—</td></tr>
+<tr><td>Date</td><td>date-fns</td><td>3.6.x</td></tr>
+<tr><td>Dev port</td><td>localhost:3001</td><td>—</td></tr>
+</table>
+<br>
+<hr>
+<br>
+<h2>3. Project Structure</h2>
+<br>
+<pre><code>
+taltas-recruiter/
+
+
+├── package.json
+
+
+├── next.config.js
+
+
+├── tailwind.config.ts
+
+
+├── tsconfig.json
+
+
+├── postcss.config.js
+
+
+├── ARCHITECTURE.md             # This file
+
+
+├── public/
+
+
+│   └── taltas-icon.svg
+
+
+├── docs/
+
+
+│   ├── taltas-SESSION-HANDOFF.md
+
+
+│   ├── HANDOFF-BACKEND.md      # Backend wiring guide
+
+
+│   ├── taltas-FULL-ARCHITECTURE.html
+
+
+│   └── taltas-FULL-ARCHITECTURE.pdf
+
+
+└── src/
+
+
+    ├── middleware.ts                # Auth route protection (13 lines)
+
+
+    ├── types/
+
+
+    │   └── api.ts                  # All TypeScript interfaces (154 lines)
+
+
+    ├── lib/
+
+
+    │   ├── api/
+
+
+    │   │   ├── client.ts           # Axios + JWT refresh interceptor (76 lines)
+
+
+    │   │   ├── auth.ts             # Login/register/refresh (19 lines)
+
+
+    │   │   ├── agents.ts           # Agent CRUD (28 lines)
+
+
+    │   │   ├── sessions.ts         # Session/conversation (19 lines)
+
+
+    │   │   ├── billing.ts          # Billing/credits (16 lines)
+
+
+    │   │   └── index.ts            # Barrel export (5 lines)
+
+
+    │   ├── hooks/
+
+
+    │   │   ├── use-auth.ts         # useMe, useLogin, useRegister (69 lines)
+
+
+    │   │   ├── use-agents.ts       # useAgents, useCreateAgent (67 lines)
+
+
+    │   │   ├── use-sessions.ts     # useSessions, useSessionDetail (51 lines)
+
+
+    │   │   └── use-billing.ts      # useBilling, usePurchaseCredits (37 lines)
+
+
+    │   ├── stores/
+
+
+    │   │   ├── auth-store.ts       # JWT tokens, user, logout (28 lines)
+
+
+    │   │   └── platform-store.ts   # Sidebar, theme, workspace (27 lines)
+
+
+    │   ├── mock-data.ts            # Typed mock data (117 lines)
+
+
+    │   └── utils.ts                # cn() helper (61 lines)
+
+
+    ├── components/
+
+
+    │   ├── auth/
+
+
+    │   │   ├── auth-guard.tsx      # Protected route wrapper (26 lines)
+
+
+    │   │   ├── network-canvas.tsx  # Animated login background (81 lines)
+
+
+    │   │   └── password-strength.tsx (36 lines)
+
+
+    │   ├── modals/
+
+
+    │   │   ├── candidate-modal.tsx         # 4-tab detail modal (373 lines)
+
+
+    │   │   ├── explorer-detail-modal.tsx   # Stats + activity (139 lines)
+
+
+    │   │   ├── new-explorer-modal.tsx      # Wizard flow (179 lines)
+
+
+    │   │   ├── edit-explorer-modal.tsx     # Quick edit (138 lines)
+
+
+    │   │   └── new-role-modal.tsx          # New job role (140 lines)
+
+
+    │   ├── shared/
+
+
+    │   │   ├── site-footer.tsx     # Dark blue footer, full + compact (291 lines)
+
+
+    │   │   └── agent-blob.tsx      # Animated agent indicator (15 lines)
+
+
+    │   ├── shell/
+
+
+    │   │   └── topbar.tsx          # Dashboard nav bar (94 lines)
+
+
+    │   ├── ui/
+
+
+    │   │   ├── modal.tsx           # Portal-based modal (23 lines)
+
+
+    │   │   └── toast.tsx           # Toast notifications (41 lines)
+
+
+    │   ├── icons.tsx               # Custom SVG icons (353 lines)
+
+
+    │   └── icon-resolver.tsx       # Dynamic icon lookup (61 lines)
+
+
+    └── app/
+
+
+        ├── layout.tsx              # Root layout (26 lines)
+
+
+        ├── providers.tsx           # QueryClientProvider (35 lines)
+
+
+        ├── globals.css             # All styles (1,325 lines)
+
+
+        ├── page.tsx                # Landing page (261 lines)
+
+
+        ├── info/[slug]/page.tsx    # All 20 public pages (762 lines)
+
+
+        ├── (auth)/
+
+
+        │   ├── layout.tsx          # Auth layout (14 lines)
+
+
+        │   ├── login/page.tsx      # Login (180 lines)
+
+
+        │   └── register/page.tsx   # Register (203 lines)
+
+
+        └── (dashboard)/
+
+
+            ├── layout.tsx          # Dashboard shell + AuthGuard (39 lines)
+
+
+            ├── dashboard/page.tsx  # Main dashboard (262 lines)
+
+
+            ├── explorers/page.tsx  # Agent management (125 lines)
+
+
+            ├── candidates/page.tsx # Candidate list (146 lines)
+
+
+            ├── pipeline/page.tsx   # Pipeline board (171 lines)
+
+
+            ├── messages/page.tsx   # Messaging (269 lines)
+
+
+            ├── reports/page.tsx    # Analytics charts (519 lines)
+
+
+            ├── jobs/page.tsx       # Job listings (191 lines)
+
+
+            ├── integrations/page.tsx # Connectors (213 lines)
+
+
+            ├── notifications/page.tsx # Alerts (108 lines)
+
+
+            ├── profile/page.tsx    # User settings (184 lines)
+
+
+            └── settings/page.tsx   # Workspace config (180 lines)
+
+
+</code></pre>
+<br>
+<hr>
+<br>
+<h2>4. Route Map</h2>
+<br>
+<h3>Public Routes</h3>
+<table>
+<tr><th>Route</th><th>Description</th></tr>
+<tr><td>`/`</td><td>Landing page with hero, features, pricing</td></tr>
+<tr><td>`/info/about`</td><td>About with stats, team, values</td></tr>
+<tr><td>`/info/careers`</td><td>Job listings + perks</td></tr>
+<tr><td>`/info/contact`</td><td>Contact form + info cards</td></tr>
+<tr><td>`/info/changelog`</td><td>Tagged update feed</td></tr>
+<tr><td>`/info/blog`</td><td>Featured + sidebar layout</td></tr>
+<tr><td>`/info/insights`</td><td>Reports grid</td></tr>
+<tr><td>`/info/helpcenter`</td><td>Search bar + 6-section grid + contact strip</td></tr>
+<tr><td>`/info/apiref`</td><td>Sidebar nav + endpoint docs + JSON examples</td></tr>
+<tr><td>`/info/status`</td><td>Green dot + 6 incident history entries</td></tr>
+<tr><td>`/info/community`</td><td>3-col: channels, posts, join card</td></tr>
+<tr><td>`/info/partners`</td><td>3 scrolling logo carousels + CTA</td></tr>
+<tr><td>`/info/security`</td><td>3×2 security card grid</td></tr>
+<tr><td>`/info/investors`</td><td>Investor chips + stat block</td></tr>
+<tr><td>`/info/casestudies`</td><td>Featured + 2 case studies with stats</td></tr>
+<tr><td>`/info/presskit`</td><td>Boilerplate, downloads, coverage</td></tr>
+<tr><td>`/info/papers`</td><td>3 research papers with abstracts</td></tr>
+<tr><td>`/info/privacy`</td><td>Privacy policy (full text)</td></tr>
+<tr><td>`/info/terms`</td><td>Terms of service (full text)</td></tr>
+<tr><td>`/info/cookie`</td><td>Cookie policy (full text)</td></tr>
+<tr><td>`/info/gdpr`</td><td>GDPR compliance (full text)</td></tr>
+</table>
+<br>
+<h3>Auth Routes</h3>
+<table>
+<tr><th>Route</th><th>Description</th></tr>
+<tr><td>`/login`</td><td>Login with network canvas animation</td></tr>
+<tr><td>`/register`</td><td>Registration with password strength</td></tr>
+</table>
+<br>
+<h3>Dashboard Routes (Protected)</h3>
+<table>
+<tr><th>Route</th><th>Description</th></tr>
+<tr><td>`/dashboard`</td><td>Stats, activity, pipeline overview</td></tr>
+<tr><td>`/explorers`</td><td>Agent grid with create/edit/detail modals</td></tr>
+<tr><td>`/candidates`</td><td>Candidate list with detail modal</td></tr>
+<tr><td>`/pipeline`</td><td>Kanban pipeline board</td></tr>
+<tr><td>`/messages`</td><td>Conversations + compose + transcript</td></tr>
+<tr><td>`/reports`</td><td>Funnel, radar, pareto, export</td></tr>
+<tr><td>`/jobs`</td><td>Job management</td></tr>
+<tr><td>`/integrations`</td><td>ATS/HRIS connections</td></tr>
+<tr><td>`/notifications`</td><td>Alert center</td></tr>
+<tr><td>`/profile`</td><td>User settings</td></tr>
+<tr><td>`/settings`</td><td>Workspace config (dark theme default)</td></tr>
+</table>
+<br>
+<hr>
+<br>
+<h2>5. Authentication</h2>
+<br>
+<pre><code>
+Login → POST /auth/login → { accessToken, refreshToken }
+
+
+     → Store in Zustand auth-store
+
+
+     → Axios interceptor attaches Bearer token
+
+
+     → On 401: POST /auth/refresh → retry queue
+
+
+     → On refresh fail: logout → /login
+
+
+</code></pre>
+<br>
+<p style="margin:4px 0"><strong>Test Credentials:</strong> test@taltas.ai / TestPass123!</p>
+<br>
+<hr>
+<br>
+<h2>6. API Integration</h2>
+<br>
+<p style="margin:4px 0"><strong>Base URL:</strong> <code>https://api.taltas.ai/api/v1</code></p>
+<br>
+<h3>Key Endpoints</h3>
+<table>
+<tr><th>Method</th><th>Endpoint</th><th>Hook</th></tr>
+<tr><td>POST</td><td>/auth/login</td><td>useLogin()</td></tr>
+<tr><td>POST</td><td>/auth/register</td><td>useRegister()</td></tr>
+<tr><td>POST</td><td>/auth/refresh</td><td>(auto via interceptor)</td></tr>
+<tr><td>GET</td><td>/principals/me</td><td>useMe()</td></tr>
+<tr><td>GET/POST/PUT/DELETE</td><td>/agents</td><td>useAgents()</td></tr>
+<tr><td>GET</td><td>/sessions</td><td>useSessions()</td></tr>
+<tr><td>GET</td><td>/billing/current</td><td>useBilling()</td></tr>
+</table>
+<br>
+<h3>Integration Status</h3>
+<div style="margin-left:16px;margin-bottom:4px">• API client scaffolded with Axios + JWT refresh interceptor</div>
+<div style="margin-left:16px;margin-bottom:4px">• React Query hooks defined for all major endpoints</div>
+<div style="margin-left:16px;margin-bottom:4px">• Currently running on embedded mock data per-page</div>
+<div style="margin-left:16px;margin-bottom:4px">• <strong>Next step:</strong> Wire hooks to replace mock data (see docs/HANDOFF-BACKEND.md)</div>
+<br>
+<hr>
+<br>
+<h2>7. Styling</h2>
+<br>
+<h3>CSS Variables</h3>
+<pre><code>
+--font-sans: 'Inter', system-ui, sans-serif;
+
+
+--font-mono: 'Roboto Mono', 'Courier New', monospace;
+
+
+--font-serif: 'Roboto Slab', Georgia, serif;
+
+
+</code></pre>
+<br>
+<h3>Key Colors</h3>
+<div style="margin-left:16px;margin-bottom:4px">• Primary accent: #4f46e5 (indigo)</div>
+<div style="margin-left:16px;margin-bottom:4px">• Secondary accent: #6366f1</div>
+<div style="margin-left:16px;margin-bottom:4px">• Primary blue: #2563eb</div>
+<div style="margin-left:16px;margin-bottom:4px">• Dark footer: #0f172a</div>
+<div style="margin-left:16px;margin-bottom:4px">• Public page bg: #fafbfd</div>
+<div style="margin-left:16px;margin-bottom:4px">• Text bright: #0f172a</div>
+<div style="margin-left:16px;margin-bottom:4px">• Text muted: #94a3b8</div>
+<br>
+<h3>Footer (site-footer.tsx — 291 lines)</h3>
+<div style="margin-left:16px;margin-bottom:4px">• Always dark blue (#0f172a) on every page</div>
+<div style="margin-left:16px;margin-bottom:4px">• <strong>Full variant</strong> (landing + info pages): 5-column grid (brand + 4 link columns) + bottom legal bar</div>
+<p style="margin:4px 0">  - Logo: Georgia serif, 22px, white</p>
+<p style="margin:4px 0">  - Tagline: system sans, 13px, #94a3b8</p>
+<p style="margin:4px 0">  - Column headings: Space Mono, 10px uppercase, .14em letter-spacing</p>
+<p style="margin:4px 0">  - Column links: system sans, 13px, #64748b → #e2e8f0 on hover</p>
+<p style="margin:4px 0">  - Social buttons: LinkedIn + X/Twitter SVGs</p>
+<p style="margin:4px 0">  - Copyright: Space Mono, 10px, #cbd5e1</p>
+<p style="margin:4px 0">  - Legal links: Space Mono, 10px, #cbd5e1 → #94a3b8 on hover</p>
+<div style="margin-left:16px;margin-bottom:4px">• <strong>Compact variant</strong> (auth + dashboard): bottom bar only with copyright + legal links</div>
+<br>
+<h3>PubNav (info pages)</h3>
+<div style="margin-left:16px;margin-bottom:4px">• Matches landing page nav fonts exactly:</div>
+<p style="margin:4px 0">  - Logo: var(--font-serif), 30px, weight 400, #0f172a, accent #4f46e5</p>
+<p style="margin:4px 0">  - Nav links: var(--font-mono), 11px, uppercase, .08em letter-spacing, #94a3b8</p>
+<p style="margin:4px 0">  - CTA button: var(--font-mono), 11px, uppercase, border rgba(0,0,0,.14)</p>
+<br>
+<hr>
+<br>
+<h2>8. Key Features</h2>
+<br>
+<h3>Public Pages (info/[slug]/page.tsx — 762 lines)</h3>
+<div style="margin-left:16px;margin-bottom:4px">• 16 custom-layout pages with full content from HTML source</div>
+<div style="margin-left:16px;margin-bottom:4px">• 4 standard legal pages (templated with heading/body sections)</div>
+<div style="margin-left:16px;margin-bottom:4px">• All share PubNav + SiteFooter</div>
+<div style="margin-left:16px;margin-bottom:4px">• Search functionality on Help Center page</div>
+<div style="margin-left:16px;margin-bottom:4px">• Scrolling partner logo carousels with CSS animation</div>
+<div style="margin-left:16px;margin-bottom:4px">• Community page with post feed, channels, join card, contributor sidebar</div>
+<br>
+<h3>Reports Charts (SVG)</h3>
+<div style="margin-left:16px;margin-bottom:4px">• <strong>Radar</strong>: 300×290 SVG, 6-axis, Explorer (blue) vs ATS (gray), apex values visible</div>
+<div style="margin-left:16px;margin-bottom:4px">• <strong>Pareto</strong>: 440px wide, 14px bar padding, -40° rotated labels, 80% line</div>
+<div style="margin-left:16px;margin-bottom:4px">• <strong>Funnel</strong>: Conversion visualization with stage percentages</div>
+<br>
+<h3>Modal System</h3>
+<div style="margin-left:16px;margin-bottom:4px">• Portal-based with click-outside + ESC close</div>
+<div style="margin-left:16px;margin-bottom:4px">• CandidateModal: 4 tabs (Overview, Conversation, Fit, Timeline) — 373 lines</div>
+<div style="margin-left:16px;margin-bottom:4px">• ExplorerDetailModal: Stats + activity + pause/resume — 139 lines</div>
+<div style="margin-left:16px;margin-bottom:4px">• NewExplorerModal: Wizard flow — 179 lines</div>
+<div style="margin-left:16px;margin-bottom:4px">• EditExplorerModal: Quick edit — 138 lines</div>
+<div style="margin-left:16px;margin-bottom:4px">• NewRoleModal: Job role creation — 140 lines</div>
+<br>
+<hr>
+<br>
+<h2>9. Backend Reference</h2>
+<br>
+<h3>Infrastructure</h3>
+<div style="margin-left:16px;margin-bottom:4px">• EKS (Kubernetes) on AWS</div>
+<div style="margin-left:16px;margin-bottom:4px">• RDS (PostgreSQL)</div>
+<div style="margin-left:16px;margin-bottom:4px">• Redis for caching</div>
+<div style="margin-left:16px;margin-bottom:4px">• TLS 1.3 end-to-end</div>
+<div style="margin-left:16px;margin-bottom:4px">• CI/CD via GitHub Actions</div>
+<br>
+<h3>SNAP Protocol</h3>
+<p style="margin:4px 0">Agent interaction protocol: Screening → Negotiation → Assessment → Placement</p>
+<br>
+<hr>
+<br>
+<h2>10. What's Next</h2>
+<br>
+<h3>Priority Order</h3>
+<p style="margin:4px 0">1. <strong>Connect to live backend</strong> (replace mock data) ← IMMEDIATE NEXT</p>
+<p style="margin:4px 0">2. Candidate Portal (second frontend)</p>
+<p style="margin:4px 0">3. Admin Portal (third frontend)</p>
+<p style="margin:4px 0">4. Socket.io real-time features</p>
+<p style="margin:4px 0">5. Pipeline drag-and-drop</p>
+<p style="margin:4px 0">6. Search & filtering</p>
+<p style="margin:4px 0">7. File uploads (JD to S3)</p>
+<p style="margin:4px 0">8. Email notifications</p>
+<br>
+<h3>Backend Wiring Order (see docs/HANDOFF-BACKEND.md)</h3>
+<p style="margin:4px 0">1. Auth flow (login/register → JWT → redirect)</p>
+<p style="margin:4px 0">2. Dashboard (useMe + useBilling + useAgents)</p>
+<p style="margin:4px 0">3. Explorers (useAgents grid + useCreateAgent wizard)</p>
+<p style="margin:4px 0">4. Candidates (useSessions list + detail modal)</p>
+<p style="margin:4px 0">5. Pipeline (session status-based view)</p>
+<p style="margin:4px 0">6. Messages (useSessionDetail transcripts)</p>
+<p style="margin:4px 0">7. Reports (aggregate session/agent data)</p>
+<p style="margin:4px 0">8. Remaining pages</p>
+<br>
+<hr>
+<br>
+<h2>11. Recent Changes</h2>
+<br>
+<h3>February 25, 2026 (v3.0)</h3>
+<div style="margin-left:16px;margin-bottom:4px">• Rebuilt info/[slug]/page.tsx from scratch: 762 lines, 20 fully-ported pages from HTML source</div>
+<div style="margin-left:16px;margin-bottom:4px">• Help Center: search bar, 6-section grid with articles, contact strip</div>
+<div style="margin-left:16px;margin-bottom:4px">• API Reference: sidebar nav, auth docs, endpoint specs, JSON response examples</div>
+<div style="margin-left:16px;margin-bottom:4px">• Status: operational indicator, 6 incident history entries</div>
+<div style="margin-left:16px;margin-bottom:4px">• Community: 3-col layout — channels, post feed, join card, contributors, stats</div>
+<div style="margin-left:16px;margin-bottom:4px">• Contact: full form (name, email, topic select, message) + 4 info cards</div>
+<div style="margin-left:16px;margin-bottom:4px">• Partners: 3 scrolling logo carousels (HR Platforms, ATS, Staffing) + CTA</div>
+<div style="margin-left:16px;margin-bottom:4px">• Security: 3×2 card grid (Encryption, SOC 2, Access Controls, Vuln Disclosure, Infra, Pen Testing)</div>
+<div style="margin-left:16px;margin-bottom:4px">• Investors: chip grid + stat block ($22M / Series A / 2023)</div>
+<div style="margin-left:16px;margin-bottom:4px">• Case Studies: featured Meridian Pay + NovaCare + Loom-Up with stats</div>
+<div style="margin-left:16px;margin-bottom:4px">• Press Kit: boilerplate, press contact, 5 downloadable assets, 3 coverage entries</div>
+<div style="margin-left:16px;margin-bottom:4px">• Research Papers: 3 papers with authors, abstracts, PDF/arXiv links</div>
+<div style="margin-left:16px;margin-bottom:4px">• Legal pages: Privacy, Terms, Cookie, GDPR — full text ported from HTML source</div>
+<div style="margin-left:16px;margin-bottom:4px">• PubNav fonts now match landing page nav exactly (serif logo, mono links)</div>
+<div style="margin-left:16px;margin-bottom:4px">• Added @keyframes partnerScroll to globals.css</div>
+<div style="margin-left:16px;margin-bottom:4px">• TypeScript compiles clean (0 errors)</div>
+<div style="margin-left:16px;margin-bottom:4px">• Created HANDOFF-BACKEND.md for backend wiring guide</div>
+<br>
+<h3>February 24, 2026 (v2.0)</h3>
+<div style="margin-left:16px;margin-bottom:4px">• 19 UI/UX fixes across dashboard, reports, settings, explorers, modals, footer</div>
+<div style="margin-left:16px;margin-bottom:4px">• Footer component completely rewritten with exact HTML source fonts/content</div>
+<div style="margin-left:16px;margin-bottom:4px">• Dark blue (#0f172a) footer with full 5-col + compact variants</div>
+<div style="margin-left:16px;margin-bottom:4px">• Rebuilt all footer/info pages with full HTML mockup content</div>
+<div style="margin-left:16px;margin-bottom:4px">• Contact page: emoji → SVG icons (mail, handshake, newspaper, map-pin)</div>
+<div style="margin-left:16px;margin-bottom:4px">• Pareto chart: widened 380→440px, padding 10→14px, labels lowered</div>
+<div style="margin-left:16px;margin-bottom:4px">• Radar chart: apex values added (10px Explorer, 9px ATS), SVG enlarged 300×290</div>
+<div style="margin-left:16px;margin-bottom:4px">• Dashboard fonts: var(--font-mono) = Roboto Mono</div>
+<div style="margin-left:16px;margin-bottom:4px">• Landing page footer fonts: Space Mono for headings</div>
+<br>
+<hr>
+<br>
+<h2>12. Three Frontends (Same Backend)</h2>
+<br>
+<table>
+<tr><th>Platform</th><th>Status</th><th>Port</th><th>LOC</th></tr>
+<tr><td>Recruiter</td><td>✅ UI Complete</td><td>3001</td><td>~7,990</td></tr>
+<tr><td>Candidate</td><td>❌ Not started</td><td>3002</td><td>—</td></tr>
+<tr><td>Admin</td><td>❌ Not started</td><td>3003</td><td>—</td></tr>
+</table>
+<br>
+<hr>
+<br>
+<h2>13. Boston Tech Labs Context</h2>
+<br>
+<p style="margin:4px 0">Taltas is a portfolio company of Boston Tech Labs (BTL), a venture studio.</p>
+<p style="margin:4px 0">The project owner is Tawanda, CEO of BTL.</p>
+<p style="margin:4px 0">Frontend preference: Next.js + Tailwind + shadcn/ui</p>
+<br>
+</body></html>

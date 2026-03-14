@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taltas Recruiter Portal — Full Architecture</title>
+<style>
+  :root { --blue: #2563eb; --dark: #0f172a; --gray: #64748b; --light: #f8fafc; --border: #e2e8f0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', -apple-system, sans-serif; color: #334155; line-height: 1.7; background: #fff; }
+  .container { max-width: 900px; margin: 0 auto; padding: 60px 48px 100px; }
+  .header { background: var(--dark); color: #fff; padding: 60px 48px 48px; margin-bottom: 0; }
+  .header .inner { max-width: 900px; margin: 0 auto; }
+  .header h1 { font-family: Georgia, serif; font-size: 36px; font-weight: 400; letter-spacing: -.02em; margin-bottom: 8px; }
+  .header .meta { font-family: 'Roboto Mono', monospace; font-size: 11px; color: rgba(255,255,255,.5); letter-spacing: .06em; }
+  .header .status { display: inline-block; margin-top: 12px; background: rgba(37,99,235,.2); border: 1px solid rgba(37,99,235,.4); border-radius: 4px; padding: 4px 12px; font-family: 'Roboto Mono', monospace; font-size: 10px; color: #93c5fd; letter-spacing: .08em; text-transform: uppercase; }
+  h2 { font-family: Georgia, serif; font-size: 24px; font-weight: 400; color: var(--dark); margin: 48px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); letter-spacing: -.01em; }
+  h3 { font-size: 16px; font-weight: 600; color: var(--dark); margin: 28px 0 10px; }
+  p { margin-bottom: 14px; font-size: 14px; }
+  code { font-family: 'Roboto Mono', monospace; font-size: 12px; background: #f1f5f9; padding: 2px 6px; border-radius: 3px; color: var(--dark); }
+  pre { background: var(--dark); color: #e2e8f0; padding: 20px 24px; border-radius: 8px; overflow-x: auto; margin: 16px 0 24px; font-family: 'Roboto Mono', monospace; font-size: 12px; line-height: 1.6; }
+  table { width: 100%; border-collapse: collapse; margin: 16px 0 24px; font-size: 13px; }
+  th { background: #f8fafc; font-family: 'Roboto Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--gray); padding: 10px 14px; text-align: left; border-bottom: 2px solid var(--border); }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:hover td { background: #fafbff; }
+  .badge { display: inline-block; font-family: 'Roboto Mono', monospace; font-size: 9px; letter-spacing: .1em; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; }
+  .badge-done { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
+  .badge-next { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; }
+  .badge-todo { background: #fff7ed; color: #ea580c; border: 1px solid #fed7aa; }
+  ul { padding-left: 20px; margin: 8px 0 16px; }
+  li { margin-bottom: 6px; font-size: 14px; }
+  .toc { background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 24px 28px; margin: 24px 0 40px; }
+  .toc-title { font-family: 'Roboto Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: .14em; color: var(--blue); margin-bottom: 12px; }
+  .toc a { display: block; font-size: 13px; color: var(--gray); text-decoration: none; padding: 4px 0; transition: color .15s; }
+  .toc a:hover { color: var(--blue); }
+  .flow { background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 20px 24px; margin: 16px 0; font-family: 'Roboto Mono', monospace; font-size: 12px; line-height: 2; }
+  .section-label { font-family: 'Roboto Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: .14em; color: var(--blue); margin-bottom: 4px; }
+  @media print { .container { padding: 20px; } h2 { break-after: avoid; } table { font-size: 11px; } pre { font-size: 10px; } }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="inner">
+    <h1>Taltas Recruiter Portal</h1>
+    <div class="meta">Version 2.0 · February 24, 2026 · Full Architecture Document</div>
+    <div class="status">Recruiter MVP — UI Complete</div>
+  </div>
+</div>
+
+<div class="container">
+
+<div class="toc">
+  <div class="toc-title">Table of Contents</div>
+  <a href="#summary">1. Executive Summary</a>
+  <a href="#stack">2. Tech Stack</a>
+  <a href="#structure">3. Project Structure</a>
+  <a href="#routes">4. Route Map</a>
+  <a href="#auth">5. Authentication</a>
+  <a href="#api">6. API Integration</a>
+  <a href="#styling">7. Styling System</a>
+  <a href="#features">8. Key Features by Page</a>
+  <a href="#public">9. Public Pages</a>
+  <a href="#backend">10. Backend Reference</a>
+  <a href="#next">11. What's Next</a>
+  <a href="#changes">12. Recent Changes</a>
+  <a href="#setup">13. Development Setup</a>
+</div>
+
+<h2 id="summary">1. Executive Summary</h2>
+<p>Taltas is an AI-powered recruitment intelligence platform. The <strong>Recruiter Portal</strong> is the first of three planned frontend platforms (Recruiter → Candidate → Admin), all sharing the same backend API at <code>https://api.taltas.ai/api/v1</code>.</p>
+<p>The portal is a Next.js 14 application with 50+ source files, ~7,500 lines of code, featuring a complete dashboard UI with mock data, full API integration layer, authentication with JWT refresh flow, and 25+ public pages matching the marketing HTML mockup.</p>
+
+<h2 id="stack">2. Tech Stack</h2>
+<table>
+  <tr><th>Layer</th><th>Technology</th><th>Version</th></tr>
+  <tr><td>Framework</td><td>Next.js (App Router)</td><td>14.2.x</td></tr>
+  <tr><td>UI Library</td><td>React</td><td>18.3.x</td></tr>
+  <tr><td>Language</td><td>TypeScript</td><td>5.5.x</td></tr>
+  <tr><td>Styling</td><td>Tailwind CSS + globals.css</td><td>3.4.x</td></tr>
+  <tr><td>State (server)</td><td>TanStack React Query</td><td>5.50.x</td></tr>
+  <tr><td>State (client)</td><td>Zustand</td><td>4.5.x</td></tr>
+  <tr><td>HTTP Client</td><td>Axios (with interceptors)</td><td>1.7.x</td></tr>
+  <tr><td>Real-time</td><td>socket.io-client</td><td>4.7.x</td></tr>
+  <tr><td>Forms</td><td>react-hook-form + zod</td><td>7.52 / 3.23</td></tr>
+  <tr><td>Icons</td><td>Lucide React + custom SVGs</td><td>0.400.x</td></tr>
+  <tr><td>Charts</td><td>Hand-drawn SVG</td><td>—</td></tr>
+  <tr><td>Dev port</td><td>localhost:3001</td><td>—</td></tr>
+</table>
+
+<h2 id="structure">3. Project Structure</h2>
+<pre>taltas-recruiter/
+├── package.json, next.config.js, tailwind.config.ts, tsconfig.json
+├── ARCHITECTURE.md
+├── docs/HANDOVER.md
+├── public/taltas-icon.svg
+└── src/
+    ├── middleware.ts               # Auth route guard
+    ├── types/api.ts                # All TS interfaces (154 lines)
+    ├── lib/
+    │   ├── api/client.ts           # Axios + JWT refresh
+    │   ├── api/auth|agents|sessions|billing.ts
+    │   ├── hooks/use-auth|agents|sessions|billing.ts
+    │   ├── stores/auth-store|platform-store.ts
+    │   ├── mock-data.ts            # Demo data
+    │   └── utils.ts                # cn() helper
+    ├── components/
+    │   ├── modals/candidate|explorer-detail|new-explorer|new-role
+    │   ├── shared/site-footer|agent-blob
+    │   ├── shell/topbar
+    │   ├── ui/modal|toast
+    │   ├── icons.tsx (353 lines)
+    │   └── icon-resolver.tsx
+    └── app/
+        ├── globals.css (1,406 lines)
+        ├── page.tsx (landing)
+        ├── info/[slug]/page.tsx (553 lines — all public pages)
+        ├── (auth)/login|register
+        └── (dashboard)/dashboard|explorers|candidates|pipeline
+            |messages|reports|jobs|integrations|notifications
+            |profile|settings</pre>
+
+<h2 id="routes">4. Route Map</h2>
+<h3>Public Routes</h3>
+<table>
+  <tr><th>Route</th><th>Description</th></tr>
+  <tr><td><code>/</code></td><td>Landing page — hero, features, pricing</td></tr>
+  <tr><td><code>/info/about</code></td><td>About — stats, team, values</td></tr>
+  <tr><td><code>/info/careers</code></td><td>Job listings + perks</td></tr>
+  <tr><td><code>/info/contact</code></td><td>Contact cards (SVG icons)</td></tr>
+  <tr><td><code>/info/changelog</code></td><td>Tagged update feed</td></tr>
+  <tr><td><code>/info/blog</code></td><td>Featured + sidebar</td></tr>
+  <tr><td><code>/info/insights</code></td><td>Reports grid</td></tr>
+  <tr><td><code>/info/[slug]</code></td><td>25+ content pages (privacy, terms, etc.)</td></tr>
+</table>
+
+<h3>Dashboard Routes (Protected)</h3>
+<table>
+  <tr><th>Route</th><th>Description</th></tr>
+  <tr><td><code>/dashboard</code></td><td>Stats, activity, pipeline overview</td></tr>
+  <tr><td><code>/explorers</code></td><td>Agent grid + create/edit/detail modals</td></tr>
+  <tr><td><code>/candidates</code></td><td>Candidate list + detail modal (4 tabs)</td></tr>
+  <tr><td><code>/pipeline</code></td><td>Kanban board</td></tr>
+  <tr><td><code>/messages</code></td><td>Conversations + compose + transcript</td></tr>
+  <tr><td><code>/reports</code></td><td>Funnel, radar, pareto charts + export</td></tr>
+  <tr><td><code>/jobs</code></td><td>Job management</td></tr>
+  <tr><td><code>/integrations</code></td><td>ATS/HRIS connectors</td></tr>
+  <tr><td><code>/settings</code></td><td>Theme (dark default), workspace config</td></tr>
+</table>
+
+<h2 id="auth">5. Authentication</h2>
+<div class="flow">
+Login → POST /auth/login → { accessToken, refreshToken }<br>
+→ Store in Zustand auth-store<br>
+→ Axios interceptor attaches Bearer token<br>
+→ On 401: POST /auth/refresh → retry failed requests<br>
+→ On refresh fail: logout → /login
+</div>
+<p><strong>Test Credentials:</strong> <code>test@taltas.ai</code> / <code>TestPass123!</code></p>
+
+<h2 id="api">6. API Integration</h2>
+<p><strong>Base URL:</strong> <code>https://api.taltas.ai/api/v1</code></p>
+<table>
+  <tr><th>Method</th><th>Endpoint</th><th>Hook</th></tr>
+  <tr><td>POST</td><td>/auth/login</td><td>useLogin()</td></tr>
+  <tr><td>POST</td><td>/auth/register</td><td>useRegister()</td></tr>
+  <tr><td>GET</td><td>/principals/me</td><td>useMe()</td></tr>
+  <tr><td>GET/POST/PUT/DELETE</td><td>/agents</td><td>useAgents()</td></tr>
+  <tr><td>GET</td><td>/sessions</td><td>useSessions()</td></tr>
+  <tr><td>GET</td><td>/billing/current</td><td>useBilling()</td></tr>
+</table>
+
+<h2 id="styling">7. Styling System</h2>
+<h3>Fonts</h3>
+<table>
+  <tr><th>Variable</th><th>Stack</th><th>Usage</th></tr>
+  <tr><td><code>--font-sans</code></td><td>Inter, system-ui</td><td>Body text</td></tr>
+  <tr><td><code>--font-mono</code></td><td>Roboto Mono</td><td>Labels, code, stats</td></tr>
+  <tr><td><code>--font-serif</code></td><td>Roboto Slab, Georgia</td><td>Headings, logo</td></tr>
+</table>
+
+<h3>Key Colors</h3>
+<table>
+  <tr><th>Token</th><th>Value</th><th>Usage</th></tr>
+  <tr><td>Primary</td><td>#2563eb</td><td>Buttons, links, accents</td></tr>
+  <tr><td>Footer dark</td><td>#0f172a</td><td>Footer bg on all pages</td></tr>
+  <tr><td>Public bg</td><td>#fafbfd</td><td>Info page backgrounds</td></tr>
+  <tr><td>Text bright</td><td>#0f172a</td><td>Headings</td></tr>
+  <tr><td>Text muted</td><td>#94a3b8</td><td>Secondary text</td></tr>
+</table>
+
+<h2 id="features">8. Key Features by Page</h2>
+
+<h3>Reports (/reports)</h3>
+<ul>
+  <li><strong>Radar chart:</strong> 300×290 SVG, 6-axis, Explorer (blue bold) vs ATS (gray), values at each apex</li>
+  <li><strong>Pareto chart:</strong> 440px wide, 14px bar padding, -40° rotated labels, cumulative line + 80% threshold</li>
+  <li><strong>Funnel:</strong> SVG conversion visualization</li>
+  <li><strong>Report export:</strong> Tiles with generate + schedule workflow</li>
+</ul>
+
+<h3>Modals</h3>
+<ul>
+  <li><strong>CandidateModal (362 lines):</strong> Overview, Conversation, Fit Analysis, Timeline tabs</li>
+  <li><strong>NewExplorerModal (179 lines):</strong> Multi-step wizard, also serves as quick edit</li>
+  <li><strong>ExplorerDetailModal:</strong> Stats, activity log, pause/resume</li>
+</ul>
+
+<h2 id="public">9. Public Pages (/info/[slug])</h2>
+<h3>Custom Layout Pages</h3>
+<table>
+  <tr><th>Slug</th><th>Layout</th></tr>
+  <tr><td>about</td><td>Blue stats block, team grid (4 avatars), values grid, mission columns</td></tr>
+  <tr><td>careers</td><td>Job listings with hover + perks with checkmark SVGs</td></tr>
+  <tr><td>contact</td><td>4 SVG icon cards (mail, handshake, newspaper, map-pin)</td></tr>
+  <tr><td>changelog</td><td>Tagged feed (New/Improved/Fix badges)</td></tr>
+  <tr><td>blog</td><td>Featured article + sidebar cards</td></tr>
+  <tr><td>insights</td><td>Featured spanning full width + 2-col grid</td></tr>
+</table>
+<p>All other slugs (privacy, terms, security, documentation, API reference, etc.) use a templated section layout.</p>
+
+<h2 id="backend">10. Backend Reference</h2>
+<p>Backend API live at <code>https://api.taltas.ai</code> — EKS, RDS (PostgreSQL), Redis, TLS 1.3, CI/CD via GitHub Actions.</p>
+<p><strong>SNAP Protocol:</strong> Screening → Negotiation → Assessment → Placement</p>
+
+<h2 id="next">11. What's Next</h2>
+<table>
+  <tr><th>Priority</th><th>Task</th><th>Status</th></tr>
+  <tr><td>1</td><td>Connect to live backend</td><td><span class="badge badge-next">Next</span></td></tr>
+  <tr><td>2</td><td>Candidate Portal (2nd frontend)</td><td><span class="badge badge-todo">Planned</span></td></tr>
+  <tr><td>3</td><td>Admin Portal (3rd frontend)</td><td><span class="badge badge-todo">Planned</span></td></tr>
+  <tr><td>4</td><td>Socket.io real-time</td><td><span class="badge badge-todo">Planned</span></td></tr>
+  <tr><td>5</td><td>Pipeline drag-and-drop</td><td><span class="badge badge-todo">Planned</span></td></tr>
+  <tr><td>—</td><td>Verify footer page navigation</td><td><span class="badge badge-next">Verify</span></td></tr>
+  <tr><td>—</td><td>Add login page footer</td><td><span class="badge badge-next">Verify</span></td></tr>
+</table>
+
+<h2 id="changes">12. Recent Changes (Feb 24, 2026)</h2>
+<ul>
+  <li>Rebuilt all footer/info pages with full HTML mockup content</li>
+  <li>Contact page: emoji → SVG icons (mail, handshake, newspaper, map-pin)</li>
+  <li>Pareto chart: widened 380→440px, padding 10→14px, labels lowered with -40° rotation</li>
+  <li>Radar chart: apex values added (Explorer 10px bold blue, ATS 9px gray), SVG 300×290</li>
+  <li>Footer confirmed dark blue #0f172a across all pages</li>
+</ul>
+
+<h2 id="setup">13. Development Setup</h2>
+<pre>cd taltas-recruiter
+npm install
+npm run dev        # → http://localhost:3001
+
+# Test login: test@taltas.ai / TestPass123!</pre>
+
+</div>
+</body>
+</html>
