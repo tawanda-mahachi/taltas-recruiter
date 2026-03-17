@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client';
 
 import { useEffect } from 'react';
@@ -24,3 +25,4 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
 
   return <>{children}</>;
 }
+

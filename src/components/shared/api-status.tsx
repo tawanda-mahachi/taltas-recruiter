@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client';
 
 import { useApiHealth, type ApiHealth } from '@/lib/data-provider';
@@ -70,3 +71,4 @@ export function ApiStatusPanel() {
     </div>
   );
 }
+

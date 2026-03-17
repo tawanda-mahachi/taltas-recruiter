@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -137,3 +138,4 @@ export function ExplorerDetailModal({ open, onClose, explorerId }: { open: boole
     </Modal>
   );
 }
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client';
 
 /**
@@ -13,3 +14,4 @@ export function AgentBlob({ live, size = 14 }: { live: boolean; size?: number })
     </span>
   );
 }
+

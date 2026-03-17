@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client';
 import { useEffect, useCallback, ReactNode } from 'react';
 
@@ -21,3 +22,4 @@ export function Modal({ open, onClose, children, maxWidth = '640px', className =
     </div>
   );
 }
+

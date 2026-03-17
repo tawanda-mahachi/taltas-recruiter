@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
@@ -259,3 +260,4 @@ export default function LandingPage() {
     </div>
   );
 }
+

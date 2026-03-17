@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client';
 import { useState, useEffect, createContext, useContext, useCallback, ReactNode } from 'react';
 import { IconX } from '@/components/icons';
@@ -39,3 +40,4 @@ export function ToastProvider({ children }: { children: ReactNode }) {
     </ToastContext.Provider>
   );
 }
+

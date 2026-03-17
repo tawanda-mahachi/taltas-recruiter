@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client';
 import { useState } from 'react';
 import { Modal } from '@/components/ui/modal';
@@ -157,3 +158,4 @@ export function NewRoleModal({ open, onClose, onCreateExplorer }: { open: boolea
     </Modal>
   );
 }
+

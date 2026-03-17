@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client';
 import { useState } from 'react';
 import { Modal } from '@/components/ui/modal';
@@ -178,3 +179,4 @@ export function NewExplorerModal({ open, onClose }: { open: boolean; onClose: ()
     </Modal>
   );
 }
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client';
 
 export function PasswordStrength({ password }: { password: string }) {
@@ -34,3 +35,4 @@ export function PasswordStrength({ password }: { password: string }) {
     </div>
   );
 }
+

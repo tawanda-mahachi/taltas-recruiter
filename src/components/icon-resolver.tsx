@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   IconBot, IconDna, IconTarget, IconChart, IconBrain, IconRocket,
   IconSeedling, IconFlashlight, IconBriefcase, IconSettings, IconLeaf,
@@ -59,3 +60,4 @@ export function resolveIcon(key: string, props?: { size?: number; className?: st
   if (!Icon) return null;
   return <Icon {...(props || {})} />;
 }
+

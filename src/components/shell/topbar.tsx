@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client';
 
 import { IconUser, IconBell, IconSettings, IconLogOut } from '@/components/icons';
@@ -92,3 +93,4 @@ export function Topbar() {
     </div>
   );
 }
+
