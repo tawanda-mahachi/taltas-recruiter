@@ -163,10 +163,10 @@ export default function RecruiterPage() {
         <div className="r-wrap">
           {/* LEFT */}
           <div className="r-left">
-            <div className="r-brand">Tal<span>tas</span></div>
+            <a href="https://taltas.ai" style={{textDecoration:"none"}}><div className="r-brand">Tal<span>tas</span></div></a>
             <div className="r-brand-tag">Talent Atlas</div>
             <div className="r-eyebrow">Explorer Agent</div>
-            <h1 className="r-headline">Your next great hire<br/>is already in<br/><em>your pipeline.</em></h1>
+            <h1 className="r-headline">Your next great hire is already<br/><em>in your pipeline.</em></h1>
             <p className="r-sub">Taltas deploys AI Explorer agents that conduct real structured conversations with every inbound candidate — scoring on 6 fit dimensions, mapping sentiment, and surfacing the hidden gems your ATS would have rejected. Agents do the groundwork. You make every call.</p>
             <div className="r-stats">
               {STATS.map((s, i) => (
