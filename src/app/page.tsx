@@ -273,7 +273,6 @@ export default function RecruiterPage() {
               <a href="/info/helpcenter">Help Center</a>
               <a href="/info/apiref">API Reference</a>
               <a href="/info/status">Status</a>
-              <a href="/info/community">Community</a>
               <a href="/info/contact">Contact Us</a>
             </div>
             <div className="r-ft-col">
