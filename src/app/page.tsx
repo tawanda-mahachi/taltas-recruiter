@@ -35,13 +35,6 @@ const STEPS = [
   },
 ];
 
-const FOOTER_COLS = [
-  { head: 'Product', links: ['Explorer Agents', 'Deep Match Scoring', 'Sentiment Maps', 'Pipeline Analytics', 'Integrations', 'Changelog'] },
-  { head: 'Resources', links: ['Documentation', 'Insights & Reports', 'Research Papers', 'Case Studies', 'Press Kit', 'Blog'] },
-  { head: 'Support', links: ['Help Center', 'API Reference', 'Status', 'Community', 'Contact Us'] },
-  { head: 'Company', links: ['About', 'Careers', 'Partners', 'Security', 'Investors'] },
-];
-
 const CSS = `
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -105,7 +98,7 @@ body{font-family:var(--fb);background:#fff;display:flex;flex-direction:column}
 .r-demo{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:13px;padding:7px 14px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:8px}
 .r-demo span{font-family:var(--fm);font-size:9px;color:rgba(255,255,255,.3);letter-spacing:.05em}
 .r-ft{background:#0f172a;border-top:1px solid rgba(255,255,255,.06);width:100%}
-.r-ft-top{max-width:1200px;margin:0 auto;padding:64px 48px 48px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:48px}
+.r-ft-top{padding:64px 52px 48px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:48px}
 .r-ft-logo{font-family:Georgia,'Times New Roman',serif;font-size:22px;color:#fff;margin-bottom:14px}
 .r-ft-logo span{color:#2563eb}
 .r-ft-tagline{font-size:13px;color:#cbd5e1;line-height:1.7;max-width:220px;margin-bottom:24px}
@@ -115,7 +108,7 @@ body{font-family:var(--fb);background:#fff;display:flex;flex-direction:column}
 .r-ft-col-head{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.9);margin-bottom:18px}
 .r-ft-col a{display:block;font-size:13px;color:#94a3b8;text-decoration:none;margin-bottom:10px;transition:color .15s}
 .r-ft-col a:hover{color:#e2e8f0}
-.r-ft-bottom{max-width:1200px;margin:0 auto;padding:22px 48px;border-top:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.r-ft-bottom{padding:22px 52px;border-top:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
 .r-ft-copy{font-family:'Space Mono',monospace;font-size:10px;color:#e2e8f0;letter-spacing:.04em}
 .r-ft-legal{display:flex;gap:24px;flex-wrap:wrap}
 .r-ft-legal a{font-family:'Space Mono',monospace;font-size:10px;color:#e2e8f0;letter-spacing:.04em;text-decoration:none;transition:color .15s}
@@ -257,18 +250,46 @@ export default function RecruiterPage() {
                 <a href="#" aria-label="X"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
               </div>
             </div>
-            {FOOTER_COLS.map((col) => (
-              <div key={col.head} className="r-ft-col">
-                <div className="r-ft-col-head">{col.head}</div>
-                {col.links.map((l) => <a key={l} href="#">{l}</a>)}
-              </div>
-            ))}
+            <div className="r-ft-col">
+              <div className="r-ft-col-head">Product</div>
+              <a href="/info/changelog">Explorer Agents</a>
+              <a href="/info/changelog">Deep Match Scoring</a>
+              <a href="/info/changelog">Sentiment Maps</a>
+              <a href="/info/insights">Pipeline Analytics</a>
+              <a href="/info/changelog">Integrations</a>
+              <a href="/info/changelog">Changelog</a>
+            </div>
+            <div className="r-ft-col">
+              <div className="r-ft-col-head">Resources</div>
+              <a href="/info/papers">Documentation</a>
+              <a href="/info/insights">Insights &amp; Reports</a>
+              <a href="/info/papers">Research Papers</a>
+              <a href="/info/casestudies">Case Studies</a>
+              <a href="/info/presskit">Press Kit</a>
+              <a href="/info/blog">Blog</a>
+            </div>
+            <div className="r-ft-col">
+              <div className="r-ft-col-head">Support</div>
+              <a href="/info/helpcenter">Help Center</a>
+              <a href="/info/apiref">API Reference</a>
+              <a href="/info/status">Status</a>
+              <a href="/info/community">Community</a>
+              <a href="/info/contact">Contact Us</a>
+            </div>
+            <div className="r-ft-col">
+              <div className="r-ft-col-head">Company</div>
+              <a href="/info/about">About</a>
+              <a href="/info/careers">Careers</a>
+              <a href="/info/partners">Partners</a>
+              <a href="/info/security">Security</a>
+              <a href="/info/investors">Investors</a>
+            </div>
           </div>
           <div className="r-ft-bottom">
             <div className="r-ft-copy">© 2026 Taltas Inc. All rights reserved.</div>
             <div className="r-ft-legal">
-              <a href="#">Privacy Policy</a><a href="#">Terms of Service</a>
-              <a href="#">Cookie Policy</a><a href="#">GDPR</a>
+              <a href="/info/privacy">Privacy Policy</a><a href="/info/terms">Terms of Service</a>
+              <a href="/info/cookie">Cookie Policy</a><a href="/info/gdpr">GDPR</a>
             </div>
           </div>
         </footer>
