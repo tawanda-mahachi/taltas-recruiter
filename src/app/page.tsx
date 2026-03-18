@@ -28,12 +28,12 @@ body{font-family:var(--font-body);background:#fff;display:flex;flex-direction:co
 .eyebrow::before{content:'';width:20px;height:1px;background:var(--blue)}
 .headline{font-family:var(--font-display);font-size:clamp(34px,3.8vw,54px);font-weight:600;letter-spacing:-2px;line-height:1.0;color:var(--text);margin-bottom:10px}
 .headline em{font-style:italic;color:var(--blue)}
-.sub{font-size:14px;color:var(--text-dim);line-height:1.7;font-weight:300;max-width:500px;margin-bottom:44px}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden;max-width:500px;margin-bottom:44px}
+.sub{font-size:14px;color:var(--text-dim);line-height:1.7;font-weight:300;max-width:100%;margin-bottom:44px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden;max-width:100%;margin-bottom:44px}
 .stat{background:#fff;padding:18px 20px}
 .stat-num{font-family:var(--font-display);font-size:32px;font-weight:600;letter-spacing:-1px;color:var(--blue);line-height:1;margin-bottom:3px}
 .stat-label{font-family:var(--font-mono);font-size:9px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;line-height:1.4}
-.steps{display:flex;flex-direction:column;max-width:500px}
+.steps{display:flex;flex-direction:column;max-width:100%}
 .step{display:flex;gap:16px;padding:13px 0;border-bottom:1px solid var(--border)}
 .step:first-child{border-top:1px solid var(--border)}
 .s-letter{width:26px;height:26px;border-radius:50%;background:var(--blue-bg);border:1px solid var(--blue-border);color:var(--blue);font-family:var(--font-mono);font-size:9px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
@@ -45,9 +45,12 @@ body{font-family:var(--font-body);background:#fff;display:flex;flex-direction:co
 .right::before{content:'';position:absolute;top:-80px;right:-80px;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,.04);pointer-events:none}
 .right::after{content:'';position:absolute;bottom:-60px;left:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.03);pointer-events:none}
 .ri{position:relative;z-index:1}
-.f-brand{font-family:var(--font-display);font-size:48px;font-weight:700;color:#fff;letter-spacing:-.5px;margin-bottom:3px}
+.f-brand-link{text-decoration:none;display:inline-block}
+.f-brand{font-family:var(--font-display);font-size:48px;font-weight:700;color:#fff;letter-spacing:-.5px;margin-bottom:0;display:inline-block}
+.f-brand-row{display:flex;align-items:center;gap:12px;margin-bottom:4px}
+.f-talent-atlas{font-family:var(--font-mono);font-size:13px;color:rgba(255,255,255,.5);letter-spacing:.18em;text-transform:uppercase}
 .f-brand span{color:rgba(255,255,255,.55)}
-.f-tag{font-family:var(--font-mono);font-size:9px;color:rgba(255,255,255,.4);letter-spacing:.18em;text-transform:uppercase;margin-bottom:32px}
+.f-tag{font-family:var(--font-mono);font-size:9px;color:rgba(255,255,255,.4);letter-spacing:.18em;text-transform:uppercase;margin-bottom:28px;margin-top:8px}
 .f-title{font-family:var(--font-display);font-size:24px;font-weight:500;color:#fff;margin-bottom:5px;letter-spacing:-.5px}
 .f-sub{font-size:12px;color:rgba(255,255,255,.5);margin-bottom:24px}
 .field{margin-bottom:14px}
@@ -114,7 +117,8 @@ body{font-family:var(--font-body);background:#fff;display:flex;flex-direction:co
   <!-- RIGHT: Login form -->
   <div class="right">
     <div class="ri">
-      <div class="f-brand">Tal<span>tas</span></div>
+      <a href="https://taltas.ai" class="f-brand-link"><div class="f-brand">Tal<span>tas</span></div></a>
+      <div class="f-brand-row"><span class="f-talent-atlas">Talent Atlas</span></div>
       <div class="f-tag">Recruiter Portal</div>
       <div class="f-title">Welcome back</div>
       <div class="f-sub">Sign in to your workspace</div>
