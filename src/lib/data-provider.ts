@@ -487,7 +487,7 @@ export function useConnectIntegration() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (data: { provider: string; displayName: string; config?: any }) => {
-      const { data: res } = await api.post('/integrations', data);
+      const { data: res } = await api.post('/integrations/connect', data);
       return res;
     },
     onSuccess: () => {
