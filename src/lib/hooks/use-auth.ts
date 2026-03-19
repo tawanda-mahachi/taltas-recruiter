@@ -63,7 +63,7 @@ export function useLogout() {
     onSettled: () => {
       logout();
       qc.clear();
-      router.push('/login');
+      router.push('/');
     },
   });
 }

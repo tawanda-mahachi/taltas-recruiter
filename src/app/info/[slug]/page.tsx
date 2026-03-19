@@ -7,11 +7,12 @@ import { SiteFooter } from '@/components/shared/site-footer';
 function PubNav({ router }: { router: ReturnType<typeof useRouter> }) {
   return (
     <nav style={{ position: 'sticky', top: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '18px 52px', background: 'rgba(250,251,253,.96)', backdropFilter: 'blur(20px)', borderBottom: '1px solid rgba(0,0,0,.07)' }}>
-      <a href="https://taltas.ai" style={{ textDecoration: 'none' }}>
-        <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 48, fontWeight: 700, color: '#0f172a', letterSpacing: '-.5px', cursor: 'pointer', lineHeight: 1 }}>
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 14 }}>
+        <a href="https://taltas.ai" style={{ textDecoration: 'none', fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 48, fontWeight: 700, color: '#0f172a', letterSpacing: '-0.5px', lineHeight: 1 }}>
           Tal<span style={{ color: '#1a56db' }}>tas</span>
-        </div>
-      </a>
+        </a>
+        <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 13, color: '#64748b', letterSpacing: '0.18em', textTransform: 'uppercase' as const, paddingLeft: 14, borderLeft: '1px solid rgba(0,0,0,0.1)' }}>Talent Atlas</span>
+      </div>
       <div style={{ display: 'flex', alignItems: 'baseline', gap: 32 }}>
         <a href="/" style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 15, color: '#64748b', textDecoration: 'none' }}>Home</a>
         <a href="/info/blog" style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 15, color: '#64748b', textDecoration: 'none' }}>Blog</a>
@@ -117,26 +118,121 @@ function CareersPage() {
 
 /* -- CONTACT PAGE ------------------------------------------ */
 function ContactPage() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [subject, setSubject] = useState('General Inquiry');
+  const [message, setMessage] = useState('');
+  const [sent, setSent] = useState(false);
+
+  const labelStyle: React.CSSProperties = {
+    fontFamily: "'DM Mono', monospace",
+    fontSize: 10,
+    letterSpacing: '.1em',
+    textTransform: 'uppercase',
+    color: '#64748b',
+    marginBottom: 6,
+    fontWeight: 600,
+    display: 'block',
+  };
+
+  const inputStyle: React.CSSProperties = {
+    width: '100%',
+    padding: '11px 14px',
+    fontSize: 13,
+    border: '1px solid #e2e8f0',
+    borderRadius: 8,
+    color: '#0f172a',
+    outline: 'none',
+    fontFamily: 'inherit',
+    boxSizing: 'border-box',
+    background: '#f8fafc',
+    transition: 'border-color 0.2s, background 0.2s',
+  };
+
+  const handleSend = () => {
+    if (!name.trim() || !email.trim() || !message.trim()) return;
+    const sub = encodeURIComponent(`[${subject}] Message from ${name}`);
+    const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nSubject: ${subject}\n\n${message}`);
+    window.location.href = `mailto:hello@taltas.ai?subject=${sub}&body=${body}`;
+    setSent(true);
+  };
+
   return (
     <>
       <div style={S.hero}>
         <div style={S.eyebrow}>Contact</div>
         <h1 style={S.h1}>Get in touch.</h1>
-        <p style={S.sub}>Whether you have a sales question, need support, or want to share feedback -- we read every message.</p>
+        <p style={S.sub}>Have a question, issue, or suggestion? We respond to all queries within 24 hours on business days.</p>
       </div>
-      <div style={S.container}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 24 }}>
-          {[
-            { label: 'Sales', email: 'sales@taltas.ai', desc: 'Enterprise pricing, demos, and procurement questions.' },
-            { label: 'Support', email: 'support@taltas.ai', desc: 'Help with your account, integrations, or platform issues.' },
-            { label: 'Press', email: 'press@taltas.ai', desc: 'Media inquiries, interviews, and press kit requests.' },
-          ].map((c, i) => (
-            <div key={i} style={S.card}>
-              <div style={{ ...S.eyebrow, color: '#1a56db' }}>{c.label}</div>
-              <a href={`mailto:${c.email}`} style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 16, fontWeight: 500, color: '#0f172a', textDecoration: 'none', display: 'block', marginBottom: 12 }}>{c.email}</a>
-              <p style={{ ...S.body, marginBottom: 0 }}>{c.desc}</p>
+      <div style={{ maxWidth: 780, margin: '0 auto', padding: '0 48px 100px' }}>
+        <div style={{ marginBottom: 44 }}>
+          <div style={{ padding: 22, background: 'rgba(26,86,219,.05)', border: '1px solid rgba(26,86,219,.15)', borderRadius: 12, display: 'inline-block' }}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a56db" strokeWidth="2" style={{ marginBottom: 10 }}><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg>
+            <div style={{ fontSize: 13, fontWeight: 600, color: '#0f172a', marginBottom: 3 }}>Email Support</div>
+            <div style={{ fontSize: 12, color: '#1a56db' }}>hello@taltas.ai</div>
+          </div>
+        </div>
+
+        <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 22, fontWeight: 600, color: '#0f172a', letterSpacing: '-.5px', marginBottom: 22 }}>Send a message</div>
+
+        {sent && (
+          <div style={{ background: 'rgba(26,86,219,.07)', border: '1px solid rgba(26,86,219,.2)', borderRadius: 10, padding: '14px 18px', marginBottom: 20, fontSize: 13, color: '#1e40af' }}>
+            Your email client should open shortly. If it did not, email us directly at <strong>hello@taltas.ai</strong>
+          </div>
+        )}
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+            <div>
+              <label style={labelStyle}>Name</label>
+              <input style={inputStyle} placeholder="Your name" value={name} onChange={e => setName(e.target.value)} />
             </div>
-          ))}
+            <div>
+              <label style={labelStyle}>Email</label>
+              <input style={inputStyle} placeholder="you@company.com" type="email" value={email} onChange={e => setEmail(e.target.value)} />
+            </div>
+          </div>
+          <div>
+            <label style={labelStyle}>Subject</label>
+            <select style={{ ...inputStyle, cursor: 'pointer' }} value={subject} onChange={e => setSubject(e.target.value)}>
+              <option>General Inquiry</option>
+              <option>Sales Question</option>
+              <option>Technical Issue</option>
+              <option>Billing Question</option>
+              <option>Feature Request</option>
+              <option>Privacy &amp; Data</option>
+            </select>
+          </div>
+          <div>
+            <label style={labelStyle}>Message</label>
+            <textarea
+              style={{ ...inputStyle, minHeight: 130, resize: 'vertical' } as React.CSSProperties}
+              placeholder="How can we help?"
+              value={message}
+              onChange={e => setMessage(e.target.value)}
+            />
+          </div>
+          <button
+            onClick={handleSend}
+            disabled={sent || !name || !email || !message}
+            style={{
+              padding: '12px 28px',
+              fontSize: 12,
+              fontWeight: 500,
+              fontFamily: "'DM Mono', monospace",
+              letterSpacing: '.06em',
+              background: sent ? '#94a3b8' : '#1a56db',
+              color: '#fff',
+              border: 'none',
+              borderRadius: 8,
+              cursor: sent || !name || !email || !message ? 'not-allowed' : 'pointer',
+              alignSelf: 'flex-start',
+              transition: 'all 0.2s',
+              opacity: !name || !email || !message ? 0.6 : 1,
+            }}
+          >
+            {sent ? 'Opening email client...' : 'Send Message'}
+          </button>
         </div>
       </div>
     </>
