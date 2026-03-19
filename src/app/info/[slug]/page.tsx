@@ -157,12 +157,12 @@ function ContactPage() {
 
   return (
     <>
-      <div style={S.hero}>
-        <div style={S.eyebrow}>Contact</div>
-        <h1 style={S.h1}>Get in touch.</h1>
-        <p style={S.sub}>Have a question, issue, or suggestion? We respond to all queries within 24 hours on business days.</p>
+      <div style={{ marginBottom: 36, maxWidth: 780, margin: '0 auto', padding: '52px 48px 0' }}>
+        <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, letterSpacing: '.18em', textTransform: 'uppercase', color: '#1a56db', marginBottom: 12 }}>Contact</div>
+        <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 40, fontWeight: 600, color: '#0d1b3e', letterSpacing: '-1px', lineHeight: 1.05, marginBottom: 10 }}>Get in touch.</div>
+        <p style={{ fontSize: 15, color: '#4a5a7a', lineHeight: 1.65, maxWidth: 480 }}>Have a question, issue, or suggestion? We respond to all queries within 24 hours on business days.</p>
       </div>
-      <div style={{ maxWidth: 780, margin: '0 auto', padding: '0 48px 100px' }}>
+      <div style={{ maxWidth: 780, margin: '0 auto', padding: '24px 48px 100px' }}>
         <div style={{ marginBottom: 44 }}>
           <div style={{ padding: 22, background: 'rgba(26,86,219,.05)', border: '1px solid rgba(26,86,219,.15)', borderRadius: 12, display: 'inline-block' }}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a56db" strokeWidth="2" style={{ marginBottom: 10 }}><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg>
