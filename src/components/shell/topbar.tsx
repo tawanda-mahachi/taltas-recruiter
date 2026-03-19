@@ -42,11 +42,11 @@ export function Topbar() {
   return (
     <div className="topbar">
       <div className="flex items-center gap-[10px]">
-        <div>
-          <div className="text-[20px] font-semibold" style={{ fontFamily: "'Roboto Slab', serif", color: 'var(--text-bright)' }}>
-            Tal<span style={{ color: 'var(--blue)' }}>tas</span>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: 14 }}>
+          <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 48, fontWeight: 700, color: '#0d1b3e', letterSpacing: '-0.5px', lineHeight: 1 }}>
+            Tal<span style={{ color: '#1a56db' }}>tas</span>
           </div>
-          <div className="font-mono text-[9px] mt-[1px]" style={{ color: 'var(--muted)' }}>Recruitment Intelligence Platform</div>
+          <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 13, color: '#9aaac8', letterSpacing: '0.18em', textTransform: 'uppercase', paddingLeft: 14, borderLeft: '1px solid rgba(30,60,120,0.16)' }}>Talent Atlas</span>
         </div>
       </div>
 
