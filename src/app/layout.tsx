@@ -1,4 +1,4 @@
-﻿import type { Metadata } from 'next';
+import type { Metadata } from 'next';
 import { Providers } from './providers';
 import { Cormorant_Garamond, DM_Mono, DM_Sans, Roboto, Roboto_Mono, Roboto_Slab } from 'next/font/google';
 import './globals.css';
