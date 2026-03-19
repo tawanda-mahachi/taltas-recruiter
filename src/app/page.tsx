@@ -41,7 +41,7 @@ const CSS = `
 :root{
   --blue:#1a56db;--blue-dark:#1240a8;--blue-bg:rgba(26,86,219,0.07);--blue-border:rgba(26,86,219,0.18);
   --text:#0d1b3e;--text-dim:#4a5a7a;--muted:#9aaac8;--border:rgba(30,60,120,0.1);
-  --fd:'Cormorant Garamond',Georgia,serif;--fm:'DM Mono',monospace;--fb:'DM Sans',sans-serif;
+  --fd:var(--font-cormorant), Georgia, serif;--fm:var(--font-dm-mono), monospace;--fb:var(--font-dm-sans), sans-serif;
 }
 html,body{min-height:100%;margin:0}
 body{font-family:var(--fb);background:#fff;display:flex;flex-direction:column}

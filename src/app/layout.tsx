@@ -1,6 +1,14 @@
 import type { Metadata } from 'next';
 import { Providers } from './providers';
+import { Cormorant_Garamond, DM_Mono, DM_Sans, Roboto, Roboto_Mono, Roboto_Slab } from 'next/font/google';
 import './globals.css';
+
+const cormorant  = Cormorant_Garamond({ subsets: ['latin'], weight: ['400','500','600','700'], style: ['normal','italic'], variable: '--font-cormorant', display: 'swap' });
+const dmMono     = DM_Mono({ subsets: ['latin'], weight: ['300','400','500'], variable: '--font-dm-mono', display: 'swap' });
+const dmSans     = DM_Sans({ subsets: ['latin'], weight: ['300','400','500'], variable: '--font-dm-sans', display: 'swap' });
+const roboto     = Roboto({ subsets: ['latin'], weight: ['300','400','500','700'], variable: '--font-roboto', display: 'swap' });
+const robotoMono = Roboto_Mono({ subsets: ['latin'], weight: ['300','400','500','700'], variable: '--font-roboto-mono', display: 'swap' });
+const robotoSlab = Roboto_Slab({ subsets: ['latin'], weight: ['400','700'], variable: '--font-roboto-slab', display: 'swap' });
 
 export const metadata: Metadata = {
   title: 'Taltas · Recruiter Portal',
@@ -9,12 +17,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&family=Roboto+Mono:wght@300;400;500;700&family=Roboto+Slab:wght@400;700&family=Roboto:wght@300;400;500;700&display=block" rel="stylesheet" />
-      </head>
+    <html lang="en" className={`${cormorant.variable} ${dmMono.variable} ${dmSans.variable} ${roboto.variable} ${robotoMono.variable} ${robotoSlab.variable}`}>
       <body>
         <Providers>{children}</Providers>
       </body>

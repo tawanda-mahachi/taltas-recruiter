@@ -8,17 +8,17 @@ function PubNav({ router }: { router: ReturnType<typeof useRouter> }) {
   return (
     <nav style={{ position: 'sticky', top: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '18px 52px', background: 'rgba(255,255,255,0.92)', backdropFilter: 'blur(20px)', borderBottom: '1px solid rgba(30,60,120,0.1)' }}>
       <div style={{ display: 'flex', alignItems: 'baseline', gap: 14 }}>
-        <a href="https://taltas.ai" style={{ textDecoration: 'none', fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 48, fontWeight: 700, color: '#0d1b3e', letterSpacing: '-0.5px', lineHeight: 1 }}>
+        <a href="https://taltas.ai" style={{ textDecoration: 'none', fontFamily: "var(--font-cormorant), Georgia, serif", fontSize: 48, fontWeight: 700, color: '#0d1b3e', letterSpacing: '-0.5px', lineHeight: 1 }}>
           Tal<span style={{ color: '#1a56db' }}>tas</span>
         </a>
-        <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 13, color: '#9aaac8', letterSpacing: '0.18em', textTransform: 'uppercase' as const, paddingLeft: 14, borderLeft: '1px solid rgba(30,60,120,0.16)' }}>Talent Atlas</span>
+        <span style={{ fontFamily: "var(--font-dm-mono), monospace", fontSize: 13, color: '#9aaac8', letterSpacing: '0.18em', textTransform: 'uppercase' as const, paddingLeft: 14, borderLeft: '1px solid rgba(30,60,120,0.16)' }}>Talent Atlas</span>
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
-        <a href="/" style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 15, color: '#4a5a7a', textDecoration: 'none' }}>Home</a>
-        <a href="/info/blog" style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 15, color: '#4a5a7a', textDecoration: 'none' }}>Blog</a>
-        <a href="/info/about" style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 15, color: '#4a5a7a', textDecoration: 'none' }}>About</a>
-        <a href="/" style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 15, color: '#4a5a7a', textDecoration: 'none' }}>Sign in</a>
-        <a href="/" style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 15, color: '#1a56db', textDecoration: 'none', fontWeight: 500 }}>Get started</a>
+        <a href="/" style={{ fontFamily: "var(--font-dm-sans), sans-serif", fontSize: 15, color: '#4a5a7a', textDecoration: 'none' }}>Home</a>
+        <a href="/info/blog" style={{ fontFamily: "var(--font-dm-sans), sans-serif", fontSize: 15, color: '#4a5a7a', textDecoration: 'none' }}>Blog</a>
+        <a href="/info/about" style={{ fontFamily: "var(--font-dm-sans), sans-serif", fontSize: 15, color: '#4a5a7a', textDecoration: 'none' }}>About</a>
+        <a href="/" style={{ fontFamily: "var(--font-dm-sans), sans-serif", fontSize: 15, color: '#4a5a7a', textDecoration: 'none' }}>Sign in</a>
+        <a href="/" style={{ fontFamily: "var(--font-dm-sans), sans-serif", fontSize: 15, color: '#1a56db', textDecoration: 'none', fontWeight: 500 }}>Get started</a>
       </div>
     </nav>
   );
@@ -26,17 +26,17 @@ function PubNav({ router }: { router: ReturnType<typeof useRouter> }) {
 
 /* -- REUSABLE STYLES --------------------------------------- */
 const S = {
-  eyebrow: { fontFamily: "'DM Mono', monospace", fontSize: 10, letterSpacing: '.18em', textTransform: 'uppercase' as const, color: '#6366f1', marginBottom: 16 } as React.CSSProperties,
-  h1: { fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 60, fontWeight: 400, lineHeight: 1.1, letterSpacing: '-.02em', color: '#0d1b3e', margin: '16px 0 20px' } as React.CSSProperties,
-  h2: { fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 32, fontWeight: 400, lineHeight: 1.2, letterSpacing: '-.02em', color: '#0d1b3e', marginBottom: 20 } as React.CSSProperties,
+  eyebrow: { fontFamily: "var(--font-dm-mono), monospace", fontSize: 10, letterSpacing: '.18em', textTransform: 'uppercase' as const, color: '#6366f1', marginBottom: 16 } as React.CSSProperties,
+  h1: { fontFamily: "var(--font-cormorant), Georgia, serif", fontSize: 60, fontWeight: 400, lineHeight: 1.1, letterSpacing: '-.02em', color: '#0d1b3e', margin: '16px 0 20px' } as React.CSSProperties,
+  h2: { fontFamily: "var(--font-cormorant), Georgia, serif", fontSize: 32, fontWeight: 400, lineHeight: 1.2, letterSpacing: '-.02em', color: '#0d1b3e', marginBottom: 20 } as React.CSSProperties,
   sub: { fontSize: 16, color: '#64748b', lineHeight: 1.7, maxWidth: 540 } as React.CSSProperties,
   body: { fontSize: 14, color: '#475569', lineHeight: 1.8, marginBottom: 16 } as React.CSSProperties,
   hero: { padding: '100px 48px 64px', maxWidth: 1200, margin: '0 auto' } as React.CSSProperties,
   container: { maxWidth: 1200, margin: '0 auto', padding: '0 48px 100px' } as React.CSSProperties,
-  serif: { fontFamily: "'Cormorant Garamond', Georgia, serif" } as React.CSSProperties,
-  mono: { fontFamily: "'DM Mono', monospace" } as React.CSSProperties,
+  serif: { fontFamily: "var(--font-cormorant), Georgia, serif" } as React.CSSProperties,
+  mono: { fontFamily: "var(--font-dm-mono), monospace" } as React.CSSProperties,
   card: { background: '#fff', border: '1px solid rgba(0,0,0,.07)', borderRadius: 12, padding: 32 } as React.CSSProperties,
-  tag: { display: 'inline-block', fontFamily: "'DM Mono', monospace", fontSize: 10, letterSpacing: '.12em', textTransform: 'uppercase' as const, background: '#f1f5f9', color: '#64748b', padding: '4px 10px', borderRadius: 4 } as React.CSSProperties,
+  tag: { display: 'inline-block', fontFamily: "var(--font-dm-mono), monospace", fontSize: 10, letterSpacing: '.12em', textTransform: 'uppercase' as const, background: '#f1f5f9', color: '#64748b', padding: '4px 10px', borderRadius: 4 } as React.CSSProperties,
 };
 
 /* -- ABOUT PAGE -------------------------------------------- */
@@ -93,14 +93,14 @@ function CareersPage() {
             {roles.map((r, i) => (
               <div key={i} style={{ ...S.card, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <div>
-                  <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 16, fontWeight: 500, color: '#0d1b3e', marginBottom: 6 }}>{r.title}</div>
+                  <div style={{ fontFamily: "var(--font-dm-sans), sans-serif", fontSize: 16, fontWeight: 500, color: '#0d1b3e', marginBottom: 6 }}>{r.title}</div>
                   <div style={{ display: 'flex', gap: 8 }}>
                     <span style={S.tag}>{r.team}</span>
                     <span style={S.tag}>{r.location}</span>
                     <span style={S.tag}>{r.type}</span>
                   </div>
                 </div>
-                <a href="mailto:careers@taltas.ai" style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: '#1a56db', textDecoration: 'none', fontWeight: 500 }}>Apply</a>
+                <a href="mailto:careers@taltas.ai" style={{ fontFamily: "var(--font-dm-sans), sans-serif", fontSize: 14, color: '#1a56db', textDecoration: 'none', fontWeight: 500 }}>Apply</a>
               </div>
             ))}
           </div>
@@ -123,7 +123,7 @@ function ContactPage() {
   const [sent, setSent] = useState(false);
 
   const labelStyle: React.CSSProperties = {
-    fontFamily: "'DM Mono', monospace",
+    fontFamily: "var(--font-dm-mono), monospace",
     fontSize: 10,
     letterSpacing: '.1em',
     textTransform: 'uppercase',
@@ -158,8 +158,8 @@ function ContactPage() {
   return (
     <>
       <div style={{ marginBottom: 36, maxWidth: 780, margin: '0 auto', padding: '52px 48px 0' }}>
-        <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, letterSpacing: '.18em', textTransform: 'uppercase', color: '#1a56db', marginBottom: 12 }}>Contact</div>
-        <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 40, fontWeight: 600, color: '#0d1b3e', letterSpacing: '-1px', lineHeight: 1.05, marginBottom: 10 }}>Get in touch.</div>
+        <div style={{ fontFamily: "var(--font-dm-mono), monospace", fontSize: 10, letterSpacing: '.18em', textTransform: 'uppercase', color: '#1a56db', marginBottom: 12 }}>Contact</div>
+        <div style={{ fontFamily: "var(--font-cormorant), Georgia, serif", fontSize: 40, fontWeight: 600, color: '#0d1b3e', letterSpacing: '-1px', lineHeight: 1.05, marginBottom: 10 }}>Get in touch.</div>
         <p style={{ fontSize: 15, color: '#4a5a7a', lineHeight: 1.65, maxWidth: 480 }}>Have a question, issue, or suggestion? We respond to all queries within 24 hours on business days.</p>
       </div>
       <div style={{ maxWidth: 780, margin: '0 auto', padding: '24px 48px 100px' }}>
@@ -171,7 +171,7 @@ function ContactPage() {
           </div>
         </div>
 
-        <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 22, fontWeight: 600, color: '#0d1b3e', letterSpacing: '-.5px', marginBottom: 22 }}>Send a message</div>
+        <div style={{ fontFamily: "var(--font-cormorant), Georgia, serif", fontSize: 22, fontWeight: 600, color: '#0d1b3e', letterSpacing: '-.5px', marginBottom: 22 }}>Send a message</div>
 
         {sent && (
           <div style={{ background: 'rgba(26,86,219,.07)', border: '1px solid rgba(26,86,219,.2)', borderRadius: 10, padding: '14px 18px', marginBottom: 20, fontSize: 13, color: '#1e40af' }}>
@@ -217,7 +217,7 @@ function ContactPage() {
               padding: '12px 28px',
               fontSize: 12,
               fontWeight: 500,
-              fontFamily: "'DM Mono', monospace",
+              fontFamily: "var(--font-dm-mono), monospace",
               letterSpacing: '.06em',
               background: sent ? '#94a3b8' : '#1a56db',
               color: '#fff',
@@ -261,7 +261,7 @@ function ChangelogPage() {
               <div style={{ ...S.tag, marginTop: 8 }}>{e.version}</div>
             </div>
             <div>
-              <h3 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 22, fontWeight: 400, color: '#0d1b3e', margin: '0 0 12px', letterSpacing: '-.01em' }}>{e.title}</h3>
+              <h3 style={{ fontFamily: "var(--font-cormorant), Georgia, serif", fontSize: 22, fontWeight: 400, color: '#0d1b3e', margin: '0 0 12px', letterSpacing: '-.01em' }}>{e.title}</h3>
               <p style={{ ...S.body, marginBottom: 0 }}>{e.body}</p>
             </div>
           </div>
@@ -295,7 +295,7 @@ function BlogPage() {
                 <span style={S.tag}>{p.tag}</span>
                 <span style={{ ...S.mono, fontSize: 11, color: '#94a3b8' }}>{p.date}</span>
               </div>
-              <h3 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 22, fontWeight: 400, color: '#0d1b3e', margin: '0 0 12px', lineHeight: 1.25, letterSpacing: '-.01em' }}>{p.title}</h3>
+              <h3 style={{ fontFamily: "var(--font-cormorant), Georgia, serif", fontSize: 22, fontWeight: 400, color: '#0d1b3e', margin: '0 0 12px', lineHeight: 1.25, letterSpacing: '-.01em' }}>{p.title}</h3>
               <p style={{ ...S.body, marginBottom: 0 }}>{p.excerpt}</p>
             </div>
           ))}
@@ -328,9 +328,9 @@ function InsightsPage() {
                 <span style={S.tag}>{r.tag}</span>
                 <span style={{ ...S.mono, fontSize: 11, color: '#94a3b8' }}>{r.year}</span>
               </div>
-              <h3 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 22, fontWeight: 400, color: '#0d1b3e', margin: '0 0 12px', letterSpacing: '-.01em' }}>{r.title}</h3>
+              <h3 style={{ fontFamily: "var(--font-cormorant), Georgia, serif", fontSize: 22, fontWeight: 400, color: '#0d1b3e', margin: '0 0 12px', letterSpacing: '-.01em' }}>{r.title}</h3>
               <p style={{ ...S.body, marginBottom: 20 }}>{r.desc}</p>
-              <a href="mailto:insights@taltas.ai" style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: '#1a56db', textDecoration: 'none', fontWeight: 500 }}>Request report</a>
+              <a href="mailto:insights@taltas.ai" style={{ fontFamily: "var(--font-dm-sans), sans-serif", fontSize: 13, color: '#1a56db', textDecoration: 'none', fontWeight: 500 }}>Request report</a>
             </div>
           ))}
         </div>
@@ -360,19 +360,19 @@ function HelpCenterPage() {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 24 }}>
           {sections.map((sec, i) => (
             <div key={i} style={S.card}>
-              <div style={{ width: 36, height: 36, background: '#eff6ff', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'DM Mono', monospace", fontSize: 14, color: '#1a56db', marginBottom: 16 }}>{sec.icon}</div>
-              <h3 style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 15, fontWeight: 600, color: '#0d1b3e', margin: '0 0 16px' }}>{sec.title}</h3>
+              <div style={{ width: 36, height: 36, background: '#eff6ff', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "var(--font-dm-mono), monospace", fontSize: 14, color: '#1a56db', marginBottom: 16 }}>{sec.icon}</div>
+              <h3 style={{ fontFamily: "var(--font-dm-sans), sans-serif", fontSize: 15, fontWeight: 600, color: '#0d1b3e', margin: '0 0 16px' }}>{sec.title}</h3>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                 {sec.articles.map((a, j) => (
-                  <a key={j} href="mailto:support@taltas.ai" style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: '#475569', textDecoration: 'none', lineHeight: 1.5 }}>{a}</a>
+                  <a key={j} href="mailto:support@taltas.ai" style={{ fontFamily: "var(--font-dm-sans), sans-serif", fontSize: 13, color: '#475569', textDecoration: 'none', lineHeight: 1.5 }}>{a}</a>
                 ))}
               </div>
             </div>
           ))}
         </div>
         <div style={{ marginTop: 48, ...S.card, background: '#f8faff', borderColor: '#dbeafe', textAlign: 'center' as const }}>
-          <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 15, color: '#475569', margin: '0 0 12px' }}>Can't find what you're looking for?</p>
-          <a href="mailto:support@taltas.ai" style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: '#1a56db', fontWeight: 500, textDecoration: 'none' }}>Contact support</a>
+          <p style={{ fontFamily: "var(--font-dm-sans), sans-serif", fontSize: 15, color: '#475569', margin: '0 0 12px' }}>Can't find what you're looking for?</p>
+          <a href="mailto:support@taltas.ai" style={{ fontFamily: "var(--font-dm-sans), sans-serif", fontSize: 14, color: '#1a56db', fontWeight: 500, textDecoration: 'none' }}>Contact support</a>
         </div>
       </div>
     </>
@@ -403,7 +403,7 @@ function ApiRefPage() {
           <div>
             <div style={{ ...S.mono, fontSize: 10, letterSpacing: '.12em', textTransform: 'uppercase', color: '#94a3b8', marginBottom: 12 }}>Base URL</div>
             <div style={{ ...S.card, padding: '12px 16px' }}>
-              <code style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, color: '#1a56db' }}>https://api.taltas.ai/api/v1</code>
+              <code style={{ fontFamily: "var(--font-dm-mono), monospace", fontSize: 12, color: '#1a56db' }}>https://api.taltas.ai/api/v1</code>
             </div>
             <div style={{ ...S.mono, fontSize: 10, letterSpacing: '.12em', textTransform: 'uppercase', color: '#94a3b8', margin: '24px 0 12px' }}>Authentication</div>
             <p style={{ fontSize: 13, color: '#64748b', lineHeight: 1.6 }}>All requests require a Bearer token in the Authorization header. Generate API keys from Settings &gt; Keys.</p>
@@ -413,8 +413,8 @@ function ApiRefPage() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
               {endpoints.map((ep, i) => (
                 <div key={i} style={{ ...S.card, padding: '16px 20px', display: 'flex', gap: 16, alignItems: 'flex-start' }}>
-                  <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, fontWeight: 700, color: methodColor(ep.method), minWidth: 44, paddingTop: 2 }}>{ep.method}</div>
-                  <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, color: '#0d1b3e', minWidth: 260, paddingTop: 2 }}>{ep.path}</div>
+                  <div style={{ fontFamily: "var(--font-dm-mono), monospace", fontSize: 11, fontWeight: 700, color: methodColor(ep.method), minWidth: 44, paddingTop: 2 }}>{ep.method}</div>
+                  <div style={{ fontFamily: "var(--font-dm-mono), monospace", fontSize: 12, color: '#0d1b3e', minWidth: 260, paddingTop: 2 }}>{ep.path}</div>
                   <div style={{ fontSize: 13, color: '#64748b', lineHeight: 1.5 }}>{ep.desc}</div>
                 </div>
               ))}
@@ -453,10 +453,10 @@ function StatusPage() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 2, marginBottom: 48 }}>
           {services.map((svc, i) => (
             <div key={i} style={{ ...S.card, padding: '16px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 15, color: '#0d1b3e' }}>{svc.name}</span>
+              <span style={{ fontFamily: "var(--font-dm-sans), sans-serif", fontSize: 15, color: '#0d1b3e' }}>{svc.name}</span>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <div style={{ width: 8, height: 8, borderRadius: '50%', background: statusColor(svc.status) }} />
-                <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, color: statusColor(svc.status) }}>{statusLabel(svc.status)}</span>
+                <span style={{ fontFamily: "var(--font-dm-mono), monospace", fontSize: 12, color: statusColor(svc.status) }}>{statusLabel(svc.status)}</span>
               </div>
             </div>
           ))}
@@ -498,8 +498,8 @@ function CommunityPage({ router }: { router: ReturnType<typeof useRouter> }) {
             <div style={{ ...S.mono, fontSize: 9, textTransform: 'uppercase', letterSpacing: '.14em', color: '#94a3b8', marginBottom: 12 }}>Channels</div>
             {channels.map(ch => (
               <div key={ch.id} onClick={() => setActiveChannel(ch.id)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 12px', borderRadius: 6, cursor: 'pointer', background: activeChannel === ch.id ? '#eff6ff' : 'transparent', marginBottom: 2 }}>
-                <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: activeChannel === ch.id ? '#1a56db' : '#64748b' }}>#{ch.name}</span>
-                {ch.unread > 0 && <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, background: '#1a56db', color: '#fff', borderRadius: 10, padding: '1px 6px' }}>{ch.unread}</span>}
+                <span style={{ fontFamily: "var(--font-dm-sans), sans-serif", fontSize: 13, color: activeChannel === ch.id ? '#1a56db' : '#64748b' }}>#{ch.name}</span>
+                {ch.unread > 0 && <span style={{ fontFamily: "var(--font-dm-mono), monospace", fontSize: 10, background: '#1a56db', color: '#fff', borderRadius: 10, padding: '1px 6px' }}>{ch.unread}</span>}
               </div>
             ))}
           </div>
@@ -507,21 +507,21 @@ function CommunityPage({ router }: { router: ReturnType<typeof useRouter> }) {
             {posts.map((p, i) => (
               <div key={i} style={{ ...S.card, marginBottom: 16 }}>
                 <div style={{ display: 'flex', gap: 12, marginBottom: 12 }}>
-                  <div style={{ width: 36, height: 36, borderRadius: '50%', background: '#eff6ff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'DM Mono', monospace", fontSize: 12, color: '#1a56db', flexShrink: 0 }}>{p.initials}</div>
+                  <div style={{ width: 36, height: 36, borderRadius: '50%', background: '#eff6ff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "var(--font-dm-mono), monospace", fontSize: 12, color: '#1a56db', flexShrink: 0 }}>{p.initials}</div>
                   <div>
-                    <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, fontWeight: 600, color: '#0d1b3e' }}>{p.name}</div>
-                    <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: '#94a3b8' }}>{p.role} - {p.company} - {p.time}</div>
+                    <div style={{ fontFamily: "var(--font-dm-sans), sans-serif", fontSize: 14, fontWeight: 600, color: '#0d1b3e' }}>{p.name}</div>
+                    <div style={{ fontFamily: "var(--font-dm-sans), sans-serif", fontSize: 12, color: '#94a3b8' }}>{p.role} - {p.company} - {p.time}</div>
                   </div>
                 </div>
                 <p style={{ ...S.body, marginBottom: 16 }}>{p.text}</p>
-                <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: '#94a3b8' }}>{p.replies} replies</div>
+                <div style={{ fontFamily: "var(--font-dm-mono), monospace", fontSize: 11, color: '#94a3b8' }}>{p.replies} replies</div>
               </div>
             ))}
           </div>
           <div>
             <div style={{ ...S.card, marginBottom: 16 }}>
               <div style={{ ...S.mono, fontSize: 9, textTransform: 'uppercase', letterSpacing: '.14em', color: '#94a3b8', marginBottom: 12 }}>Community</div>
-              <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 28, fontWeight: 700, color: '#0d1b3e', marginBottom: 4 }}>1,240</div>
+              <div style={{ fontFamily: "var(--font-dm-sans), sans-serif", fontSize: 28, fontWeight: 700, color: '#0d1b3e', marginBottom: 4 }}>1,240</div>
               <div style={{ fontSize: 13, color: '#64748b' }}>Talent professionals</div>
             </div>
             <div style={{ ...S.card }}>
@@ -556,7 +556,7 @@ function SecurityPage() {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginBottom: 48 }}>
           {items.map((item, i) => (
             <div key={i} style={S.card}>
-              <h3 style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 15, fontWeight: 600, color: '#0d1b3e', margin: '0 0 10px' }}>{item.title}</h3>
+              <h3 style={{ fontFamily: "var(--font-dm-sans), sans-serif", fontSize: 15, fontWeight: 600, color: '#0d1b3e', margin: '0 0 10px' }}>{item.title}</h3>
               <p style={{ ...S.body, marginBottom: 0 }}>{item.desc}</p>
             </div>
           ))}
@@ -624,10 +624,10 @@ function CaseStudiesPage() {
                 <span style={S.tag}>{c.company}</span>
               </div>
               <div style={{ marginBottom: 20 }}>
-                <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 48, fontWeight: 400, color: '#1a56db', lineHeight: 1 }}>{c.metric}</div>
-                <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: '#94a3b8', letterSpacing: '.08em', marginTop: 4 }}>{c.label}</div>
+                <div style={{ fontFamily: "var(--font-cormorant), Georgia, serif", fontSize: 48, fontWeight: 400, color: '#1a56db', lineHeight: 1 }}>{c.metric}</div>
+                <div style={{ fontFamily: "var(--font-dm-mono), monospace", fontSize: 11, color: '#94a3b8', letterSpacing: '.08em', marginTop: 4 }}>{c.label}</div>
               </div>
-              <h3 style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 15, fontWeight: 600, color: '#0d1b3e', margin: '0 0 10px' }}>{c.role}</h3>
+              <h3 style={{ fontFamily: "var(--font-dm-sans), sans-serif", fontSize: 15, fontWeight: 600, color: '#0d1b3e', margin: '0 0 10px' }}>{c.role}</h3>
               <p style={{ ...S.body, marginBottom: 0 }}>{c.outcome}</p>
             </div>
           ))}
@@ -658,8 +658,8 @@ function PressKitPage() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
               {['Logo pack (SVG, PNG)', 'Brand guidelines', 'Product screenshots', 'Executive headshots', 'Fact sheet'].map((asset, i) => (
                 <div key={i} style={{ ...S.card, padding: '12px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: '#0d1b3e' }}>{asset}</span>
-                  <a href="mailto:press@taltas.ai" style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: '#1a56db', textDecoration: 'none' }}>Request</a>
+                  <span style={{ fontFamily: "var(--font-dm-sans), sans-serif", fontSize: 14, color: '#0d1b3e' }}>{asset}</span>
+                  <a href="mailto:press@taltas.ai" style={{ fontFamily: "var(--font-dm-sans), sans-serif", fontSize: 13, color: '#1a56db', textDecoration: 'none' }}>Request</a>
                 </div>
               ))}
             </div>
@@ -692,9 +692,9 @@ function PartnersPage() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 24, marginBottom: 48 }}>
           {tiers.map((t, i) => (
             <div key={i} style={S.card}>
-              <h3 style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 16, fontWeight: 600, color: '#0d1b3e', margin: '0 0 10px' }}>{t.name}</h3>
+              <h3 style={{ fontFamily: "var(--font-dm-sans), sans-serif", fontSize: 16, fontWeight: 600, color: '#0d1b3e', margin: '0 0 10px' }}>{t.name}</h3>
               <p style={{ ...S.body, marginBottom: 12 }}>{t.desc}</p>
-              <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: '#94a3b8', letterSpacing: '.06em' }}>Examples: {t.examples}</div>
+              <div style={{ fontFamily: "var(--font-dm-mono), monospace", fontSize: 11, color: '#94a3b8', letterSpacing: '.06em' }}>Examples: {t.examples}</div>
             </div>
           ))}
         </div>
@@ -728,10 +728,10 @@ function PapersPage() {
               <span style={S.tag}>{p.tag}</span>
               <span style={{ ...S.mono, fontSize: 11, color: '#94a3b8' }}>{p.date}</span>
             </div>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 22, fontWeight: 400, color: '#0d1b3e', margin: '0 0 8px', letterSpacing: '-.01em', lineHeight: 1.3 }}>{p.title}</h3>
-            <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: '#94a3b8', marginBottom: 12 }}>{p.authors}</div>
+            <h3 style={{ fontFamily: "var(--font-cormorant), Georgia, serif", fontSize: 22, fontWeight: 400, color: '#0d1b3e', margin: '0 0 8px', letterSpacing: '-.01em', lineHeight: 1.3 }}>{p.title}</h3>
+            <div style={{ fontFamily: "var(--font-dm-mono), monospace", fontSize: 11, color: '#94a3b8', marginBottom: 12 }}>{p.authors}</div>
             <p style={{ ...S.body, marginBottom: 20 }}>{p.abstract}</p>
-            <a href="mailto:research@taltas.ai" style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: '#1a56db', textDecoration: 'none', fontWeight: 500 }}>Request full paper</a>
+            <a href="mailto:research@taltas.ai" style={{ fontFamily: "var(--font-dm-sans), sans-serif", fontSize: 13, color: '#1a56db', textDecoration: 'none', fontWeight: 500 }}>Request full paper</a>
           </div>
         ))}
       </div>

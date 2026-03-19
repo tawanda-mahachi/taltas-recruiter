@@ -43,10 +43,10 @@ export function Topbar() {
     <div className="topbar">
       <div className="flex items-center gap-[10px]">
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 14 }}>
-          <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 48, fontWeight: 700, color: '#0d1b3e', letterSpacing: '-0.5px', lineHeight: 1 }}>
+          <div style={{ fontFamily: "var(--font-cormorant), Georgia, serif", fontSize: 48, fontWeight: 700, color: '#0d1b3e', letterSpacing: '-0.5px', lineHeight: 1 }}>
             Tal<span style={{ color: '#1a56db' }}>tas</span>
           </div>
-          <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 13, color: '#9aaac8', letterSpacing: '0.18em', textTransform: 'uppercase', paddingLeft: 14, borderLeft: '1px solid rgba(30,60,120,0.16)' }}>Talent Atlas</span>
+          <span style={{ fontFamily: "var(--font-dm-mono), monospace", fontSize: 13, color: '#9aaac8', letterSpacing: '0.18em', textTransform: 'uppercase', paddingLeft: 14, borderLeft: '1px solid rgba(30,60,120,0.16)' }}>Talent Atlas</span>
         </div>
       </div>
 
