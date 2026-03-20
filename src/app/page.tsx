@@ -49,7 +49,7 @@ body{font-family:var(--fb);background:#fff;display:flex;flex-direction:column}
 .r-left{display:flex;flex-direction:column;justify-content:flex-start;padding:52px 72px 80px;background:#fff;overflow-y:auto}
 .r-brand{font-family:var(--fd);font-size:48px;font-weight:700;letter-spacing:-0.5px;color:var(--text);line-height:1;margin-bottom:6px}
 .r-brand span{color:var(--blue)}
-.r-brand-tag{font-family:var(--fm);font-size:13px;color:var(--muted);letter-spacing:.18em;text-transform:uppercase;margin-bottom:52px}
+
 .r-eyebrow{font-family:var(--fm);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);margin-bottom:16px;display:flex;align-items:center;gap:10px}
 .r-eyebrow::before{content:'';width:20px;height:1px;background:var(--blue)}
 .r-headline{font-family:var(--fd);font-size:clamp(40px,4.2vw,62px);font-weight:600;letter-spacing:-2px;line-height:1.0;color:var(--text);margin-bottom:16px}
@@ -69,10 +69,10 @@ body{font-family:var(--fb);background:#fff;display:flex;flex-direction:column}
 .r-right::before{content:'';position:absolute;top:-80px;right:-80px;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,.04);pointer-events:none}
 .r-right::after{content:'';position:absolute;bottom:-60px;left:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.03);pointer-events:none}
 .r-ri{position:relative;z-index:1}
-.r-logo-row{display:flex;align-items:baseline;gap:14px;margin-bottom:6px;text-decoration:none;cursor:pointer}
-.r-f-brand{font-family:var(--fd);font-size:48px;font-weight:700;color:#fff;letter-spacing:-.5px;line-height:1}
-.r-f-brand span{color:rgba(255,255,255,.55)}
-.r-f-atlas{font-family:var(--fm);font-size:13px;color:rgba(255,255,255,.45);letter-spacing:.18em;text-transform:uppercase;padding-left:14px;border-left:1px solid rgba(255,255,255,.2)}
+
+
+
+
 .r-f-tag{font-family:var(--fm);font-size:9px;color:rgba(255,255,255,.4);letter-spacing:.18em;text-transform:uppercase;margin-bottom:32px}
 .r-f-title{font-family:var(--fd);font-size:26px;font-weight:500;color:#fff;margin-bottom:5px;letter-spacing:-.5px}
 .r-f-sub{font-size:13px;color:rgba(255,255,255,.5);margin-bottom:26px}
