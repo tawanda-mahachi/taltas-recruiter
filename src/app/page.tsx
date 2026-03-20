@@ -102,9 +102,9 @@ body{font-family:var(--fb);background:#fff;display:flex;flex-direction:column}
 .r-ft-logo{font-family:'Cormorant Garamond',Georgia,serif;font-size:36px;font-weight:700;color:#fff;letter-spacing:-0.5px;line-height:1}
 .r-ft-logo span{color:#1a56db}.r-ft-atlas{font-family:'DM Mono',monospace;font-size:13px;color:rgba(255,255,255,0.75);letter-spacing:0.18em;text-transform:uppercase;margin-top:6px;display:block}
 .r-ft-tagline{display:none}
-.r-ft-social{display:flex;gap:10px}
-.r-ft-social a{width:32px;height:32px;border-radius:8px;border:1px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;color:#e2e8f0;text-decoration:none;transition:all .2s}
-.r-ft-social a:hover{border-color:#2563eb;color:#2563eb;background:rgba(37,99,235,.1)}
+.r-ft-social{display:flex;gap:10px;margin-top:16px}
+.r-ft-social a{width:32px;height:32px;border-radius:6px;border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.4);text-decoration:none;transition:all .2s}
+.r-ft-social a:hover{border-color:#1a56db;color:#1a56db;background:rgba(26,86,219,0.1)}
 .r-ft-col-head{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.9);margin-bottom:18px}
 .r-ft-col a{display:block;font-size:13px;color:#94a3b8;text-decoration:none;margin-bottom:10px;transition:color .15s}
 .r-ft-col a:hover{color:#e2e8f0}
