@@ -56,7 +56,7 @@ export function SiteFooter({ variant = 'full' }: { variant?: 'full' | 'compact' 
 
   return (
     <footer style={{ background: '#0f172a', borderTop: '1px solid rgba(255,255,255,.06)' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '1.8fr 1fr 1fr 1fr', gap: 48, padding: '64px 52px 48px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr 1fr 1fr', gap: 48, padding: '64px 52px 48px' }}>
         <div>
           <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 36, fontWeight: 700, color: '#ffffff', letterSpacing: '-0.5px', lineHeight: 1 }}>
             Tal<span style={{ color: '#1a56db' }}>tas</span>
