@@ -93,8 +93,8 @@ body{font-family:var(--fb);background:#fff;display:flex;flex-direction:column}
 .r-divider span{font-family:var(--fm);font-size:9px;color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase}
 .r-sso{width:100%;padding:12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:10px;color:rgba(255,255,255,.65);font-family:var(--fm);font-size:11px;letter-spacing:.06em;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s}
 .r-sso:hover{background:rgba(255,255,255,.13);color:#fff}
-.r-reg{text-align:center;margin-top:20px;font-size:12px;color:rgba(255,255,255,.4)}
-.r-reg a{color:rgba(255,255,255,.8);text-decoration:none;font-weight:500}
+.r-reg{text-align:center;margin-top:20px;font-size:15px;color:rgba(255,255,255,.6)}
+.r-reg a{color:#ffffff;text-decoration:none;font-weight:500}
 .r-demo{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:13px;padding:7px 14px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:8px}
 .r-demo span{font-family:var(--fm);font-size:9px;color:rgba(255,255,255,.3);letter-spacing:.05em}
 .r-ft{background:#0f172a;border-top:1px solid rgba(255,255,255,.06);width:100%}
