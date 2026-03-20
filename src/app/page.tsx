@@ -99,9 +99,9 @@ body{font-family:var(--fb);background:#fff;display:flex;flex-direction:column}
 .r-demo span{font-family:var(--fm);font-size:9px;color:rgba(255,255,255,.3);letter-spacing:.05em}
 .r-ft{background:#0f172a;border-top:1px solid rgba(255,255,255,.06);width:100%}
 .r-ft-top{padding:64px 52px 48px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:48px}
-.r-ft-logo{font-family:Georgia,'Times New Roman',serif;font-size:22px;color:#fff;margin-bottom:14px}
-.r-ft-logo span{color:#2563eb}
-.r-ft-tagline{font-size:13px;color:#cbd5e1;line-height:1.7;max-width:220px;margin-bottom:24px}
+.r-ft-logo{font-family:'Cormorant Garamond',Georgia,serif;font-size:36px;font-weight:700;color:#fff;letter-spacing:-0.5px;line-height:1}
+.r-ft-logo span{color:#1a56db}.r-ft-atlas{font-family:'DM Mono',monospace;font-size:13px;color:rgba(255,255,255,0.75);letter-spacing:0.18em;text-transform:uppercase;margin-top:6px;display:block}
+.r-ft-tagline{display:none}
 .r-ft-social{display:flex;gap:10px}
 .r-ft-social a{width:32px;height:32px;border-radius:8px;border:1px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;color:#e2e8f0;text-decoration:none;transition:all .2s}
 .r-ft-social a:hover{border-color:#2563eb;color:#2563eb;background:rgba(37,99,235,.1)}
@@ -244,7 +244,7 @@ export default function RecruiterPage() {
           <div className="r-ft-top">
             <div>
               <div className="r-ft-logo">Tal<span>tas</span></div>
-              <p className="r-ft-tagline">Recruitment Intelligence Platform. AI-native hiring, built for the people who care about quality.</p>
+              <div className="r-ft-atlas">Talent Atlas</div>
               <div className="r-ft-social">
                 <a href="#" aria-label="LinkedIn"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg></a>
                 <a href="#" aria-label="X"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
