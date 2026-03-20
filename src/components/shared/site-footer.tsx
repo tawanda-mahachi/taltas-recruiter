@@ -58,13 +58,10 @@ export function SiteFooter({ variant = 'full' }: { variant?: 'full' | 'compact' 
     <footer style={{ background: '#0f172a', borderTop: '1px solid rgba(255,255,255,.06)' }}>
       <div style={{ display: 'grid', gridTemplateColumns: '1.8fr 1fr 1fr 1fr', gap: 48, padding: '64px 52px 48px' }}>
         <div>
-          <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 36, fontWeight: 700, color: '#ffffff', marginBottom: 4, letterSpacing: '-0.5px' }}>
+          <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 36, fontWeight: 700, color: '#ffffff', letterSpacing: '-0.5px', lineHeight: 1 }}>
             Tal<span style={{ color: '#1a56db' }}>tas</span>
           </div>
-          <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 13, color: 'rgba(255,255,255,0.75)', letterSpacing: '0.18em', textTransform: 'uppercase', marginTop: 4, marginBottom: 16, display: 'block' }}>Talent Atlas</div>
-          <p style={{ fontSize: 13, color: '#94a3b8', lineHeight: 1.65, margin: '0 0 20px', maxWidth: 220 }}>
-            AI-native recruitment intelligence — built for the people who care about the right fit.
-          </p>
+          <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 13, color: 'rgba(255,255,255,0.75)', letterSpacing: '0.18em', textTransform: 'uppercase', marginTop: 6, display: 'block' }}>Talent Atlas</div>
         </div>
         <div>
           <div style={headStyle}>Resources</div>
