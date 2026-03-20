@@ -45,7 +45,7 @@ const CSS = `
 }
 html,body{min-height:100%;margin:0}
 body{font-family:var(--fb);background:#fff;display:flex;flex-direction:column}
-.r-nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;padding:18px 52px;background:rgba(255,255,255,0.92);backdrop-filter:blur(20px);border-bottom:1px solid rgba(30,60,120,0.1)}.r-nav-brand{font-family:var(--fd);font-size:48px;font-weight:700;letter-spacing:-0.5px;color:#0d1b3e;text-decoration:none;line-height:1}.r-nav-brand span{color:var(--blue)}.r-nav-tagline{font-family:var(--fm);font-size:13px;color:#9aaac8;letter-spacing:0.18em;text-transform:uppercase;padding-left:14px;border-left:1px solid rgba(30,60,120,0.16)}.r-wrap{display:grid;grid-template-columns:1fr 500px;min-height:100vh;flex:1}
+.r-nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;padding:18px 52px;background:rgba(255,255,255,0.92);backdrop-filter:blur(20px);border-bottom:1px solid rgba(30,60,120,0.1)}.r-nav-brand{font-family:var(--fd);font-size:48px;font-weight:700;letter-spacing:-0.5px;color:#0d1b3e;text-decoration:none;line-height:1}.r-nav-brand span{color:var(--blue)}.r-nav-tagline{font-family:var(--fm);font-size:13px;color:#9aaac8;letter-spacing:0.18em;text-transform:uppercase;padding-left:14px;border-left:1px solid rgba(30,60,120,0.16)}.r-nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;padding:18px 52px;background:rgba(255,255,255,0.92);backdrop-filter:blur(20px);border-bottom:1px solid rgba(30,60,120,0.1)}.r-nav-brand{font-family:var(--fd);font-size:48px;font-weight:700;letter-spacing:-0.5px;color:#0d1b3e;text-decoration:none;line-height:1}.r-nav-brand span{color:var(--blue)}.r-nav-tagline{font-family:var(--fm);font-size:13px;color:#9aaac8;letter-spacing:0.18em;text-transform:uppercase;padding-left:14px;border-left:1px solid rgba(30,60,120,0.16)}.r-wrap{display:grid;grid-template-columns:1fr 500px;min-height:100vh;flex:1}
 .r-left{display:flex;flex-direction:column;justify-content:flex-start;padding:52px 72px 80px;background:#fff;overflow-y:auto}
 .r-brand{font-family:var(--fd);font-size:48px;font-weight:700;letter-spacing:-0.5px;color:var(--text);line-height:1;margin-bottom:6px}
 .r-brand span{color:var(--blue)}
@@ -153,7 +153,7 @@ export default function RecruiterPage() {
     <>
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
       <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-        <nav className="r-nav"><a href="https://taltas.ai" className="r-nav-brand" style={{display:"flex",alignItems:"baseline",gap:14,textDecoration:"none"}}><span>Tal<span style={{color:"var(--blue)"}}>tas</span></span><span className="r-nav-tagline">Talent Atlas</span></a></nav>
+        <nav className="r-nav"><a href="https://taltas.ai" style={{display:"flex",alignItems:"baseline",gap:14,textDecoration:"none"}}><span style={{fontFamily:"var(--fd)",fontSize:48,fontWeight:700,letterSpacing:"-0.5px",color:"#0d1b3e",lineHeight:1}}>Tal<span style={{color:"var(--blue)"}}>tas</span></span><span style={{fontFamily:"var(--fm)",fontSize:13,color:"#9aaac8",letterSpacing:"0.18em",textTransform:"uppercase",paddingLeft:14,borderLeft:"1px solid rgba(30,60,120,0.16)"}}>Talent Atlas</span></a></nav>
         <div className="r-wrap">
           {/* LEFT */}
           <div className="r-left">
