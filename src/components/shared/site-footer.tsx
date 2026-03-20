@@ -61,7 +61,7 @@ export function SiteFooter({ variant = 'full' }: { variant?: 'full' | 'compact' 
           <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 36, fontWeight: 700, color: '#ffffff', marginBottom: 6, letterSpacing: '-0.5px' }}>
             Tal<span style={{ color: '#1a56db' }}>tas</span>
           </div>
-          <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: '#4a5a7a', letterSpacing: '.18em', textTransform: 'uppercase', marginBottom: 16 }}>Talent Atlas</div>
+          <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 13, color: 'rgba(255,255,255,0.75)', letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: 12, display: 'block' }}>Talent Atlas</div>
           <p style={{ fontSize: 13, color: '#94a3b8', lineHeight: 1.65, margin: '0 0 20px', maxWidth: 220 }}>
             AI-native recruitment intelligence — built for the people who care about the right fit.
           </p>
