@@ -128,13 +128,13 @@ export default function RecruiterPage() {
   const loginMutation = useLogin();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState('senior_recruiter');
+  
   const [showPw, setShowPw] = useState(false);
   const [error, setError] = useState('');
-  const [isReturning, setIsReturning] = useState(() => { try { return !!localStorage.getItem('taltas_r_visited'); } catch { return false; } });
+  const [isReturning, setIsReturning] = useState(false);
   const [mounted, setMounted] = useState(false);
 
-  useEffect(() => { setMounted(true); }, []);
+  useEffect(() => { setMounted(true); setIsReturning(!!localStorage.getItem('taltas_r_visited')); }, []);
   useEffect(() => { if (mounted && user?.token) { localStorage.setItem('taltas_r_visited', '1'); router.replace('/dashboard'); } }, [mounted, user]);
 
   const handleSubmit = async () => {
@@ -210,9 +210,9 @@ export default function RecruiterPage() {
                   </button>
                 </div>
               </div>
-              <div className="r-field">
+              <div className="r-field" style={{display:"none"}}>
                 <label className="r-lbl">Role</label>
-                <select className="r-inp" value={role} onChange={(e) => setRole(e.target.value)}>
+                <select className="r-inp" value="senior_recruiter">
                   <option value="hiring_manager">Hiring Manager</option>
                   <option value="senior_recruiter">Senior Recruiter</option>
                   <option value="recruiter">Recruiter</option>
