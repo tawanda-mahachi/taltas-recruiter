@@ -131,10 +131,12 @@ export default function RecruiterPage() {
   const [role, setRole] = useState('senior_recruiter');
   const [showPw, setShowPw] = useState(false);
   const [error, setError] = useState('');
+  const [isReturning, setIsReturning] = useState(false);
+  useEffect(() => { setIsReturning(!!localStorage.getItem('taltas_r_visited')); }, []);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => { setMounted(true); }, []);
-  useEffect(() => { if (mounted && user?.token) router.replace('/dashboard'); }, [mounted, user]);
+  useEffect(() => { if (mounted && user?.token) { localStorage.setItem('taltas_r_visited', '1'); router.replace('/dashboard'); } }, [mounted, user]);
 
   const handleSubmit = async () => {
     setError('');
@@ -186,8 +188,8 @@ export default function RecruiterPage() {
           <div className="r-right">
             <div className="r-ri">
               <div className="r-f-tag">Recruiter Portal</div>
-              <div className="r-f-title">Welcome back</div>
-              <div className="r-f-sub">Sign in to your workspace</div>
+              <div className="r-f-title">{isReturning ? 'Welcome back' : 'Sign in to get started'}</div>
+              <div className="r-f-sub">{isReturning ? 'Sign in to your workspace' : 'New here? Create an account below'}</div>
               {error && <div className="r-err">{error}</div>}
               <div className="r-field">
                 <label className="r-lbl">Email</label>
