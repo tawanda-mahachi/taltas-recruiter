@@ -131,8 +131,7 @@ export default function RecruiterPage() {
   const [role, setRole] = useState('senior_recruiter');
   const [showPw, setShowPw] = useState(false);
   const [error, setError] = useState('');
-  const [isReturning, setIsReturning] = useState(false);
-  useEffect(() => { setIsReturning(!!localStorage.getItem('taltas_r_visited')); }, []);
+  const [isReturning, setIsReturning] = useState(() => { try { return !!localStorage.getItem('taltas_r_visited'); } catch { return false; } });
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => { setMounted(true); }, []);
