@@ -11,7 +11,8 @@ import { initials } from '@/lib/utils';
 const NAV_TABS = [
   { key: 'dashboard',     label: 'Dashboard',     href: '/dashboard' },
   { key: 'pipeline',      label: 'Pipeline',      href: '/pipeline' },
-  { key: 'jobs',           label: 'Jobs',           href: '/jobs' },
+  { key: 'jobs',           label: 'Live Jobs',      href: '/jobs' },
+  { key: 'job-bank',      label: 'Job Bank',       href: '/job-bank' },
   { key: 'candidates',    label: 'Candidates',    href: '/candidates' },
   { key: 'explorers',     label: 'Explorers',     href: '/explorers' },
   { key: 'integrations',  label: 'Integrations',  href: '/integrations' },
