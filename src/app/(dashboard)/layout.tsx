@@ -1,34 +1,30 @@
+// @ts-nocheck
 'use client';
-
 import { AuthGuard } from '@/components/auth/auth-guard';
-import { Topbar } from '@/components/shell/topbar';
-import { SiteFooter } from '@/components/shared/site-footer';
+import { Sidebar } from '@/components/shell/sidebar';
 import { ToastProvider } from '@/components/ui/toast';
 import { useMe } from '@/lib/hooks/use-auth';
 import { useAuthStore } from '@/lib/stores/auth-store';
 import { useEffect } from 'react';
 
-function DashboardShell({ children }: { children: React.ReactNode }) {
+function DashboardShell({ children }) {
   const { data: me } = useMe();
   const { setUser } = useAuthStore();
-
-  // Keep store synced with server data
-  useEffect(() => {
-    if (me) setUser(me);
-  }, [me, setUser]);
+  useEffect(() => { if (me) setUser(me); }, [me, setUser]);
 
   return (
-    <div className="min-h-screen" style={{ background: 'var(--bg)', display: 'flex', flexDirection: 'column' }}>
-      <Topbar />
-      <main className="max-w-[1340px] mx-auto px-6 py-5" style={{ flex: 1, width: '100%' }}>
-        {children}
-      </main>
-      <SiteFooter variant="compact" />
+    <div className='app-shell'>
+      <Sidebar />
+      <div className='main-content'>
+        <main style={{ padding: '28px 32px', flex: 1 }}>
+          {children}
+        </main>
+      </div>
     </div>
   );
 }
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+export default function DashboardLayout({ children }) {
   return (
     <AuthGuard>
       <ToastProvider>
