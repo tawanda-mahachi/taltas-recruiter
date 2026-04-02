@@ -222,7 +222,7 @@ export default function IntegrationsPage() {
                     {item.payloadSummary || (isPush ? 'Candidate pushed' : 'Jobs synced')}
                   </div>
                   <div style={{ fontSize: 10, color: 'var(--muted)', marginTop: 2 }}>
-                    {item.provider} · {item.eventType.replace(/_/g, ' ')} {item.roleTitle ? '· ' + item.roleTitle : ''}
+                    {item.provider} ï¿½ {item.eventType.replace(/_/g, ' ')} {item.roleTitle ? 'ï¿½ ' + item.roleTitle : ''}
                   </div>
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 3, flexShrink: 0 }}>
