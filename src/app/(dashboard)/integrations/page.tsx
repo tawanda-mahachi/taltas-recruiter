@@ -1,13 +1,14 @@
 // @ts-nocheck
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import { MOCK_INTEGRATIONS } from '@/lib/mock-data';
 import { useIntegrations } from '@/lib/data-provider';
 import { DataSourceBadge } from '@/components/shared/api-status';
 import { resolveIcon } from '@/components/icon-resolver';
 import { useToast } from '@/components/ui/toast';
 import { IconSearch, IconPlus, IconRefreshCw, IconSettings, IconZap } from '@/components/icons';
+import { useAuthStore } from '@/lib/stores/auth-store';
 import { Modal } from '@/components/ui/modal';
 
 const CATEGORIES = ['All', 'ATS', 'HRIS', 'Job Site'];
@@ -55,6 +56,20 @@ export default function IntegrationsPage() {
   const [editForm, setEditForm] = useState<IntegConfig>({});
   const [connecting, setConnecting] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [activityFeed, setActivityFeed] = useState<any[]>([]);
+  const [feedLoading, setFeedLoading] = useState(true);
+  const { token } = useAuthStore();
+  const API = process.env.NEXT_PUBLIC_API_URL || 'https://api.taltas.ai/api/v1';
+
+  const fetchFeed = useCallback(async () => {
+    if (!token) return;
+    try {
+      const r = await fetch(API + '/integrations/activity-feed?limit=30', { headers: { Authorization: 'Bearer ' + token } });
+      if (r.ok) setActivityFeed(await r.json());
+    } catch {} finally { setFeedLoading(false); }
+  }, [token]);
+
+  useEffect(() => { fetchFeed(); }, [fetchFeed]);
   const [configs, setConfigs] = useState<Record<string, IntegConfig>>(
     Object.fromEntries(apiIntegrations.filter(i => i.connected).map(i => [i.name || i.id || '', {
       webhookUrl: `https://api.taltas.ai/webhooks/${(i.name || 'integration').toLowerCase().replace(/\s/g, '-')}`,
@@ -182,6 +197,51 @@ export default function IntegrationsPage() {
           <div className="font-mono text-[8px] text-center mt-[8px]" style={{ color: 'var(--muted)' }}>ðŸ”’ TLS 1.3 Â· AES-256 Â· SOC 2 Type II</div>
         </>)}
       </Modal>
+
+      {/* -- Activity Feed -- */}
+      <div style={{ marginTop: 24 }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+          <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-bright)', letterSpacing: '-0.2px' }}>ATS Activity Feed</div>
+          <button onClick={fetchFeed} style={{ fontSize: 11, color: 'var(--muted)', background: 'none', border: 'none', cursor: 'pointer' }}>? Refresh</button>
+        </div>
+        <div style={{ background: 'var(--surface)', border: '1px solid var(--border2)', borderRadius: 10, overflow: 'hidden' }}>
+          {feedLoading ? (
+            <div style={{ padding: 24, textAlign: 'center', color: 'var(--muted)', fontSize: 12 }}>Loading activity...</div>
+          ) : activityFeed.length === 0 ? (
+            <div style={{ padding: 24, textAlign: 'center', color: 'var(--muted)', fontSize: 12 }}>No ATS activity yet. Connect an ATS to get started.</div>
+          ) : activityFeed.map((item: any, i: number) => {
+            const isPush = item.direction === 'push';
+            const isSuccess = item.status === 'success';
+            return (
+              <div key={item.id} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 16px', borderBottom: i < activityFeed.length - 1 ? '1px solid var(--border)' : 'none' }}>
+                <div style={{ width: 28, height: 28, borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, background: isPush ? '#2563eb18' : '#16a34a18', flexShrink: 0 }}>
+                  {isPush ? '?' : '?'}
+                </div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-bright)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    {item.payloadSummary || (isPush ? 'Candidate pushed' : 'Jobs synced')}
+                  </div>
+                  <div style={{ fontSize: 10, color: 'var(--muted)', marginTop: 2 }}>
+                    {item.provider} · {item.eventType.replace(/_/g, ' ')} {item.roleTitle ? '· ' + item.roleTitle : ''}
+                  </div>
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 3, flexShrink: 0 }}>
+                  <span style={{ fontSize: 10, padding: '2px 7px', borderRadius: 4, fontWeight: 600, background: isSuccess ? '#16a34a15' : '#dc262615', color: isSuccess ? '#16a34a' : '#dc2626', border: '1px solid ' + (isSuccess ? '#16a34a30' : '#dc262630') }}>
+                    {isSuccess ? (isPush ? '? Pushed' : '? Pulled') : '? Failed'}
+                  </span>
+                  {!item.jobLinked && isPush && (
+                    <span style={{ fontSize: 9, color: '#d97706', fontWeight: 500 }}>? No job linked</span>
+                  )}
+                  <span style={{ fontSize: 9, color: 'var(--muted)' }}>{new Date(item.createdAt).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
+                </div>
+                {item.status === 'failed' && (
+                  <button onClick={async () => { await fetch(API + '/integrations/push-log/' + item.id + '/retry', { method: 'POST', headers: { Authorization: 'Bearer ' + token } }); fetchFeed(); }} style={{ padding: '4px 9px', borderRadius: 5, border: '1px solid var(--border2)', background: 'var(--surface)', fontSize: 10, cursor: 'pointer', color: 'var(--text-mid)', flexShrink: 0 }}>Retry</button>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
 
       {/* Edit/configure existing integration */}
       <Modal open={!!editModal} onClose={() => setEditModal(null)} maxWidth="540px">

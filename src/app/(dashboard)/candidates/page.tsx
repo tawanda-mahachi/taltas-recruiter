@@ -1,12 +1,13 @@
 // @ts-nocheck
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { MOCK_CANDIDATES, fitBadgeClass, stageBadgeClass } from '@/lib/mock-data';
 import { useCandidates } from '@/lib/data-provider';
 import { DataSourceBadge } from '@/components/shared/api-status';
 import { IconSearch, IconX, IconDownload, IconMap, IconUser, IconPlus } from '@/components/icons';
 import { CandidateModal } from '@/components/modals/candidate-modal';
+import { useAuthStore } from '@/lib/stores/auth-store';
 
 type SortKey = 'name' | 'score' | 'stage' | 'sentiment';
 type SortDir = 'asc' | 'desc';
@@ -46,6 +47,22 @@ function SentimentBar({ value, trend = '' }: { value: string; trend?: string }) 
 }
 
 export default function CandidatesPage() {
+  const { token } = useAuthStore();
+  const [pushLogs, setPushLogs] = useState<Record<string, any>>({});
+  const API = process.env.NEXT_PUBLIC_API_URL || 'https://api.taltas.ai/api/v1';
+
+  useEffect(() => {
+    if (!token) return;
+    fetch(API + '/integrations/activity-feed?limit=100', { headers: { Authorization: 'Bearer ' + token } })
+      .then(r => r.ok ? r.json() : [])
+      .then((logs: any[]) => {
+        const map: Record<string, any> = {};
+        logs.filter(l => l.eventType === 'push_candidate' && l.sessionId).forEach(l => {
+          if (!map[l.sessionId] || l.status === 'success') map[l.sessionId] = l;
+        });
+        setPushLogs(map);
+      }).catch(() => {});
+  }, [token]);
   const [search, setSearch] = useState('');
   const [stageFilter, setStageFilter] = useState('');
   const [fitFilter, setFitFilter] = useState('');
