@@ -1,28 +1,26 @@
 // @ts-nocheck
 'use client';
-
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/lib/stores/auth-store';
 
-export function AuthGuard({ children }: { children: React.ReactNode }) {
+export function AuthGuard({ children }) {
   const router = useRouter();
-  const { isAuthenticated } = useAuthStore();
+  const isAuthenticated = useAuthStore(s => s.isAuthenticated);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      router.replace('/');
-    }
+    setReady(true);
+    if (!isAuthenticated) router.replace('/login');
   }, [isAuthenticated, router]);
 
-  if (!isAuthenticated) {
+  if (!ready || !isAuthenticated) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg)' }}>
-        <div style={{ width: 24, height: 24, border: '2.5px solid var(--border)', borderTopColor: 'var(--blue)', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+      <div style={{minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',background:'#F4F4F2'}}>
+        <div style={{width:24,height:24,border:'2.5px solid #E8E8E5',borderTopColor:'#0033FF',borderRadius:'50%',animation:'spin 0.8s linear infinite'}}/>
+        <style>{'@keyframes spin{to{transform:rotate(360deg)}}'}</style>
       </div>
     );
   }
-
   return <>{children}</>;
 }
-

@@ -7,6 +7,8 @@ interface AuthState {
   user: Principal | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  _hasHydrated: boolean;
+  setHasHydrated: (val: boolean) => void;
   setTokens: (access: string, refresh: string) => void;
   setUser: (user: Principal) => void;
   setLoading: (loading: boolean) => void;
@@ -19,6 +21,8 @@ export const useAuthStore = create<AuthState>((set) => ({
   user: null,
   isAuthenticated: false,
   isLoading: false,
+      _hasHydrated: false,
+      setHasHydrated: (val) => set({ _hasHydrated: val }),
   setTokens: (accessToken, refreshToken) =>
     set({ accessToken, refreshToken, isAuthenticated: true }),
   setUser: (user) => set({ user }),
