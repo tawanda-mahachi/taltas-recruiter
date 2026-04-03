@@ -39,7 +39,7 @@ export function Sidebar() {
     <aside className="sidebar">
       {/* Logo */}
       <div className="sidebar-logo">
-        <svg width="32" height="32" viewBox="0 0 60 60" fill="none">
+        <svg width="44" height="44" viewBox="0 0 60 60" fill="none">
           <circle cx="30" cy="30" r="27" fill="#1D9E75"/>
           <polygon points="30,8 36,32 30,28 24,32" fill="white"/>
           <polygon points="30,52 34,32 30,36 26,32" fill="white" opacity="0.28"/>
