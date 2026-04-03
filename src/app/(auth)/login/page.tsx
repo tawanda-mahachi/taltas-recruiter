@@ -5,18 +5,10 @@ import { useLogin } from '@/lib/hooks/use-auth';
 
 const STEPS = [
   { letter:'S', icon:'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z', title:'Screen with structure', desc:'Every candidate is assessed across six dimensions: skills, motivation, working style, culture, compensation fit, and timeline.' },
-  { letter:'N', icon:'M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z', title:'Negotiate before the first call', desc:'Compensation bands, expectations, and timelines are surfaced agent-to-agent. Both sides know it is worth meeting before it happens.' },
+  { letter:'N', icon:'M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z', title:'Negotiate before the first call', desc:'Compensation bands, expectations, and timelines are surfaced agent-to-agent. Both sides know it is worth the meeting.' },
   { letter:'A', icon:'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z', title:'Assess with depth', desc:'AI-powered conversation surfaces motivation, working style, and career context that a resume was never designed to carry.' },
   { letter:'P', icon:'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2', title:'Place with confidence', desc:'Receive a full candidate summary with match scores, sentiment analysis, and conversation transcript before making any decision.' },
 ];
-
-const METRICS = [
-  { num:'6', label:'Fit dimensions per candidate' },
-  { num:'4x', label:'Richer signal than a resume' },
-  { num:'100%', label:'Structured evaluation, every time' },
-];
-
-const ACC = '#0033FF';
 
 export default function LoginPage() {
   const loginMutation = useLogin();
@@ -37,8 +29,32 @@ export default function LoginPage() {
     }
   };
 
+  const METRICS = [{num:'6',label:'Fit dimensions per candidate'},{num:'4x',label:'Richer signal than a resume'},{num:'100%',label:'Structured evaluation, every time'}];
+
   return (
     <div style={{minHeight:'100vh',display:'flex',flexDirection:'column',background:'#FFFFFF',fontFamily:'Helvetica Neue,Helvetica,Arial,sans-serif',position:'relative',overflow:'hidden'}}>
+      {/* Nav - matches landing page */}
+      <nav style={{position:'sticky',top:0,zIndex:50,background:'rgba(255,255,255,.92)',backdropFilter:'blur(8px)',WebkitBackdropFilter:'blur(8px)',borderBottom:'1px solid #E8E8E5',height:64,display:'flex',alignItems:'center',padding:'0 56px',fontFamily:'Helvetica Neue,Helvetica,Arial,sans-serif'}}>
+        <a href="https://taltas.ai" style={{display:'flex',alignItems:'center',gap:12,marginRight:'auto',textDecoration:'none'}}>
+          <svg width="44" height="44" viewBox="0 0 60 60" fill="none">
+            <circle cx="30" cy="30" r="27" fill="#1D9E75"/>
+            <polygon points="30,8 36,32 30,28 24,32" fill="white"/>
+            <polygon points="30,52 34,32 30,36 26,32" fill="white" opacity="0.28"/>
+            <line x1="12" y1="30" x2="48" y2="30" stroke="white" strokeWidth="1" opacity="0.25"/>
+            <circle cx="30" cy="30" r="3.5" fill="white"/>
+            <circle cx="30" cy="30" r="1.8" fill="#1D9E75"/>
+          </svg>
+          <div style={{display:'flex',alignItems:'flex-end',gap:10}}>
+            <div style={{fontSize:36,fontWeight:300,letterSpacing:'-0.03em',lineHeight:1}}><span style={{color:'#0A0A0A'}}>Tal</span><span style={{color:'#1D9E75'}}>tas</span></div>
+            <div style={{fontSize:11,color:'#AAAAAA',letterSpacing:'.1em',textTransform:'uppercase',fontWeight:400,lineHeight:1,marginBottom:7}}>Your Talent Atlas</div>
+          </div>
+        </a>
+        <div style={{display:'flex',gap:32,alignItems:'center'}}>
+          <a href="https://taltas.ai#how-it-works" style={{fontSize:14,color:'#AAAAAA',fontWeight:300,textDecoration:'none'}}>How it works</a>
+          <a href="https://candidates.taltas.ai" style={{fontSize:14,color:'#AAAAAA',fontWeight:300,textDecoration:'none'}}>Candidates</a>
+          <a href="https://recruiters.taltas.ai" style={{fontSize:14,color:'#AAAAAA',fontWeight:300,textDecoration:'none'}}>Recruiters</a>
+        </div>
+      </nav>
       <div style={{position:'fixed',top:20,right:40,pointerEvents:'none',zIndex:0,opacity:.1}}>
         <svg width="700" height="700" viewBox="0 0 60 60" fill="none">
           <circle cx="30" cy="30" r="27" fill="none" stroke="#1D9E75" strokeWidth=".3"/>
@@ -65,26 +81,20 @@ export default function LoginPage() {
           </g>
         </svg>
       </div>
-      <div style={{display:'grid',gridTemplateColumns:'1fr 480px',flex:1,position:'relative',zIndex:1}}>
-        <div style={{padding:'64px 72px',display:'flex',flexDirection:'column',justifyContent:'center',overflowY:'auto'}}>
-          <div style={{fontFamily:'Courier New,monospace',fontSize:10,color:ACC,letterSpacing:'.18em',textTransform:'uppercase',marginBottom:20,display:'flex',alignItems:'center',gap:10}}>
-            <div style={{width:20,height:1,background:ACC}}/>
-            Explorer Agent
-          </div>
+      <div style={{display:'grid',gridTemplateColumns:'1fr 460px',flex:1,position:'relative',zIndex:1}}>
+        <div style={{padding:'48px 72px',display:'flex',flexDirection:'column',justifyContent:'center',overflowY:'auto'}}>
           <h1 style={{fontSize:'clamp(32px,3.5vw,50px)',fontWeight:300,letterSpacing:'-0.03em',lineHeight:1.05,color:'#0A0A0A',marginBottom:16}}>Hire with depth.<br/>Not just keywords.</h1>
           <p style={{fontSize:15,fontWeight:300,color:'#6B6B6B',lineHeight:1.8,marginBottom:40,maxWidth:480}}>Taltas Explorer Agents conduct structured conversations with candidates, surfacing the six dimensions of fit that a resume was never designed to carry.</p>
-
           <div style={{border:'1px solid #E8E8E5',marginBottom:40}}>
-            {METRICS.map((m, i) => (
+            {METRICS.map((m,i) => (
               <div key={i} style={{display:'flex',alignItems:'center',gap:24,padding:'16px 24px',borderBottom:i<METRICS.length-1?'1px solid #E8E8E5':'none'}}>
-                <div style={{fontSize:36,fontWeight:300,letterSpacing:'-2px',color:ACC,lineHeight:1,flexShrink:0,width:72}}>{m.num}</div>
+                <div style={{fontSize:36,fontWeight:300,letterSpacing:'-2px',color:'#0033FF',lineHeight:1,flexShrink:0,width:72}}>{m.num}</div>
                 <div style={{fontSize:12,fontWeight:300,color:'#6B6B6B',lineHeight:1.5}}>{m.label}</div>
               </div>
             ))}
           </div>
-
           <div style={{display:'flex',flexDirection:'column'}}>
-            {STEPS.map((s, i) => (
+            {STEPS.map((s,i) => (
               <div key={i} style={{display:'flex',gap:16,padding:'14px 0',borderBottom:'1px solid #E8E8E5',borderTop:i===0?'1px solid #E8E8E5':'none'}}>
                 <div style={{width:30,height:30,borderRadius:'50%',background:'rgba(0,51,255,.06)',border:'1px solid rgba(0,51,255,.14)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,marginTop:1}}>
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0033FF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d={s.icon}/></svg>
@@ -97,28 +107,14 @@ export default function LoginPage() {
             ))}
           </div>
         </div>
-
-        <div style={{background:ACC,display:'flex',flexDirection:'column',justifyContent:'flex-start',padding:'52px 48px',position:'relative',overflow:'hidden'}}>
+        <div style={{background:'#0033FF',display:'flex',flexDirection:'column',justifyContent:'flex-start',padding:'48px 48px',position:'relative',overflow:'hidden'}}>
           <div style={{position:'absolute',top:-80,left:-80,width:300,height:300,borderRadius:'50%',background:'rgba(255,255,255,.04)',pointerEvents:'none'}}/>
           <div style={{position:'absolute',bottom:-60,right:-60,width:220,height:220,borderRadius:'50%',background:'rgba(255,255,255,.03)',pointerEvents:'none'}}/>
           <div style={{position:'relative',zIndex:1}}>
-                        <a href="https://taltas.ai" style={{display:'flex',alignItems:'center',gap:12,textDecoration:'none',marginBottom:40}}>
-              <svg width="44" height="44" viewBox="0 0 60 60" fill="none">
-                <circle cx="30" cy="30" r="27" fill="rgba(255,255,255,.2)"/>
-                <polygon points="30,8 36,32 30,28 24,32" fill="white"/>
-                <polygon points="30,52 34,32 30,36 26,32" fill="white" opacity="0.28"/>
-                <line x1="12" y1="30" x2="48" y2="30" stroke="white" strokeWidth="1" opacity="0.25"/>
-                <circle cx="30" cy="30" r="3.5" fill="white"/>
-              </svg>
-              <div>
-                <div style={{fontSize:32,fontWeight:300,letterSpacing:'-0.03em',lineHeight:1,color:'#fff'}}>Taltas</div>
-                <div style={{fontSize:9,color:'rgba(255,255,255,.5)',letterSpacing:'.1em',textTransform:'uppercase',marginTop:3}}>Recruiter Portal</div>
-              </div>
-            </a>
 
-            <div style={{fontFamily:'Courier New,monospace',fontSize:9,color:'rgba(255,255,255,.4)',letterSpacing:'.18em',textTransform:'uppercase',marginBottom:20}}>Sign In</div>
-            <div style={{fontSize:24,fontWeight:300,color:'#fff',marginBottom:4,letterSpacing:'-0.02em'}}>Welcome back</div>
-            <div style={{fontSize:13,fontWeight:300,color:'rgba(255,255,255,.5)',marginBottom:28}}>Sign in to your recruiter account</div>
+            <div style={{fontFamily:'Courier New,monospace',fontSize:11,color:'rgba(255,255,255,.5)',letterSpacing:'.18em',textTransform:'uppercase',marginBottom:8}}>Sign In</div>
+            <div style={{fontSize:18,fontWeight:300,letterSpacing:'.04em',color:'rgba(255,255,255,.9)',marginBottom:4,textTransform:'uppercase',letterSpacing:'.1em'}}>Recruiter Portal</div>
+            <div style={{fontSize:13,fontWeight:300,color:'rgba(255,255,255,.45)',marginBottom:32}}>Sign in to your account</div>
 
             {error && <div style={{background:'rgba(255,255,255,.12)',border:'1px solid rgba(255,100,100,.4)',padding:'10px 14px',fontSize:12,fontWeight:300,color:'#fca5a5',marginBottom:16,lineHeight:1.5}}>{error}</div>}
 
@@ -135,7 +131,7 @@ export default function LoginPage() {
               </div>
             </div>
 
-            <button onClick={handleSubmit} disabled={loading} style={{width:'100%',padding:'14px',background:'#fff',color:'#0033FF',border:'none',fontSize:14,fontWeight:400,fontFamily:'Helvetica Neue,Helvetica,Arial,sans-serif',cursor:loading?'not-allowed':'pointer',letterSpacing:'.01em',opacity:loading?0.7:1}}>
+            <button onClick={handleSubmit} disabled={loading} style={{width:'100%',padding:'14px',background:'#fff',color:'#0033FF',border:'none',fontSize:14,fontWeight:500,fontFamily:'Helvetica Neue,Helvetica,Arial,sans-serif',cursor:loading?'not-allowed':'pointer',opacity:loading?0.7:1}}>
               {loading ? 'Signing in...' : 'Sign In'}
             </button>
 
@@ -159,7 +155,6 @@ export default function LoginPage() {
             <div style={{textAlign:'center',fontSize:13,fontWeight:300,color:'rgba(255,255,255,.5)'}}>
               New to Taltas? <a href="/register" style={{color:'#fff',textDecoration:'none',fontWeight:400}}>Create account</a>
             </div>
-            
           </div>
         </div>
       </div>
@@ -178,10 +173,10 @@ export default function LoginPage() {
               <div style={{fontSize:20,fontWeight:300,letterSpacing:'-0.03em',lineHeight:1}}><span style={{color:'#fff'}}>Tal</span><span style={{color:'#1D9E75'}}>tas</span></div>
             </div>
             <div style={{display:'flex',gap:14,marginTop:4}}>
-              <a href="https://linkedin.com/company/taltas-ai" target="_blank" style={{width:28,height:28,background:'rgba(255,255,255,.08)',border:'1px solid rgba(255,255,255,.12)',display:'flex',alignItems:'center',justifyContent:'center',textDecoration:'none',color:'rgba(255,255,255,.5)',transition:'all .2s'}}>
+              <a href="https://linkedin.com/company/taltas-ai" target="_blank" style={{width:28,height:28,background:'rgba(255,255,255,.08)',border:'1px solid rgba(255,255,255,.12)',display:'flex',alignItems:'center',justifyContent:'center',textDecoration:'none',color:'rgba(255,255,255,.5)'}}>
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
               </a>
-              <a href="https://x.com/taltasai" target="_blank" style={{width:28,height:28,background:'rgba(255,255,255,.08)',border:'1px solid rgba(255,255,255,.12)',display:'flex',alignItems:'center',justifyContent:'center',textDecoration:'none',color:'rgba(255,255,255,.5)',transition:'all .2s'}}>
+              <a href="https://x.com/taltasai" target="_blank" style={{width:28,height:28,background:'rgba(255,255,255,.08)',border:'1px solid rgba(255,255,255,.12)',display:'flex',alignItems:'center',justifyContent:'center',textDecoration:'none',color:'rgba(255,255,255,.5)'}}>
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
               </a>
             </div>
@@ -204,7 +199,7 @@ export default function LoginPage() {
             </div>
           </div>
         </div>
-        <div style={{display:'flex',justifyContent:'flex-end',alignItems:'center'}}>
+        <div style={{display:'flex',justifyContent:'flex-end'}}>
           <span style={{fontSize:11,fontWeight:300,color:'rgba(255,255,255,.3)'}}>2026 Taltas. All rights reserved.</span>
         </div>
       </footer>
