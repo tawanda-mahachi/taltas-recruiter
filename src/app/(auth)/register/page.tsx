@@ -20,7 +20,7 @@ export default function RegisterPage() {
     setError('');
     if (!email.trim() || !password.trim()) { setError('Email and password are required.'); return; }
     try {
-      await registerMutation.mutateAsync({ email: email.trim(), password: password.trim(), firstName: firstName.trim(), lastName: lastName.trim(), type: 'recruiter' });
+      await registerMutation.mutateAsync({ email: email.trim(), password: password.trim(), firstName: firstName.trim(), lastName: lastName.trim(), principalType: 'recruiter' });
     } catch (e) {
       setError(e?.response?.data?.message || e?.message || 'Registration failed.');
     }
