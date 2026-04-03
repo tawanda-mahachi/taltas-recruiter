@@ -58,6 +58,9 @@ export default function LoginPage() {
       <div style={{position:'fixed',top:20,right:'30%',pointerEvents:'none',zIndex:0,opacity:.1}}>
         <svg width="700" height="700" viewBox="0 0 60 60" fill="none">
           <circle cx="30" cy="30" r="27" fill="none" stroke="#1D9E75" strokeWidth=".3"/>
+          <polygon points="30,8 36,32 30,28 24,32" fill="#1D9E75" opacity="0.6"/>
+          <polygon points="30,52 34,32 30,36 26,32" fill="#1D9E75" opacity="0.2"/>
+          <circle cx="30" cy="30" r="2" fill="#1D9E75" opacity="0.5"/>
           <g transform="rotate(23 30 30)">
             <ellipse cx="30" cy="10" rx="12" ry="3.5" fill="none" stroke="#1D9E75" strokeWidth=".18"/>
             <ellipse cx="30" cy="18" rx="22" ry="6" fill="none" stroke="#1D9E75" strokeWidth=".2"/>
