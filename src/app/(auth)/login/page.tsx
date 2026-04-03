@@ -36,7 +36,7 @@ export default function LoginPage() {
       {/* Nav - matches landing page */}
       <nav style={{position:'sticky',top:0,zIndex:50,background:'rgba(255,255,255,.92)',backdropFilter:'blur(8px)',WebkitBackdropFilter:'blur(8px)',borderBottom:'1px solid #E8E8E5',height:64,display:'flex',alignItems:'center',padding:'0 56px',fontFamily:'Helvetica Neue,Helvetica,Arial,sans-serif'}}>
         <a href="https://taltas.ai" style={{display:'flex',alignItems:'center',gap:12,marginRight:'auto',textDecoration:'none'}}>
-          <svg width="44" height="44" viewBox="0 0 60 60" fill="none">
+          <svg width="50" height="50" viewBox="0 0 60 60" fill="none">
             <circle cx="30" cy="30" r="27" fill="#1D9E75"/>
             <polygon points="30,8 36,32 30,28 24,32" fill="white"/>
             <polygon points="30,52 34,32 30,36 26,32" fill="white" opacity="0.28"/>
@@ -45,7 +45,7 @@ export default function LoginPage() {
             <circle cx="30" cy="30" r="1.8" fill="#1D9E75"/>
           </svg>
           <div style={{display:'flex',alignItems:'flex-end',gap:10}}>
-            <div style={{fontSize:36,fontWeight:300,letterSpacing:'-0.03em',lineHeight:1}}><span style={{color:'#0A0A0A'}}>Tal</span><span style={{color:'#1D9E75'}}>tas</span></div>
+            <div style={{fontSize:40,fontWeight:300,letterSpacing:'-0.03em',lineHeight:1}}><span style={{color:'#0A0A0A'}}>Tal</span><span style={{color:'#1D9E75'}}>tas</span></div>
             <div style={{fontSize:11,color:'#AAAAAA',letterSpacing:'.1em',textTransform:'uppercase',fontWeight:400,lineHeight:1,marginBottom:7}}>Your Talent Atlas</div>
           </div>
         </a>
@@ -55,7 +55,7 @@ export default function LoginPage() {
           <a href="https://recruiters.taltas.ai" style={{fontSize:14,color:'#AAAAAA',fontWeight:300,textDecoration:'none'}}>Recruiters</a>
         </div>
       </nav>
-      <div style={{position:'fixed',top:20,right:40,pointerEvents:'none',zIndex:0,opacity:.1}}>
+      <div style={{position:'fixed',top:20,right:'30%',pointerEvents:'none',zIndex:0,opacity:.1}}>
         <svg width="700" height="700" viewBox="0 0 60 60" fill="none">
           <circle cx="30" cy="30" r="27" fill="none" stroke="#1D9E75" strokeWidth=".3"/>
           <g transform="rotate(23 30 30)">
@@ -84,10 +84,10 @@ export default function LoginPage() {
       <div style={{display:'grid',gridTemplateColumns:'1fr 460px',flex:1,position:'relative',zIndex:1}}>
         <div style={{padding:'48px 72px',display:'flex',flexDirection:'column',justifyContent:'center',overflowY:'auto'}}>
           <h1 style={{fontSize:'clamp(32px,3.5vw,50px)',fontWeight:300,letterSpacing:'-0.03em',lineHeight:1.05,color:'#0A0A0A',marginBottom:16}}>Hire with depth.<br/>Not just keywords.</h1>
-          <p style={{fontSize:15,fontWeight:300,color:'#6B6B6B',lineHeight:1.8,marginBottom:40,maxWidth:480}}>Taltas Explorer Agents conduct structured conversations with candidates, surfacing the six dimensions of fit that a resume was never designed to carry.</p>
+          <p style={{fontSize:15,fontWeight:300,color:'#6B6B6B',lineHeight:1.8,marginBottom:40,maxWidth:480}}>Stop reading resumes. Your Explorer Agent conducts structured conversations with candidates and surfaces what a two-page document was never designed to carry � motivation, working style, career context, and real fit across six dimensions.</p>
           <div style={{border:'1px solid #E8E8E5',marginBottom:40}}>
             {METRICS.map((m,i) => (
-              <div key={i} style={{display:'flex',alignItems:'center',gap:24,padding:'16px 24px',borderBottom:i<METRICS.length-1?'1px solid #E8E8E5':'none'}}>
+              <div key={i} style={{display:'flex',alignItems:'center',gap:24,padding:'11px 20px',borderBottom:i<METRICS.length-1?'1px solid #E8E8E5':'none'}}>
                 <div style={{fontSize:36,fontWeight:300,letterSpacing:'-2px',color:'#0033FF',lineHeight:1,flexShrink:0,width:72}}>{m.num}</div>
                 <div style={{fontSize:12,fontWeight:300,color:'#6B6B6B',lineHeight:1.5}}>{m.label}</div>
               </div>
@@ -112,8 +112,7 @@ export default function LoginPage() {
           <div style={{position:'absolute',bottom:-60,right:-60,width:220,height:220,borderRadius:'50%',background:'rgba(255,255,255,.03)',pointerEvents:'none'}}/>
           <div style={{position:'relative',zIndex:1}}>
 
-            <div style={{fontFamily:'Courier New,monospace',fontSize:11,color:'rgba(255,255,255,.5)',letterSpacing:'.18em',textTransform:'uppercase',marginBottom:8}}>Sign In</div>
-            <div style={{fontSize:18,fontWeight:300,letterSpacing:'.04em',color:'rgba(255,255,255,.9)',marginBottom:4,textTransform:'uppercase',letterSpacing:'.1em'}}>Recruiter Portal</div>
+            <div style={{fontSize:22,fontWeight:300,letterSpacing:'.08em',color:'rgba(255,255,255,.95)',marginBottom:6,textTransform:'uppercase'}}>Recruiter Portal</div>
             <div style={{fontSize:13,fontWeight:300,color:'rgba(255,255,255,.45)',marginBottom:32}}>Sign in to your account</div>
 
             {error && <div style={{background:'rgba(255,255,255,.12)',border:'1px solid rgba(255,100,100,.4)',padding:'10px 14px',fontSize:12,fontWeight:300,color:'#fca5a5',marginBottom:16,lineHeight:1.5}}>{error}</div>}
