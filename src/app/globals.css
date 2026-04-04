@@ -446,3 +446,7 @@ body {
 /* -- icard hover -- */
 .icard { transition: background .12s; }
 .icard:hover { background: var(--blight) !important; }
+
+.pipeline-stages { display: flex; flex-direction: row; gap: 8px; overflow-x: auto; padding-bottom: 4px; }
+.pipeline-stage { display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; padding: 8px 12px; border: 1px solid var(--border); background: var(--white); flex-shrink: 0; min-width: 80px; text-align: center; }
+.pipeline-stage.active { border-color: var(--blue); background: var(--blue-bg); }
