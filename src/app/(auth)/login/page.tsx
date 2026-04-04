@@ -37,12 +37,12 @@ export default function LoginPage() {
       <nav style={{position:'sticky',top:0,zIndex:50,background:'rgba(255,255,255,.92)',backdropFilter:'blur(8px)',WebkitBackdropFilter:'blur(8px)',borderBottom:'1px solid #E8E8E5',height:64,display:'flex',alignItems:'center',padding:'0 56px',fontFamily:'Helvetica Neue,Helvetica,Arial,sans-serif'}}>
         <a href="https://taltas.ai" style={{display:'flex',alignItems:'center',gap:12,marginRight:'auto',textDecoration:'none'}}>
           <svg width="50" height="50" viewBox="0 0 60 60" fill="none">
-            <circle cx="30" cy="30" r="27" fill="#1D9E75"/>
+            <circle cx="30" cy="30" r="27" fill="#0033FF"/>
             <polygon points="30,8 36,32 30,28 24,32" fill="white"/>
             <polygon points="30,52 34,32 30,36 26,32" fill="white" opacity="0.28"/>
             <line x1="12" y1="30" x2="48" y2="30" stroke="white" strokeWidth="1" opacity="0.25"/>
             <circle cx="30" cy="30" r="3.5" fill="white"/>
-            <circle cx="30" cy="30" r="1.8" fill="#1D9E75"/>
+            <circle cx="30" cy="30" r="1.8" fill="#0033FF"/>
           </svg>
           <div style={{display:'flex',alignItems:'flex-end',gap:10}}>
             <div style={{fontSize:40,fontWeight:300,letterSpacing:'-0.03em',lineHeight:1}}><span style={{color:'#0A0A0A'}}>Tal</span><span style={{color:'#1D9E75'}}>tas</span></div>
@@ -52,7 +52,7 @@ export default function LoginPage() {
         <div style={{display:'flex',gap:32,alignItems:'center'}}>
           <a href="https://taltas.ai#how-it-works" style={{fontSize:14,color:'#AAAAAA',fontWeight:300,textDecoration:'none'}}>How it works</a>
           <a href="https://candidates.taltas.ai" style={{fontSize:14,color:'#AAAAAA',fontWeight:300,textDecoration:'none'}}>Candidates</a>
-          <a href="https://recruiters.taltas.ai" style={{fontSize:14,color:'#AAAAAA',fontWeight:300,textDecoration:'none'}}>Recruiters</a>
+          <a href="https://recruiters.taltas.ai/login" style={{fontSize:14,color:'#AAAAAA',fontWeight:300,textDecoration:'none'}}>Recruiters</a>
         </div>
       </nav>
       <div style={{position:'fixed',top:20,right:'30%',pointerEvents:'none',zIndex:0,opacity:.1}}>
@@ -98,8 +98,8 @@ export default function LoginPage() {
           <p style={{fontSize:15,fontWeight:300,color:'#6B6B6B',lineHeight:1.8,marginBottom:40,maxWidth:480}}>Stop reading resumes. Your Explorer Agent conducts structured conversations with candidates and surfaces what a two-page document was never designed to carry � motivation, working style, career context, and real fit across six dimensions.</p>
           <div style={{border:'1px solid #E8E8E5',marginBottom:40}}>
             {METRICS.map((m,i) => (
-              <div key={i} style={{display:'flex',alignItems:'center',gap:24,padding:'11px 20px',borderBottom:i<METRICS.length-1?'1px solid #E8E8E5':'none'}}>
-                <div style={{fontSize:36,fontWeight:300,letterSpacing:'-2px',color:'#0033FF',lineHeight:1,flexShrink:0,width:72}}>{m.num}</div>
+              <div key={i} style={{display:'flex',alignItems:'center',gap:24,padding:'8px 16px',borderBottom:i<METRICS.length-1?'1px solid #E8E8E5':'none'}}>
+                <div style={{fontSize:26,fontWeight:300,letterSpacing:'-2px',color:'#0033FF',lineHeight:1,flexShrink:0,width:72}}>{m.num}</div>
                 <div style={{fontSize:12,fontWeight:300,color:'#6B6B6B',lineHeight:1.5}}>{m.label}</div>
               </div>
             ))}
@@ -196,7 +196,7 @@ export default function LoginPage() {
               <div style={{fontSize:9,color:'rgba(255,255,255,.4)',letterSpacing:'.1em',textTransform:'uppercase',marginBottom:12,fontFamily:'Courier New,monospace'}}>Platform</div>
               <div style={{display:'flex',flexDirection:'column',gap:8}}>
                 <a href="https://candidates.taltas.ai" style={{fontSize:12,fontWeight:300,color:'rgba(255,255,255,.5)',textDecoration:'none'}}>Candidate Portal</a>
-                <a href="https://recruiters.taltas.ai" style={{fontSize:12,fontWeight:300,color:'rgba(255,255,255,.5)',textDecoration:'none'}}>Recruiter Portal</a>
+                <a href="https://recruiters.taltas.ai/login" style={{fontSize:12,fontWeight:300,color:'rgba(255,255,255,.5)',textDecoration:'none'}}>Recruiter Portal</a>
               </div>
             </div>
             <div>
