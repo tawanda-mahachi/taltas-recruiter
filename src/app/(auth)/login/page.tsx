@@ -45,12 +45,12 @@ export default function LoginPage() {
             <circle cx="30" cy="30" r="1.8" fill="#0033FF"/>
           </svg>
           <div style={{display:'flex',alignItems:'flex-end',gap:10}}>
-            <div style={{fontSize:40,fontWeight:300,letterSpacing:'-0.03em',lineHeight:1}}><span style={{color:'#0A0A0A'}}>Tal</span><span style={{color:'#1D9E75'}}>tas</span></div>
+            <div style={{fontSize:40,fontWeight:300,letterSpacing:'-0.03em',lineHeight:1}}><span style={{color:'#0A0A0A'}}>Tal</span><span style={{color:"#0033FF"}}>tas</span></div>
             <div style={{fontSize:11,color:'#AAAAAA',letterSpacing:'.1em',textTransform:'uppercase',fontWeight:400,lineHeight:1,marginBottom:7}}>Your Talent Atlas</div>
           </div>
         </a>
         <div style={{display:'flex',gap:32,alignItems:'center'}}>
-          <a href="https://taltas.ai#how-it-works" style={{fontSize:14,color:'#AAAAAA',fontWeight:300,textDecoration:'none'}}>How it works</a>
+          
           <a href="https://candidates.taltas.ai" style={{fontSize:14,color:'#AAAAAA',fontWeight:300,textDecoration:'none'}}>Candidates</a>
           <a href="https://recruiters.taltas.ai/login" style={{fontSize:14,color:'#AAAAAA',fontWeight:300,textDecoration:'none'}}>Recruiters</a>
         </div>
@@ -173,14 +173,14 @@ export default function LoginPage() {
           <div>
             <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:12}}>
               <svg width="36" height="36" viewBox="0 0 60 60" fill="none">
-                <circle cx="30" cy="30" r="27" fill="#1D9E75"/>
+                <circle cx="30" cy="30" r="27" fill="#0033FF"/>
                 <polygon points="30,8 36,32 30,28 24,32" fill="white"/>
                 <polygon points="30,52 34,32 30,36 26,32" fill="white" opacity="0.28"/>
                 <line x1="12" y1="30" x2="48" y2="30" stroke="white" strokeWidth="1" opacity="0.25"/>
                 <circle cx="30" cy="30" r="3.5" fill="white"/>
-                <circle cx="30" cy="30" r="1.8" fill="#1D9E75"/>
+                <circle cx="30" cy="30" r="1.8" fill="#0033FF"/>
               </svg>
-              <div style={{fontSize:20,fontWeight:300,letterSpacing:'-0.03em',lineHeight:1}}><span style={{color:'#fff'}}>Tal</span><span style={{color:'#1D9E75'}}>tas</span></div>
+              <div style={{fontSize:20,fontWeight:300,letterSpacing:'-0.03em',lineHeight:1}}><span style={{color:'#fff'}}>Tal</span><span style={{color:"#0033FF"}}>tas</span></div>
             </div>
             <div style={{display:'flex',gap:14,marginTop:4}}>
               <a href="https://linkedin.com/company/taltas-ai" target="_blank" style={{width:28,height:28,background:'rgba(255,255,255,.08)',border:'1px solid rgba(255,255,255,.12)',display:'flex',alignItems:'center',justifyContent:'center',textDecoration:'none',color:'rgba(255,255,255,.5)'}}>
