@@ -85,7 +85,7 @@ body {
 .sidebar {
   width: 220px;
   flex-shrink: 0;
-  background: var(--white);
+  background: #FFFFFF;
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
@@ -103,14 +103,14 @@ body {
 }
 
 .sidebar-wordmark {
-    font-size: 32px;
+    font-size: 36px;
   font-weight: 300;
   letter-spacing: -0.03em;
   line-height: 1;
 }
 
 .sidebar-wordmark .t { color: var(--dark); }
-.sidebar-wordmark .a { color: var(--teal); }
+.sidebar-wordmark .a { color: var(--blue); }
 
 .sidebar-tagline {
   font-size: 8px;
@@ -452,16 +452,16 @@ body {
 .pipeline-stage.active { border-color: var(--blue); background: var(--blue-bg); }
 
 /* -- KPI Cards ------------------------------------- */
-.kpi { background: var(--white); border: 1px solid var(--border); padding: 18px 20px; }
-.kpi-num { font-size: 30px; font-weight: 300; color: var(--dark); letter-spacing: -0.02em; line-height: 1; }
+.kpi { background: #FFFFFF; border: 0.5px solid #E8E8E5; padding: 18px 20px; }
+.kpi-num { font-size: 32px; font-weight: 300; color: var(--dark); letter-spacing: -0.02em; line-height: 1; }
 .kpi-delta { font-size: 11px; color: var(--muted); margin-top: 4px; }
 .kpi-delta.up { color: var(--blue); }
 
 /* -- Pipeline -------------------------------------- */
 .pipeline-stat { text-align: center; padding: 8px 12px; }
 .pipeline-detail-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }
-.stage-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; font-family: var(--font-mono); }
-.stage-num { font-size: 22px; font-weight: 300; color: var(--dark); letter-spacing: -0.02em; }
+.stage-label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; font-family: var(--font-mono); }
+.stage-num { font-size: 26px; font-weight: 300; color: var(--dark); letter-spacing: -0.02em; }
 .stage-sep { width: 1px; background: var(--border); align-self: stretch; }
 .funnel-wrap { display: flex; flex-direction: column; gap: 4px; }
 .funnel-stage { display: flex; align-items: center; gap: 8px; }
@@ -497,7 +497,7 @@ body {
 
 /* -- Agents / Explorer ----------------------------- */
 .agent { background: var(--white); border: 1px solid var(--border); padding: 16px 18px; }
-.agent-blob { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #0033FF, #0029CC); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.agent-blob { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #0033FF, #0029CC); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .agent-blob-glow { box-shadow: 0 0 0 4px rgba(0,51,255,.1); }
 .jbot { background: var(--white); border: 1px solid var(--border); }
 .jbot-header { padding: 14px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
@@ -554,6 +554,6 @@ body {
 
 /* -- Misc ------------------------------------------ */
 .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 40; display: flex; align-items: center; justify-content: center; }
-.mono-label { font-family: var(--font-mono); font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+.mono-label { font-family: var(--font-mono); font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
 .notif-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--red); display: inline-block; }
 .toast-item { background: var(--white); border: 1px solid var(--border); padding: 10px 14px; font-size: 12px; box-shadow: 0 4px 16px rgba(0,0,0,.08); }
