@@ -58,8 +58,13 @@ export default function LoginPage() {
       <div style={{position:'fixed',top:20,right:'30%',pointerEvents:'none',zIndex:0,opacity:.1}}>
         <svg width="700" height="700" viewBox="0 0 60 60" fill="none">
           <circle cx="30" cy="30" r="27" fill="none" stroke="#1D9E75" strokeWidth=".3"/>
-                    <g transform-origin="30 30">
-              <animateTransform attributeName="transform" type="rotate" values="0 30 30;15 30 30;0 30 30;-15 30 30;0 30 30" dur="8s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1;0.4 0 0.6 1;0.4 0 0.6 1"/>
+                    <g>
+              <animateTransform attributeName="transform" type="rotate"
+                values="0 30 30;-28 30 30;33 30 30;-12 30 30;6 30 30;0 30 30;0 30 30;0 30 30"
+                keyTimes="0;0.28;0.57;0.68;0.76;0.82;0.92;1"
+                dur="6s" begin="1s" repeatCount="indefinite"
+                calcMode="spline"
+                keySplines="0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1"/>
               <polygon points="30,8 36,32 30,28 24,32" fill="#1D9E75" opacity="0.7"/>
               <polygon points="30,52 34,32 30,36 26,32" fill="#1D9E75" opacity="0.25"/>
               <circle cx="30" cy="30" r="2.5" fill="#1D9E75" opacity="0.6"/>

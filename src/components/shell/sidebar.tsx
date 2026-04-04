@@ -40,12 +40,12 @@ export function Sidebar() {
       {/* Logo */}
       <div className="sidebar-logo">
         <svg width="44" height="44" viewBox="0 0 60 60" fill="none">
-          <circle cx="30" cy="30" r="27" fill="#1D9E75"/>
+          <circle cx="30" cy="30" r="27" fill="#0033FF"/>
           <polygon points="30,8 36,32 30,28 24,32" fill="white"/>
           <polygon points="30,52 34,32 30,36 26,32" fill="white" opacity="0.28"/>
           <line x1="12" y1="30" x2="48" y2="30" stroke="white" strokeWidth="1" opacity="0.25"/>
           <circle cx="30" cy="30" r="3.5" fill="white"/>
-          <circle cx="30" cy="30" r="1.8" fill="#1D9E75"/>
+          <circle cx="30" cy="30" r="1.8" fill="#0033FF"/>
         </svg>
         <div>
           <div className="sidebar-wordmark">
