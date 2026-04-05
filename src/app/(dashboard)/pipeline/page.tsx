@@ -28,7 +28,7 @@ export default function PipelinePage() {
       {/* #17 — Configurable Pipeline Parameters */}
       <div className="card" style={{ padding: '12px 18px' }}>
         <div className="flex items-center justify-between mb-[10px] flex-wrap gap-[6px]">
-          <span className="mono-label flex items-center gap-[6px]"><IconCalendar size={11} /> Pipeline Parameters</span>
+          <span style={{ fontSize:12, color:"var(--muted)", letterSpacing:".06em", textTransform:"uppercase", fontFamily:"'Helvetica Neue',Helvetica,Arial,sans-serif", fontWeight:300, display:"flex", alignItems:"center", gap:6 }}><IconCalendar size={11} /> Pipeline Parameters</span>
           <div className="flex gap-[2px] p-[3px]" style={{ background: 'var(--surface3)' }}>
             {[{ k: '1m', l: '1M' }, { k: '3m', l: '3M' }, { k: '6m', l: '6M' }, { k: '12m', l: '12M' }].map(({ k, l }) => (
               <button key={k} onClick={() => setDateRange(k)} className="font-mono text-[9px] px-[10px] py-[4px] transition-all" style={{ color: dateRange === k ? 'var(--blue)' : 'var(--text-dim)', background: dateRange === k ? 'var(--surface)' : 'transparent', fontWeight: dateRange === k ? 600 : 400 }}>{l}</button>
@@ -37,7 +37,7 @@ export default function PipelinePage() {
         </div>
         <div className="flex flex-wrap gap-[6px] items-center">
           <input type="date" className="form-input" style={{ fontSize: '10px', padding: '4px 8px', width: 130 }} value={startDate} onChange={e => setStartDate(e.target.value)} />
-          <span className="font-mono text-[9px]" style={{ color: 'var(--muted)' }}>to</span>
+          <span style={{ fontSize:10, fontFamily:"'Helvetica Neue',Helvetica,Arial,sans-serif", fontWeight:300 }} style={{ color: 'var(--muted)' }}>to</span>
           <input type="date" className="form-input" style={{ fontSize: '10px', padding: '4px 8px', width: 130 }} value={endDate} onChange={e => setEndDate(e.target.value)} />
           <select className="filter-select" value={roleFilter} onChange={e => setRoleFilter(e.target.value)}><option value="">All Roles</option><option>Staff ML Engineer</option><option>Principal Eng.</option><option>DevRel Engineer</option></select>
         </div>
@@ -45,7 +45,7 @@ export default function PipelinePage() {
       {/* Funnel Card */}
       <div className="card">
         <div className="flex items-center justify-between mb-[14px] flex-wrap gap-[6px]">
-          <span className="mono-label flex items-center gap-[6px]">
+          <span style={{ fontSize:12, color:"var(--muted)", letterSpacing:".06em", textTransform:"uppercase", fontFamily:"'Helvetica Neue',Helvetica,Arial,sans-serif", fontWeight:300, display:"flex", alignItems:"center", gap:6 }}>
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg>
             Pipeline Funnel · All Roles<DataSourceBadge fromApi={fromApi} />
           </span>
@@ -74,7 +74,7 @@ export default function PipelinePage() {
       {/* #6 — Weekly Trend (moved up) */}
       <div className="card">
         <div className="flex items-center justify-between mb-[14px]">
-          <span className="mono-label flex items-center gap-[6px]"><IconTrendingUp size={11} /> Weekly Pipeline Trend · {dateLabel}<DataSourceBadge fromApi={fromApi} /></span>
+          <span style={{ fontSize:12, color:"var(--muted)", letterSpacing:".06em", textTransform:"uppercase", fontFamily:"'Helvetica Neue',Helvetica,Arial,sans-serif", fontWeight:300, display:"flex", alignItems:"center", gap:6 }}><IconTrendingUp size={11} /> Weekly Pipeline Trend · {dateLabel}<DataSourceBadge fromApi={fromApi} /></span>
         </div>
         <div className="grid gap-[10px]" style={{ gridTemplateColumns: 'repeat(4, 1fr)' }}>
           {weeklyTrend.map(w => (
@@ -83,8 +83,8 @@ export default function PipelinePage() {
               <div className="text-[20px] font-medium" style={{ fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif", color: 'var(--text-bright)', lineHeight: 1 }}>{w.applied}</div>
               <div className="font-mono text-[8px] mt-[4px]" style={{ color: 'var(--muted)' }}>Applied</div>
               <div className="flex gap-[8px] justify-center mt-[8px]">
-                <div><div className="text-[14px] font-medium" style={{ fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif", color: 'var(--blue)' }}>{w.screened}</div><div className="font-mono text-[7px]" style={{ color: 'var(--muted)' }}>Screened</div></div>
-                <div><div className="text-[14px] font-medium" style={{ fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif", color: 'var(--green)' }}>{w.offered}</div><div className="font-mono text-[7px]" style={{ color: 'var(--muted)' }}>Offered</div></div>
+                <div><div className="text-[14px] font-medium" style={{ fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif", color: 'var(--blue)' }}>{w.screened}</div><div style={{ fontSize:9, fontFamily:"'Helvetica Neue',Helvetica,Arial,sans-serif", fontWeight:300 }} style={{ color: 'var(--muted)' }}>Screened</div></div>
+                <div><div className="text-[14px] font-medium" style={{ fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif", color: 'var(--green)' }}>{w.offered}</div><div style={{ fontSize:9, fontFamily:"'Helvetica Neue',Helvetica,Arial,sans-serif", fontWeight:300 }} style={{ color: 'var(--muted)' }}>Offered</div></div>
               </div>
             </div>
           ))}
@@ -94,7 +94,7 @@ export default function PipelinePage() {
       {/* Time-in-Stage Analysis */}
       <div className="card">
         <div className="flex items-center justify-between mb-[14px]">
-          <span className="mono-label flex items-center gap-[6px]"><IconClock size={11} /> Time-in-Stage Analysis</span>
+          <span style={{ fontSize:12, color:"var(--muted)", letterSpacing:".06em", textTransform:"uppercase", fontFamily:"'Helvetica Neue',Helvetica,Arial,sans-serif", fontWeight:300, display:"flex", alignItems:"center", gap:6 }}><IconClock size={11} /> Time-in-Stage Analysis</span>
           <span className="font-mono text-[9px] px-[8px] py-[2px] " style={{ color: 'var(--orange)', background: 'var(--orange-bg)', border: '1px solid var(--orange-border)' }}>3 bottlenecks detected</span>
         </div>
         {apiBottlenecks.map((b) => (
@@ -113,7 +113,7 @@ export default function PipelinePage() {
         {/* Source Effectiveness */}
         <div className="card">
           <div className="flex items-center justify-between mb-[14px]">
-            <span className="mono-label flex items-center gap-[6px]"><IconTarget size={11} /> Source Effectiveness<DataSourceBadge fromApi={fromApi} /></span>
+            <span style={{ fontSize:12, color:"var(--muted)", letterSpacing:".06em", textTransform:"uppercase", fontFamily:"'Helvetica Neue',Helvetica,Arial,sans-serif", fontWeight:300, display:"flex", alignItems:"center", gap:6 }}><IconTarget size={11} /> Source Effectiveness<DataSourceBadge fromApi={fromApi} /></span>
           </div>
           <div className="overflow-x-auto">
             <table className="cand-table" style={{ minWidth: 0 }}>
@@ -136,7 +136,7 @@ export default function PipelinePage() {
         {/* Role Velocity */}
         <div className="card">
           <div className="flex items-center justify-between mb-[14px]">
-            <span className="mono-label flex items-center gap-[6px]"><IconZap size={11} /> Role Velocity (Avg Days to Hire)<DataSourceBadge fromApi={fromApi} /></span>
+            <span style={{ fontSize:12, color:"var(--muted)", letterSpacing:".06em", textTransform:"uppercase", fontFamily:"'Helvetica Neue',Helvetica,Arial,sans-serif", fontWeight:300, display:"flex", alignItems:"center", gap:6 }}><IconZap size={11} /> Role Velocity (Avg Days to Hire)<DataSourceBadge fromApi={fromApi} /></span>
           </div>
           {roleVelocity.map(r => {
             const pct = Math.min(100, (r.avgDays / 30) * 100);

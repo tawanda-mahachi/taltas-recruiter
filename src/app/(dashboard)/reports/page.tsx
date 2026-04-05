@@ -112,7 +112,7 @@ export default function ReportsPage() {
       {/* Report Parameters */}
       <div className="card" style={{ padding: '12px 18px' }}>
         <div className="flex items-center justify-between mb-[10px] flex-wrap gap-[6px]">
-          <span className="mono-label flex items-center gap-[6px]"><IconCalendar size={11} /> Report Parameters</span>
+          <span style={{ fontSize:12, color:"var(--muted)", letterSpacing:".06em", textTransform:"uppercase", fontFamily:"'Helvetica Neue',Helvetica,Arial,sans-serif", fontWeight:300, display:"flex", alignItems:"center", gap:6 }}><IconCalendar size={11} /> Report Parameters</span>
           <div className="flex gap-[2px] p-[3px] " style={{ background: 'var(--surface3)' }}>
             {[{ k: '1m', l: '1M' }, { k: '3m', l: '3M' }, { k: '6m', l: '6M' }, { k: '12m', l: '12M' }].map(({ k, l }) => (
               <button key={k} onClick={() => setDateRange(k)} className="font-mono text-[9px] px-[10px] py-[4px]  transition-all" style={{ color: dateRange === k ? 'var(--blue)' : 'var(--text-dim)', background: dateRange === k ? 'var(--surface)' : 'transparent', fontWeight: dateRange === k ? 600 : 400, boxShadow: dateRange === k ? '0 1px 3px rgba(0,0,0,.08)' : 'none' }}>{l}</button>
@@ -148,7 +148,7 @@ export default function ReportsPage() {
         {/* Pipeline Volume */}
         <div className="card">
           <div className="flex items-center justify-between mb-[12px]">
-            <span className="mono-label flex items-center gap-[6px]"><IconTrendingUp size={11} /> Pipeline Volume<DataSourceBadge fromApi={fromApi} /></span>
+            <span style={{ fontSize:12, color:"var(--muted)", letterSpacing:".06em", textTransform:"uppercase", fontFamily:"'Helvetica Neue',Helvetica,Arial,sans-serif", fontWeight:300, display:"flex", alignItems:"center", gap:6 }}><IconTrendingUp size={11} /> Pipeline Volume<DataSourceBadge fromApi={fromApi} /></span>
             <span className="font-mono text-[9px]" style={{ color: 'var(--muted)' }}>Sep 2025 → Feb 2026</span>
           </div>
           <MiniBarChart data={rangeData} color="var(--blue)" />
@@ -162,7 +162,7 @@ export default function ReportsPage() {
 
         {/* Source Effectiveness */}
         <div className="card">
-          <div className="flex items-center justify-between mb-[12px]"><span className="mono-label flex items-center gap-[6px]"><IconTarget size={11} /> Source Effectiveness</span></div>
+          <div className="flex items-center justify-between mb-[12px]"><span style={{ fontSize:12, color:"var(--muted)", letterSpacing:".06em", textTransform:"uppercase", fontFamily:"'Helvetica Neue',Helvetica,Arial,sans-serif", fontWeight:300, display:"flex", alignItems:"center", gap:6 }}><IconTarget size={11} /> Source Effectiveness</span></div>
           {SOURCES.map(s => (
             <div key={s.name} className="flex items-center gap-[9px] mb-[8px]">
               <span className="text-[11.5px] flex-shrink-0" style={{ color: 'var(--text-mid)', width: 120 }}>{s.name}</span>
@@ -182,7 +182,7 @@ export default function ReportsPage() {
 
         {/* Explorer vs ATS */}
         <div className="card">
-          <div className="flex items-center justify-between mb-[12px]"><span className="mono-label flex items-center gap-[6px]"><IconBot size={11} /> Explorer vs ATS</span></div>
+          <div className="flex items-center justify-between mb-[12px]"><span style={{ fontSize:12, color:"var(--muted)", letterSpacing:".06em", textTransform:"uppercase", fontFamily:"'Helvetica Neue',Helvetica,Arial,sans-serif", fontWeight:300, display:"flex", alignItems:"center", gap:6 }}><IconBot size={11} /> Explorer vs ATS</span></div>
           <div className="flex flex-col gap-[10px] mb-[14px]">
             <div><div className="font-mono text-[8.5px] mb-[4px]" style={{ color: 'var(--muted)' }}>ATS-ONLY QUALITY RATE</div><div className="h-[20px] rounded overflow-hidden" style={{ background: 'var(--surface3)' }}><div className="h-full flex items-center pl-[8px]" style={{ width: '64%', background: 'var(--border2)' }}><span className="font-mono text-[9px]" style={{ color: 'var(--text-dim)' }}>64%</span></div></div></div>
             <div><div className="font-mono text-[8.5px] mb-[4px]" style={{ color: 'var(--blue)' }}>TALTAS EXPLORER QUALITY RATE</div><div className="h-[20px] rounded overflow-hidden" style={{ background: 'var(--surface3)' }}><div className="h-full flex items-center pl-[8px]" style={{ width: '91%', background: 'linear-gradient(90deg, var(--blue), #60a5fa)' }}><span className="font-mono text-[9px] font-semibold" style={{ color: '#fff' }}>91%</span></div></div></div>
@@ -196,7 +196,7 @@ export default function ReportsPage() {
 
         {/* Monthly Metrics */}
         <div className="card">
-          <div className="flex items-center justify-between mb-[12px]"><span className="mono-label flex items-center gap-[6px]"><IconCalendar size={11} /> Monthly Hiring Metrics</span></div>
+          <div className="flex items-center justify-between mb-[12px]"><span style={{ fontSize:12, color:"var(--muted)", letterSpacing:".06em", textTransform:"uppercase", fontFamily:"'Helvetica Neue',Helvetica,Arial,sans-serif", fontWeight:300, display:"flex", alignItems:"center", gap:6 }}><IconCalendar size={11} /> Monthly Hiring Metrics</span></div>
           <table className="w-full" style={{ borderCollapse: 'collapse' }}>
             <thead><tr><th className="font-mono text-[8.5px] uppercase tracking-[.1em] text-left pb-[6px]" style={{ color: 'var(--muted)', borderBottom: '1px solid var(--border)' }}>Metric</th>{MONTHS.slice(6).map(m => <th key={m} className="font-mono text-[8.5px] uppercase tracking-[.1em] text-center pb-[6px]" style={{ color: 'var(--muted)', borderBottom: '1px solid var(--border)' }}>{m}</th>)}</tr></thead>
             <tbody>{METRICS_ROWS.map(row => (<tr key={row.label}><td className="text-[11.5px] py-[7px]" style={{ color: 'var(--text-mid)', borderBottom: '1px solid var(--border)' }}>{row.label}</td>{row.values.map((v, i) => <td key={i} className="text-center font-mono text-[11px] py-[7px]" style={{ color: i === row.values.length - 1 ? (row.trend === 'up' ? 'var(--green)' : 'var(--blue)') : 'var(--text-dim)', borderBottom: '1px solid var(--border)', fontWeight: i === row.values.length - 1 ? 600 : 400 }}>{v}</td>)}</tr>))}</tbody>
@@ -206,7 +206,7 @@ export default function ReportsPage() {
 
       {/* Role Pipeline Health */}
       <div className="card">
-        <div className="flex items-center justify-between mb-[14px]"><span className="mono-label flex items-center gap-[6px]"><IconTrendingUp size={11} /> Role Pipeline Health</span></div>
+        <div className="flex items-center justify-between mb-[14px]"><span style={{ fontSize:12, color:"var(--muted)", letterSpacing:".06em", textTransform:"uppercase", fontFamily:"'Helvetica Neue',Helvetica,Arial,sans-serif", fontWeight:300, display:"flex", alignItems:"center", gap:6 }}><IconTrendingUp size={11} /> Role Pipeline Health</span></div>
         <div className="overflow-x-auto">
           <table className="cand-table" style={{ minWidth: 0 }}>
             <thead><tr><th>Role</th><th>Applied</th><th>Screened</th><th>Interview</th><th>Offers</th><th>Funnel</th><th>Health</th></tr></thead>
@@ -239,7 +239,7 @@ export default function ReportsPage() {
       {/* Diversity + Explorer ROI side by side */}
       <div className="grid gap-[13px]" style={{ gridTemplateColumns: '1fr 1fr' }}>
         <div className="card">
-          <div className="flex items-center justify-between mb-[14px]"><span className="mono-label flex items-center gap-[6px]"><IconTarget size={11} /> Diversity & Inclusion Metrics</span></div>
+          <div className="flex items-center justify-between mb-[14px]"><span style={{ fontSize:12, color:"var(--muted)", letterSpacing:".06em", textTransform:"uppercase", fontFamily:"'Helvetica Neue',Helvetica,Arial,sans-serif", fontWeight:300, display:"flex", alignItems:"center", gap:6 }}><IconTarget size={11} /> Diversity & Inclusion Metrics</span></div>
           {DIVERSITY_DATA.map(cat => (
             <div key={cat.category} className="mb-[14px]">
               <div className="font-mono text-[8.5px] uppercase tracking-[.08em] mb-[6px]" style={{ color: 'var(--muted)' }}>{cat.category} — Pipeline Representation</div>
@@ -253,7 +253,7 @@ export default function ReportsPage() {
           ))}
         </div>
         <div className="card">
-          <div className="flex items-center justify-between mb-[14px]"><span className="mono-label flex items-center gap-[6px]"><IconBot size={11} /> Explorer ROI Analysis</span></div>
+          <div className="flex items-center justify-between mb-[14px]"><span style={{ fontSize:12, color:"var(--muted)", letterSpacing:".06em", textTransform:"uppercase", fontFamily:"'Helvetica Neue',Helvetica,Arial,sans-serif", fontWeight:300, display:"flex", alignItems:"center", gap:6 }}><IconBot size={11} /> Explorer ROI Analysis</span></div>
           <div className="grid gap-[8px]" style={{ gridTemplateColumns: '1fr 1fr' }}>
             {[
               { l: 'Cost Per Hire (Explorer)', v: '$2.9K', color: 'var(--green)', sub: '↓ 31% vs manual' },
@@ -277,7 +277,7 @@ export default function ReportsPage() {
       <div className="grid gap-[13px]" style={{ gridTemplateColumns: '1fr 1fr' }}>
         {/* Radar/Spider Chart — Candidate Quality Dimensions */}
         <div className="card">
-          <div className="flex items-center justify-between mb-[14px]"><span className="mono-label flex items-center gap-[6px]"><IconDiamond size={11} /> Quality Dimensions Radar</span></div>
+          <div className="flex items-center justify-between mb-[14px]"><span style={{ fontSize:12, color:"var(--muted)", letterSpacing:".06em", textTransform:"uppercase", fontFamily:"'Helvetica Neue',Helvetica,Arial,sans-serif", fontWeight:300, display:"flex", alignItems:"center", gap:6 }}><IconDiamond size={11} /> Quality Dimensions Radar</span></div>
           <div className="flex items-center justify-center" style={{ padding: '8px 0' }}>
             <svg viewBox="-10 -20 320 330" width="320" height="330">
               {/* Radar grid rings */}
@@ -370,7 +370,7 @@ export default function ReportsPage() {
 
         {/* Pareto Chart — Rejection Reasons */}
         <div className="card">
-          <div className="flex items-center justify-between mb-[14px]"><span className="mono-label flex items-center gap-[6px]"><IconActivity size={11} /> Rejection Pareto Analysis</span></div>
+          <div className="flex items-center justify-between mb-[14px]"><span style={{ fontSize:12, color:"var(--muted)", letterSpacing:".06em", textTransform:"uppercase", fontFamily:"'Helvetica Neue',Helvetica,Arial,sans-serif", fontWeight:300, display:"flex", alignItems:"center", gap:6 }}><IconActivity size={11} /> Rejection Pareto Analysis</span></div>
           {(() => {
             const reasons = [
               { label: 'Skill Mismatch', count: 42 },
@@ -448,7 +448,7 @@ export default function ReportsPage() {
       {/* Export Reports */}
       <div className="card">
         <div className="flex items-center justify-between mb-[14px]">
-          <span className="mono-label flex items-center gap-[6px]"><IconUploadCloud size={11} /> Available Reports</span>
+          <span style={{ fontSize:12, color:"var(--muted)", letterSpacing:".06em", textTransform:"uppercase", fontFamily:"'Helvetica Neue',Helvetica,Arial,sans-serif", fontWeight:300, display:"flex", alignItems:"center", gap:6 }}><IconUploadCloud size={11} /> Available Reports</span>
           <button className="ctrl-btn run flex items-center gap-[4px]" onClick={() => setScheduleOpen(true)}><IconClock size={9} /> Schedule Report</button>
         </div>
         <div className="grid gap-[9px]" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
