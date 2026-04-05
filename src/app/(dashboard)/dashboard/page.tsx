@@ -1,277 +1,468 @@
 // @ts-nocheck
 'use client';
-
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { MOCK_CANDIDATES, MOCK_ROLES, MOCK_INTEGRATIONS, MOCK_EXPLORERS, PIPELINE_STAGES, fitBadgeClass, stageBadgeClass, urgencyClass } from '@/lib/mock-data';
-import { useAuthStore } from '@/lib/stores/auth-store';
-import { useExplorers, useCandidates, useRoles, useIntegrations, useFleet, usePipeline, useCreateExplorer, useUpdateExplorer, useDashboard } from '@/lib/data-provider';
-import { DataSourceBadge } from '@/components/shared/api-status';
-import { resolveIcon } from '@/components/icon-resolver';
-import { IconMap, IconMessageCircle, IconHandshake, IconCalendar, IconChevronRight, IconArrowUp, IconArrowDown, IconUser, IconSearch } from '@/components/icons';
-import { CandidateModal } from '@/components/modals/candidate-modal';
-import { NewRoleModal } from '@/components/modals/new-role-modal';
-import { NewExplorerModal } from '@/components/modals/new-explorer-modal';
-import { EditExplorerModal } from '@/components/modals/edit-explorer-modal';
-import { ExplorerDetailModal } from '@/components/modals/explorer-detail-modal';
+import { useCandidates, useJobs, useExplorers } from '@/lib/data-provider';
 
-function KpiCard({ label, value, delta, dir, delay }: { label: string; value: string; delta: string; dir: 'up' | 'down' | 'flat'; delay: string }) {
-  const Arrow = dir === 'up' ? IconArrowUp : dir === 'down' ? IconArrowDown : IconChevronRight;
+const F = "'Helvetica Neue',Helvetica,Arial,sans-serif";
+const MONO = "'Courier New',monospace";
+const BLUE = '#2563eb';
+const TEAL = '#1D9E75';
+const DARK = '#0A0A0A';
+const MID = '#6B6B6B';
+const MUTED = '#AAAAAA';
+const BORDER = '#E8E8E5';
+const BLIGHT = '#F4F4F2';
+
+const MOCK_CANDS = [
+  { id:'c1', name:'Kai Nakamura',    role:'Product Designer',    company:'Linear',     stage:'Offer Extended',   score:92, deepMatch:92, fit:'Deep Match',   source:'Taltas Network', sentiment:94 },
+  { id:'c2', name:'Sara Kim',        role:'Sr. Product Manager', company:'Figma',      stage:'Offer Extended',   score:89, deepMatch:89, fit:'Strong Fit',   source:'Taltas Network', sentiment:88 },
+  { id:'c3', name:'Maria Gonzalez',  role:'Engineering Manager', company:'Datadog',    stage:'Final Round',      score:88, deepMatch:85, fit:'Strong Fit',   source:'Taltas Network', sentiment:86 },
+  { id:'c4', name:'Alex Chen',       role:'Staff Engineer',      company:'Stripe',     stage:'Offer Extended',   score:85, deepMatch:83, fit:'Strong Fit',   source:'Taltas Network', sentiment:82 },
+  { id:'c5', name:'Omar Hassan',     role:'ML Engineer',         company:'Anthropic',  stage:'Final Round',      score:53, deepMatch:55, fit:'Potential Fit',source:'Taltas Network', sentiment:65 },
+  { id:'c6', name:'Tawanda Mahachi', role:'Engineer',            company:'Taltas',     stage:'Recruiter Review', score:0,  deepMatch:0,  fit:'Pending',      source:'Taltas Network', sentiment:0  },
+  { id:'c7', name:'Emma Wilson',     role:'Security Engineer',   company:'Cloudflare', stage:'Sourced',          score:0,  deepMatch:0,  fit:'Pending',      source:'Taltas Network', sentiment:0  },
+  { id:'c8', name:'Priya Sharma',    role:'DevRel Engineer',     company:'Vercel',     stage:'Explorer Screen',  score:0,  deepMatch:0,  fit:'Pending',      source:'Taltas Network', sentiment:0  },
+  { id:'c9', name:'James Park',      role:'Frontend Lead',       company:'Notion',     stage:'Interview',        score:74, deepMatch:72, fit:'Good Fit',     source:'Taltas Network', sentiment:78 },
+];
+
+const MOCK_JOBS = [
+  { id:'j1', title:'Senior Backend Engineer',  sub:'Data Platform · SF / Remote',     comp:'$200–250K', status:'HOT',  candidates:20 },
+  { id:'j2', title:'Platform AI Lead',         sub:'AI Infrastructure · NYC / Remote', comp:'$180–220K', status:'WARM', candidates:23 },
+  { id:'j3', title:'Staff Infra Engineer',     sub:'Infrastructure · SF / Seattle',    comp:'$215–270K', status:'HOT',  candidates:18 },
+  { id:'j4', title:'Founding Engineer',        sub:'Engineering · Remote',             comp:'$170–210K', status:'HOT',  candidates:15 },
+  { id:'j5', title:'Backend Engineer — APIs',  sub:'API Platform · NYC',               comp:'$160–195K', status:'OPEN', candidates:3  },
+];
+
+const MOCK_EXPLS = [
+  { id:'e1', name:'New Explorer',   mode:'AUTO',   role:'Unknown Role',         company:'Taltas',    convos:0,  a2a:0  },
+  { id:'e2', name:'New Explorer',   mode:'AUTO',   role:'Unknown Role',         company:'Taltas',    convos:0,  a2a:0  },
+  { id:'e3', name:'StaffML-Agent',  mode:'ACTIVE', role:'Staff ML Engineer',    company:'Anthropic', convos:47, a2a:12 },
+  { id:'e4', name:'PrincipalEng',   mode:'ACTIVE', role:'Principal Eng, Platform',company:'Taltas', convos:31, a2a:8  },
+];
+
+const STAGES = [
+  { l:'Applied',          n:14 },
+  { l:'Explorer Screen',  n:11 },
+  { l:'Recruiter Review', n:10 },
+  { l:'Interview',        n:9  },
+  { l:'Hiring Mgr',       n:8  },
+  { l:'Final Round',      n:8  },
+  { l:'Offer',            n:3  },
+];
+const MAX_N = 14;
+
+const METRICS = [
+  { v:'15',  l:'Open Jobs',         sub:'0 this week',    up:null,  d:'',  desc:'15 open roles across 6 client accounts.' },
+  { v:'9',   l:'In Pipeline',       sub:'6 active',       up:true,  d:'↑', desc:'9 candidates in SNAP pipeline. 6 with active sessions.' },
+  { v:'14',  l:'Explorer Convos',   sub:'38% match rate', up:true,  d:'↑', desc:'14 Explorer conversations completed. 38% match signal.' },
+  { v:'6',   l:'Interviews Sched.', sub:'on track',       up:null,  d:'',  desc:'6 interviews confirmed and scheduled.' },
+  { v:'3',   l:'Offers Sent',       sub:'38% rate',       up:true,  d:'↑', desc:'3 offers sent. 38% offer-to-hire rate.' },
+  { v:'18d', l:'Avg. Time-to-Hire', sub:'3d vs last mo.', up:false, d:'↓', desc:'18 day avg offer accepted. Industry avg is 44 days.' },
+];
+
+const SC: any = {
+  'Offer Extended':   { bg:'#E6F5EE', c:'#15703A' },
+  'Final Round':      { bg:'#E8F0FF', c:BLUE },
+  'Interview':        { bg:'#EDF5FF', c:'#1d4ed8' },
+  'Recruiter Review': { bg:'#FFF7E0', c:'#8A6000' },
+  'Explorer Screen':  { bg:'#F3EEFF', c:'#7C3AED' },
+  'Sourced':          { bg:'#F0F0F0', c:MID },
+  'Pending':          { bg:BLIGHT,   c:MUTED },
+  'Applied':          { bg:BLIGHT,   c:MUTED },
+};
+
+const fitCol: any = {
+  'Deep Match':    { bg:'#E8F0FF', c:BLUE },
+  'Strong Fit':    { bg:'#E6F5EE', c:TEAL },
+  'Good Fit':      { bg:'#E6F5EE', c:TEAL },
+  'Potential Fit': { bg:'#FFF7E0', c:'#8A6000' },
+  'Pending':       { bg:BLIGHT,   c:MUTED },
+};
+
+const jobSt: any = {
+  HOT:  { bg:'#FFEAEA', c:'#CC3300' },
+  WARM: { bg:'#FFF3DC', c:'#8A5000' },
+  OPEN: { bg:'#EEF2FF', c:BLUE },
+};
+
+function Avatar({ name = '', size = 30 }: { name?: string; size?: number }) {
+  const ini = name.split(' ').map(w => w[0] || '').join('').toUpperCase().slice(0, 2) || '?';
+  const colors = [BLUE, TEAL, '#E84B3A', '#F5A623', '#635BFF', '#C8571A', '#5E6AD2'];
+  const bg = colors[(name.charCodeAt(0) || 0) % colors.length];
   return (
-    <div className="kpi" style={{ animationDelay: delay }}>
-      <div className="kpi-label">{label}</div>
-      <div className="kpi-num">{value}</div>
-      <div className={`kpi-delta ${dir}`}><Arrow size={9} /> {delta}</div>
+    <div style={{ width: size, height: size, borderRadius: '50%', background: bg, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: size * 0.33, fontWeight: 400, flexShrink: 0, fontFamily: F }}>
+      {ini}
     </div>
   );
 }
 
-function ScoreDots({ score }: { score: number }) {
-  const filled = Math.round(score / 10);
+function Dots({ v }: { v: number }) {
+  const f = Math.round(v / 10);
+  const col = v >= 85 ? TEAL : v >= 65 ? BLUE : '#F5A623';
   return (
-    <div className="score-dots">
+    <div style={{ display: 'flex', gap: 2 }}>
       {Array.from({ length: 10 }, (_, i) => (
-        <div key={i} className={`sd ${i < filled ? (score >= 90 ? 'g' : score >= 75 ? 'b' : 'o') : ''}`} />
-      ))}
-      <span className="font-mono text-[10px] ml-1" style={{ color: score >= 90 ? 'var(--green)' : score >= 75 ? 'var(--blue)' : 'var(--text-dim)', fontWeight: 600 }}>{score}</span>
-    </div>
-  );
-}
-
-function DeepMatchBars({ dm }: { dm: NonNullable<typeof MOCK_CANDIDATES[0]['deepMatch']> }) {
-  return (
-    <div className="flex flex-col gap-[3px]" style={{ minWidth: 100 }}>
-      {[{ key: 'Tech', val: dm.technical, color: 'var(--blue)' },{ key: 'Culture', val: dm.culture, color: 'var(--green)' },{ key: 'Lead', val: dm.leadership, color: 'var(--purple)' }].map((d) => (
-        <div key={d.key} className="dm-row"><span className="dm-label">{d.key}</span><div className="dm-track"><div className="dm-fill" style={{ width: `${d.val}%`, background: d.color }} /></div><span className="dm-pct">{d.val}</span></div>
+        <div key={i} style={{ width: 5, height: 5, borderRadius: '50%', background: i < f ? col : '#E0E0DB', flexShrink: 0 }} />
       ))}
     </div>
   );
 }
 
-function SentimentBar({ value, trend = '' }: { value: number; trend?: string }) {
-  const col = value >= 80 ? 'var(--green)' : value >= 65 ? 'var(--blue)' : 'var(--orange)';
+function SentimentBar({ v }: { v: number }) {
+  if (!v) return <span style={{ fontSize: 11, color: MUTED }}>—</span>;
+  const col = v >= 85 ? TEAL : v >= 70 ? BLUE : '#F5A623';
   return (
-    <div className="flex items-center gap-[5px]">
-      <div className="w-[44px] h-[4px] overflow-hidden" style={{ background: 'var(--surface3)' }}>
-        <div className="h-full" style={{ width: `${value}%`, background: col }} />
+    <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+      <div style={{ width: 40, height: 3, background: '#EBEBEB' }}>
+        <div style={{ width: v + '%', height: 3, background: col }} />
       </div>
-      <span className="font-mono text-[10px]" style={{ color: col }}>{value}%</span>
-      <span className="font-mono text-[8px]" style={{ color: (trend || '').includes('+') ? 'var(--green)' : !trend || trend === '0' ? 'var(--muted)' : 'var(--orange)' }}>{!trend || trend === '0' ? '—' : trend}</span>
+      <span style={{ fontSize: 10, color: col, fontFamily: MONO }}>{v}</span>
     </div>
   );
 }
-
-type SortKey = 'name' | 'score' | 'stage' | 'company' | 'sentiment';
-type SortDir = 'asc' | 'desc';
 
 export default function DashboardPage() {
   const router = useRouter();
-  const { user } = useAuthStore();
-  const [activeStage, setActiveStage] = useState(-1);
-  const [openBots, setOpenBots] = useState<Record<string, boolean>>({ jbot0: true });
   const [search, setSearch] = useState('');
-  const [stageFilter, setStageFilter] = useState('');
-  const [fitFilter, setFitFilter] = useState('');
-  const [sortKey, setSortKey] = useState<SortKey>('score');
-  const [sortDir, setSortDir] = useState<SortDir>('desc');
-  const [candModal, setCandModal] = useState<string | null>(null);
-  const [newRoleOpen, setNewRoleOpen] = useState(false);
-  const [newExplorerOpen, setNewExplorerOpen] = useState(false);
-  const explorersQuery = useExplorers();
-  const candidatesQuery = useCandidates();
-  const rolesQuery = useRoles();
-  const integrationsQuery = useIntegrations();
-  const fleetQuery = useFleet();
-  const pipelineQuery = usePipeline();
-  const apiExplorers = explorersQuery.data?.data || MOCK_EXPLORERS;
-  const apiCandidates = candidatesQuery.data?.data || MOCK_CANDIDATES;
-  const apiRoles = rolesQuery.data?.data || MOCK_ROLES;
-  const apiIntegrations = integrationsQuery.data?.data || MOCK_INTEGRATIONS;
-  const apiPipelineStages = pipelineQuery.data?.data?.stages || PIPELINE_STAGES;
-  const dashboardQuery = useDashboard();
-  const dashData = dashboardQuery.data?.data;
-  const allRoles = apiRoles;
-  const allExplorers = [...apiExplorers].sort((a, b) => { const order: Record<string, number> = { AUTO: 0, ASSIST: 1, DRAFT: 2 }; return (order[a.mode] ?? 2) - (order[b.mode] ?? 2); });
-  const [explorerDetail, setExplorerDetail] = useState<string | null>(null);
-  const [editExplorer, setEditExplorer] = useState<any>(null);
-  const [intToggles, setIntToggles] = useState<Record<string, boolean>>(
-    Object.fromEntries(apiIntegrations.map(i => [i.name, i.connected]))
-  );
+  const [stageFilter, setStageFilter] = useState('All Stages');
+  const [profileOpen, setProfileOpen] = useState<any>(null);
+  const [hovMetric, setHovMetric] = useState<number | null>(null);
 
-  const filtered = useMemo(() => {
-    let cands = [...apiCandidates];
-    if (search) { const q = search.toLowerCase(); cands = cands.filter(c => c.name.toLowerCase().includes(q) || c.title.toLowerCase().includes(q) || c.company.toLowerCase().includes(q)); }
-    if (activeStage >= 0) { const stageKey = apiPipelineStages[activeStage]?.key; if (stageKey) cands = cands.filter(c => c.stage === stageKey); }
-    if (stageFilter) cands = cands.filter(c => c.stage === stageFilter);
-    if (fitFilter) cands = cands.filter(c => c.fitLabel === fitFilter);
-    cands.sort((a, b) => { let cmp = 0; if (sortKey === 'name') cmp = a.name.localeCompare(b.name); else if (sortKey === 'score') cmp = a.score - b.score; else if (sortKey === 'stage') cmp = a.stage.localeCompare(b.stage); else if (sortKey === 'company') cmp = a.company.localeCompare(b.company); else if (sortKey === 'sentiment') cmp = a.sentiment - b.sentiment; return sortDir === 'desc' ? -cmp : cmp; });
-    return cands;
-  }, [search, activeStage, stageFilter, fitFilter, sortKey, sortDir, apiCandidates, apiPipelineStages]);
+  const candsQuery = useCandidates();
+  const jobsQuery = useJobs();
+  const explsQuery = useExplorers();
 
-  function toggleSort(key: SortKey) { if (sortKey === key) setSortDir(d => d === 'asc' ? 'desc' : 'asc'); else { setSortKey(key); setSortDir('desc'); } }
-  const sortArrow = (key: SortKey) => sortKey === key ? (sortDir === 'asc' ? ' ↑' : ' ↓') : '';
-  const selectedCandidate = candModal ? apiCandidates.find(c => c.id === candModal) || null : null;
+  const cands = candsQuery.data?.data?.length ? candsQuery.data.data : MOCK_CANDS;
+  const jobs  = jobsQuery.data?.data?.length  ? jobsQuery.data.data  : MOCK_JOBS;
+  const expls = explsQuery.data?.data?.length ? explsQuery.data.data : MOCK_EXPLS;
+
+  const filtered = cands.filter(c => {
+    const ms = (c.name || '').toLowerCase().includes(search.toLowerCase()) || (c.company || '').toLowerCase().includes(search.toLowerCase()) || (c.role || '').toLowerCase().includes(search.toLowerCase());
+    const mst = stageFilter === 'All Stages' || c.stage === stageFilter;
+    return ms && mst;
+  });
 
   return (
-    <div>
-      <div className="grid gap-[9px] mb-[14px]" style={{ gridTemplateColumns: 'repeat(6, 1fr)' }}>
-        <KpiCard label="Open Jobs" value={String(dashData?.roles?.open ?? allRoles.length)} delta={`${dashData?.newThisWeek ?? 3} this week`} dir="up" delay=".02s" />
-        <KpiCard label="In Pipeline" value={String(dashData?.totalCandidates ?? apiCandidates.length)} delta={`${dashData?.activeSessions ?? 0} active`} dir="up" delay=".05s" />
-        <KpiCard label="Explorer Convos" value={String(dashData?.conversations ?? 0)} delta={`${dashData?.matchRate ?? 0}% match rate`} dir="up" delay=".08s" />
-        <KpiCard label="Interviews Sched." value={String(dashData?.activeSessions ?? 0)} delta="on track" dir="flat" delay=".11s" />
-        <KpiCard label="Offers Sent" value={String(dashData?.matches ?? 0)} delta={`${dashData?.matchRate ?? 0}% rate`} dir="up" delay=".14s" />
-        <KpiCard label="Avg. Time-to-Hire" value="18d" delta="3d vs last mo." dir="up" delay=".17s" />
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', fontFamily: F, color: DARK, background: '#FFFFFF', overflow: 'hidden' }}>
+
+      {/* ── TOPBAR ── */}
+      <div style={{ padding: '14px 32px', borderBottom: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0, background: '#FFFFFF' }}>
+        <div>
+          <div style={{ fontSize: 15, fontWeight: 400, letterSpacing: '-0.01em', color: DARK }}>Dashboard</div>
+          <div style={{ fontSize: 11, color: MUTED, fontWeight: 300 }}>Overview · Today</div>
+        </div>
+        <div style={{ marginLeft: 'auto', display: 'flex', gap: 10, alignItems: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '5px 12px', border: '1px solid ' + BORDER }}>
+            <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#22C55E' }} />
+            <span style={{ fontSize: 11, color: MID, fontWeight: 300 }}>All Synced · 2m ago</span>
+          </div>
+          <button style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '5px 12px', border: '1px solid ' + BORDER, background: 'none', cursor: 'pointer', fontFamily: F, fontSize: 11, color: MID }}>
+            Sync Now
+          </button>
+        </div>
       </div>
 
-      <div className="grid gap-[13px]" style={{ gridTemplateColumns: '1fr 380px', alignItems: 'start' }}>
-        <div className="flex flex-col gap-[13px]">
-          <div className="card" style={{ display: 'flex', flexDirection: 'column', maxHeight: 'calc(100vh - 180px)', minHeight: 300 }}>
-            <div className="flex items-center justify-between mb-[14px] flex-wrap gap-[6px]">
-              <span className="mono-label flex items-center gap-[6px]"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg> Active Pipeline<DataSourceBadge fromApi={!!candidatesQuery.data?.fromApi} /></span>
-              <span className="fit-badge fit-deep">{filtered.length} candidates</span>
+      {/* ── METRICS STRIP ── */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6,1fr)', borderBottom: '1px solid ' + BORDER, flexShrink: 0, background: BLUE }}>
+        {METRICS.map((m, i) => (
+          <div key={i}
+            onMouseEnter={() => setHovMetric(i)}
+            onMouseLeave={() => setHovMetric(null)}
+            style={{ padding: '24px 28px', borderRight: i < 5 ? '1px solid rgba(255,255,255,.15)' : 'none', cursor: 'default', transition: 'background .15s', background: hovMetric === i ? 'rgba(255,255,255,.06)' : 'transparent' }}>
+            <div style={{ fontSize: 9.5, color: 'rgba(255,255,255,.55)', letterSpacing: '.1em', textTransform: 'uppercase', marginBottom: 10, fontFamily: MONO }}>{m.l}</div>
+            <div style={{ fontSize: 36, fontWeight: 300, letterSpacing: '-0.03em', lineHeight: 1, color: '#fff' }}>{m.v}</div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginTop: 8 }}>
+              {m.d && <span style={{ fontSize: 12, color: m.up ? '#6FECB8' : '#FF9E91', fontWeight: 500 }}>{m.d}</span>}
+              <span style={{ fontSize: 11, color: 'rgba(255,255,255,.5)', fontWeight: 300 }}>{m.sub}</span>
             </div>
-            <div className="pipeline-stages mb-[13px]">
-              {apiPipelineStages.map((s, i) => (
-                <div key={s.key} style={{ display: 'contents' }}>
-                  <div className={`stage ${i === activeStage ? 'active' : ''}`} onClick={() => setActiveStage(i === activeStage ? -1 : i)}>
-                    <div className="stage-num">{s.count}</div>
-                    <div className="stage-label">{s.key}</div>
-                  </div>
-                  {i < apiPipelineStages.length - 1 && <div className="stage-sep">›</div>}
-                </div>
-              ))}
-            </div>
-            <div className="flex gap-[7px] px-[14px] py-[8px] flex-wrap" style={{ borderBottom: '1px solid var(--border)', position: 'sticky', top: 0, background: 'var(--surface)', zIndex: 2 }}>
-              <div className="relative flex-1" style={{ minWidth: 140 }}>
-                <IconSearch size={12} className="absolute left-[9px] top-1/2 -translate-y-1/2 pointer-events-none opacity-40" />
-                <input className="w-full bg-[var(--surface2)] pr-3 py-[5px] text-[11.5px] outline-none" style={{ border: '1px solid var(--border)', height: 30, paddingLeft: 32 }} placeholder="Search candidates…" value={search} onChange={(e) => setSearch(e.target.value)} />
-              </div>
-              <select className="filter-select" style={{ fontSize: '10px' }} value={stageFilter} onChange={e => setStageFilter(e.target.value)}><option value="">All Stages</option><option>Explorer Screen</option><option>Recruiter Review</option><option>Interview</option><option>Hiring Mgr Review</option><option>Final Round</option><option>Offer Extended</option></select>
-              <select className="filter-select" style={{ fontSize: '10px' }} value={fitFilter} onChange={e => setFitFilter(e.target.value)}><option value="">All Fit</option><option>Deep Match</option><option>Strong Fit</option><option>Good Fit</option></select>
-            </div>
-            <div style={{ flex: 1, overflowY: 'auto', minHeight: 0 }}>
-              <table className="cand-table">
-                <thead><tr>
-                  <th className="sortable" onClick={() => toggleSort('name')}>Candidate{sortArrow('name')}</th>
-                  <th className="sortable" onClick={() => toggleSort('company')}>Role{sortArrow('company')}</th>
-                  <th className="sortable" onClick={() => toggleSort('stage')}>Stage{sortArrow('stage')}</th>
-                  <th className="sortable" onClick={() => toggleSort('score')}>AI Match{sortArrow('score')}</th>
-                  <th>Deep Match</th>
-                  <th className="sortable" onClick={() => toggleSort('sentiment')}>Sentiment Map{sortArrow('sentiment')}</th>
-                  <th>Fit · Source</th>
-                  <th>Actions</th>
-                </tr></thead>
-                <tbody>
-                  {filtered.slice(0, 14).map((c) => (
-                    <tr key={c.id} onClick={() => setCandModal(c.id)} style={{ cursor: 'pointer' }} className="hover:bg-[var(--surface2)]">
-                      <td><div className="flex items-center gap-[8px]"><img src={c.avatar} alt="" className="w-[28px] h-[28px] rounded-full object-cover flex-shrink-0" /><div><div className="text-[12px] font-medium" style={{ color: 'var(--text)' }}>{c.name}</div><div className="text-[10px]" style={{ color: 'var(--muted)' }}>{c.title}</div></div></div></td>
-                      <td className="text-[11px]" style={{ color: 'var(--muted)' }}>{c.company}</td>
-                      <td><span className={`stage-badge ${stageBadgeClass(c.stage)}`}>{c.stage}</span></td>
-                      <td><ScoreDots score={c.score} /></td>
-                      <td>{c.deepMatch && <DeepMatchBars dm={c.deepMatch} />}</td>
-                      <td><SentimentBar value={c.sentiment} trend={c.sentimentTrend} /></td>
-                      <td><div className="flex flex-col gap-[3px]"><span className={`fit-badge ${fitBadgeClass(c.fitLabel)}`}>{c.fitLabel}</span><span className={`font-mono text-[8.5px] ${c.source === 'Taltas Network' ? 'text-[var(--blue)]' : 'text-[var(--text-dim)]'}`}>{c.source}</span></div></td>
-                      <td onClick={e => e.stopPropagation()}><div className="flex gap-[4px]"><button className="ctrl-btn purple flex items-center gap-[3px]" style={{ fontSize: '8.5px' }} onClick={() => setCandModal(c.id)}><IconMap size={9} /> Map</button><button className="ctrl-btn blue flex items-center gap-[3px]" style={{ fontSize: '8.5px' }} onClick={() => setCandModal(c.id)}><IconUser size={9} /> Profile</button></div></td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <div style={{ fontSize: 11, color: 'rgba(255,255,255,.45)', fontWeight: 300, lineHeight: 1.5, marginTop: hovMetric === i ? 8 : 0, maxHeight: hovMetric === i ? 48 : 0, overflow: 'hidden', transition: 'max-height .25s ease, margin-top .25s ease, opacity .25s ease', opacity: hovMetric === i ? 1 : 0 }}>
+              {m.desc}
             </div>
           </div>
-          <div className="card">
-            <div className="flex items-center justify-between mb-[14px]">
-              <span className="mono-label flex items-center gap-[6px]"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 4v16M15 4v16M4 9h16M4 15h16"/></svg> HR Platforms & Job Site Integrations<DataSourceBadge fromApi={!!integrationsQuery.data?.fromApi} /></span>
-              <div className="flex gap-[6px] items-center">
-                <span className="fit-badge fit-good">{Object.values(intToggles).filter(Boolean).length} Connected</span>
-                <span className="fit-badge" style={{ color: 'var(--orange)', background: 'var(--orange-bg)', borderColor: 'var(--orange-border)' }}>{apiIntegrations.filter(i => i.needsAttention).length} Needs Attention</span>
-              </div>
-            </div>
-            <div className="int-grid" style={{ maxHeight: 360, overflowY: 'auto' }}>
-              {apiIntegrations.map((int) => (
-                <div key={int.name} className="int-tile">
-                  <div className="w-[32px] h-[32px] flex items-center justify-center flex-shrink-0" style={{ background: int.iconBg, border: '1px solid var(--border)' }}>{resolveIcon(int.icon, { size: 16 })}</div>
-                  <div className="flex-1">
-                    <div className="text-[11.5px] font-medium" style={{ color: 'var(--text-bright)' }}>{int.name}</div>
-                    <div className="font-mono text-[8.5px]" style={{ color: 'var(--muted)' }}>{int.category}</div>
-                    <div className="flex items-center gap-[5px] mt-[5px]"><div className="w-[5px] h-[5px]" style={{ background: intToggles[int.name || int.id || ""] ? 'var(--green)' : 'var(--orange)' }} /><span className="font-mono text-[9px]" style={{ color: intToggles[int.name || int.id || ""] ? 'var(--green)' : 'var(--orange)' }}>{intToggles[int.name || int.id || ""] ? 'Connected' : int.needsAttention ? 'Needs Setup' : 'Disconnected'}</span></div>
-                    {intToggles[int.name || int.id || ""] && <div className="font-mono text-[8px] mt-[2px]" style={{ color: 'var(--muted)' }}>{(int.records || 0).toLocaleString()} records · {int.lastSync || 'Never'}</div>}
-                  </div>
-                  <button className={`int-toggle ${intToggles[int.name || int.id || ""] ? (int.needsAttention ? 'warn' : 'on') : 'off'}`} onClick={(e) => { e.stopPropagation(); setIntToggles(prev => ({ ...prev, [int.name]: !prev[int.name] })); }} />
-                </div>
-              ))}
-            </div>
+        ))}
+      </div>
+
+      {/* ── BODY ── */}
+      <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '1fr 360px', overflow: 'hidden' }}>
+
+        {/* LEFT — PIPELINE + TABLE */}
+        <div style={{ borderRight: '1px solid ' + BORDER, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+
+          {/* Pipeline header */}
+          <div style={{ padding: '12px 24px', borderBottom: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
+            <div style={{ width: 7, height: 7, borderRadius: '50%', background: TEAL, flexShrink: 0 }} />
+            <span style={{ fontSize: 10, color: MUTED, letterSpacing: '.1em', textTransform: 'uppercase', fontFamily: MONO }}>Active Pipeline</span>
+            <span style={{ fontSize: 9, background: '#E8F0FF', color: BLUE, padding: '2px 7px', fontFamily: MONO }}>API</span>
+            <span style={{ marginLeft: 'auto', fontSize: 11, color: BLUE, fontWeight: 400 }}>{filtered.length} candidates</span>
           </div>
-        </div>
-        <div className="flex flex-col gap-[13px]">
-          <div className="card">
-            <div className="flex items-center justify-between mb-[14px]">
-              <span className="mono-label flex items-center gap-[6px]"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" /></svg> Open Jobs<DataSourceBadge fromApi={!!rolesQuery.data?.fromApi} /></span>
-              <div className="flex gap-[6px] items-center">
-                <span className="font-mono text-[9px] px-[8px] py-[2px] " style={{ color: 'var(--text-dim)', background: 'var(--surface2)', border: '1px solid var(--border2)' }}>24 active</span>
-                <button className="ctrl-btn flex items-center gap-[4px]" style={{ fontSize: '9px', background: 'var(--blue)', color: '#fff', borderColor: 'var(--blue)' }} onClick={() => setNewRoleOpen(true)}><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg> New Job</button>
-              </div>
-            </div>
-            <div style={{ maxHeight: 350, overflowY: 'auto' }}>
-              {allRoles.map((role) => (
-                <div key={role.id} className="role-row" onClick={() => router.push('/jobs')}><div><div className="role-title">{role.title}</div><div className="role-meta">{role.department} · {role.location} · {role.salary}</div></div><div className="role-right"><span className={`urg-badge ${urgencyClass(role.urgency)}`}>{role.urgency}</span><span className="ats-source">{role.atsSource}</span><div><div className="role-count-num">{role.candidateCount}</div><div className="role-count-label">candidates</div></div></div></div>
-              ))}
-            </div>
-          </div>
-          <div className="card">
-            <div className="flex items-center justify-between mb-[14px]">
-              <span className="mono-label flex items-center gap-[6px]"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="10" rx="2" /><circle cx="12" cy="5" r="2" /><path d="M12 7v4M8 11V9M16 11V9" /></svg> Explorer Interactions<DataSourceBadge fromApi={!!explorersQuery.data?.fromApi} /></span>
-              <button className="ctrl-btn blue flex items-center gap-[4px]" style={{ fontSize: '9.5px' }} onClick={() => setNewExplorerOpen(true)}><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg> New Explorer</button>
-            </div>
-            {allExplorers.map((bot) => {
-              const isOpen = openBots[bot.id] || false;
-              const botKey = bot.id === 'jbot0' ? 'staffml' : bot.id === 'jbot1' ? 'principaleng' : bot.id === 'jbot2' ? 'devrel' : 'dataeng';
+
+          {/* Funnel — typography as data */}
+          <div style={{ display: 'flex', height: 76, borderBottom: '1px solid ' + BORDER, flexShrink: 0 }}>
+            {STAGES.map((s, i) => {
+              const pct = s.n / MAX_N;
+              const numSz = Math.round(13 + pct * 18);
+              const drop = i > 0 ? Math.round((1 - s.n / STAGES[i - 1].n) * 100) : null;
               return (
-                <div key={bot.id} className="jbot" style={{ opacity: bot.mode === 'DRAFT' ? 0.6 : 1 }}>
-                  <div className="jbot-header" onClick={() => setOpenBots((prev) => ({ ...prev, [bot.id]: !prev[bot.id] }))}>
-                    <div className="jbot-icon" style={{ background: bot.iconBg }}>{resolveIcon(bot.icon, { size: 16 })}</div>
-                    <div className="jbot-main">
-                      <div className="jbot-title-row"><span className="jbot-name">{bot.name}</span><span className={`jbot-mode ${bot.mode === 'AUTO' ? 'bm-auto' : bot.mode === 'ASSIST' ? 'bm-assist' : 'bm-draft'}`}>{bot.mode}</span>{bot.mode !== 'DRAFT' && <div className="agent-blob"><div className={`agent-blob-inner live ${bot.id === 'jbot1' ? 'v2' : bot.id === 'jbot2' ? 'v3' : ''}`}></div></div>}</div>
-                      <div className="jbot-role"><IconChevronRight size={10} /> {bot.role} · {bot.ats}</div>
-                      <div className="jbot-stats-row"><div className="jbot-chip"><IconMessageCircle size={10} /> {bot.conversations} convos</div><div className="jbot-chip"><IconHandshake size={10} /> {bot.a2aSessions} A2A</div>{bot.interviewsSet > 0 && <div className="jbot-chip"><IconCalendar size={10} /> {bot.interviewsSet} interviews</div>}</div>
-                    </div>
-                    <div className="jbot-right">{bot.interviewsSet > 0 && <div><div className="jbot-int-num">{bot.interviewsSet}</div><div className="jbot-int-label">Interviews<br/>Set</div></div>}<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ transform: isOpen ? 'rotate(180deg)' : 'none', transition: 'transform .15s' }}><polyline points="6 9 12 15 18 9" /></svg></div>
-                  </div>
-                  {isOpen && (
-                    <div className="jbot-body" style={{ paddingTop: 10 }}>
-                      <div className="font-mono text-[8.5px] uppercase tracking-[.1em] mb-[8px]" style={{ color: 'var(--muted)' }}>{(bot.interactions || []).length > 0 ? 'Recent Interactions' : 'No activity yet — explorer is in draft'}</div>
-                      {(bot.interactions || []).map((ip, i) => {
-                        const cand = apiCandidates.find(c => c.name === ip.name);
-                        return (
-                          <div key={i} className="ip-row" style={{ cursor: cand ? 'pointer' : 'default' }} onClick={() => { if (cand) setCandModal(cand.id); }}>
-                            <div className="ip-avatar"><img src={ip.avatar} alt="" /></div>
-                            <span className="ip-name">{ip.name}</span>
-                            <span className="ip-agent">via {ip.via}</span>
-                            <span className="ip-sent" style={{ background: `var(--${ip.sentimentColor}-bg)`, color: `var(--${ip.sentimentColor})`, borderColor: `var(--${ip.sentimentColor}-border)` }}>{ip.sentiment}</span>
-                            <span style={{ marginLeft: 'auto', display: 'flex', gap: 4 }}>
-                              <button className="ctrl-btn flex items-center gap-[3px]" style={{ fontSize: '8px', padding: '2px 6px' }} onClick={(e) => { e.stopPropagation(); if (cand) setCandModal(cand.id); }}><IconUser size={8} /> Profile</button>
-                              <button className="ctrl-btn purple flex items-center gap-[3px]" style={{ fontSize: '8px', padding: '2px 6px' }} onClick={(e) => { e.stopPropagation(); if (cand) setCandModal(cand.id); }}><IconMap size={8} /> Sentiment Map</button>
-                            </span>
-                          </div>
-                        );
-                      })}
-                      <div className="flex gap-[6px] mt-[10px] pt-[8px]" style={{ borderTop: '1px solid var(--border)' }}>
-                        <button className="ctrl-btn blue flex items-center gap-[3px]" style={{ fontSize: '9px' }} onClick={() => setExplorerDetail(botKey)}><IconMessageCircle size={10} /> View All</button>
-                        <button className="ctrl-btn flex items-center gap-[3px]" style={{ fontSize: '9px' }} onClick={() => setEditExplorer(bot)}><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Edit</button>
-                      </div>
-                    </div>
+                <div key={i} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '0 4px', borderRight: i < STAGES.length - 1 ? '1px solid ' + BORDER : 'none', cursor: 'pointer', position: 'relative' }}>
+                  {drop !== null && drop > 0 && (
+                    <div style={{ position: 'absolute', left: -1, top: '50%', transform: 'translateY(-50%)', fontSize: 7.5, color: '#CC3300', background: '#FFFFFF', padding: '1px 3px', zIndex: 1, lineHeight: 1, borderLeft: '1px solid ' + BORDER }}>-{drop}%</div>
                   )}
+                  <div style={{ fontSize: numSz, fontWeight: 300, letterSpacing: '-0.02em', color: DARK, lineHeight: 1, marginBottom: 4 }}>{s.n}</div>
+                  <div style={{ fontSize: 7.5, color: MUTED, textTransform: 'uppercase', letterSpacing: '.05em', textAlign: 'center', lineHeight: 1.3, fontFamily: MONO }}>{s.l}</div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Filters */}
+          <div style={{ padding: '10px 24px', borderBottom: '1px solid ' + BORDER, display: 'flex', gap: 8, flexShrink: 0 }}>
+            <div style={{ flex: 1, position: 'relative', display: 'flex', alignItems: 'center' }}>
+              <svg style={{ position: 'absolute', left: 8 }} width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={MUTED} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+              <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search candidates..."
+                style={{ width: '100%', padding: '6px 10px 6px 28px', border: '1px solid ' + BORDER, fontSize: 12, fontFamily: F, color: DARK, background: '#FFFFFF', outline: 'none' }} />
+            </div>
+            <select value={stageFilter} onChange={e => setStageFilter(e.target.value)}
+              style={{ padding: '6px 10px', border: '1px solid ' + BORDER, fontSize: 12, fontFamily: F, color: MID, background: '#FFFFFF', outline: 'none' }}>
+              <option>All Stages</option>
+              {STAGES.map(s => <option key={s.l}>{s.l}</option>)}
+              <option>Offer Extended</option>
+            </select>
+          </div>
+
+          {/* Table header — all columns */}
+          <div style={{ display: 'grid', gridTemplateColumns: '180px 110px 130px 80px 90px 70px 100px 60px 90px', padding: '0 16px', height: 34, alignItems: 'center', background: BLIGHT, borderBottom: '1px solid ' + BORDER, flexShrink: 0, gap: 8 }}>
+            {['Candidate', 'Role', 'Stage', 'AI Match', 'Deep Match', 'Sentiment', 'Fit · Source', 'Map', 'Actions'].map((h, i) => (
+              <div key={i} style={{ fontSize: 9, color: MUTED, letterSpacing: '.09em', textTransform: 'uppercase', fontFamily: MONO, fontWeight: 400, whiteSpace: 'nowrap' }}>{h}</div>
+            ))}
+          </div>
+
+          {/* Rows — scrollable */}
+          <div style={{ flex: 1, overflowY: 'auto' }}>
+            {filtered.map((c: any, i: number) => {
+              const sc = SC[c.stage] || { bg: BLIGHT, c: MUTED };
+              const fc = fitCol[c.fit || 'Pending'] || { bg: BLIGHT, c: MUTED };
+              return (
+                <div key={c.id || i} onClick={() => setProfileOpen(c)}
+                  style={{ display: 'grid', gridTemplateColumns: '180px 110px 130px 80px 90px 70px 100px 60px 90px', padding: '0 16px', height: 52, alignItems: 'center', borderBottom: '1px solid ' + BLIGHT, gap: 8, cursor: 'pointer', transition: 'background .1s', background: '#FFFFFF' }}
+                  onMouseEnter={e => (e.currentTarget.style.background = 'rgba(37,99,235,.016)')}
+                  onMouseLeave={e => (e.currentTarget.style.background = '#FFFFFF')}>
+
+                  {/* Candidate */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 }}>
+                    <Avatar name={c.name || ''} size={28} />
+                    <div style={{ minWidth: 0 }}>
+                      <div style={{ fontSize: 12.5, fontWeight: 400, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{c.name}</div>
+                      <div style={{ fontSize: 10.5, color: MUTED, fontWeight: 300, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{c.company}</div>
+                    </div>
+                  </div>
+
+                  {/* Role */}
+                  <div style={{ fontSize: 11, color: MID, fontWeight: 300, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{c.role}</div>
+
+                  {/* Stage */}
+                  <div><span style={{ fontSize: 9.5, padding: '2px 8px', background: sc.bg, color: sc.c, fontWeight: 400, whiteSpace: 'nowrap', display: 'inline-block' }}>{c.stage}</span></div>
+
+                  {/* AI Match */}
+                  <div>
+                    {c.score > 0
+                      ? <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}><Dots v={c.score} /><span style={{ fontSize: 9.5, color: MID, fontFamily: MONO }}>{c.score}</span></div>
+                      : <span style={{ fontSize: 11, color: MUTED }}>—</span>}
+                  </div>
+
+                  {/* Deep Match */}
+                  <div>
+                    {c.deepMatch > 0
+                      ? <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}><Dots v={c.deepMatch} /><span style={{ fontSize: 9.5, color: TEAL, fontFamily: MONO }}>{c.deepMatch}</span></div>
+                      : <span style={{ fontSize: 11, color: MUTED }}>—</span>}
+                  </div>
+
+                  {/* Sentiment */}
+                  <SentimentBar v={c.sentiment || 0} />
+
+                  {/* Fit · Source */}
+                  <div>
+                    <div><span style={{ fontSize: 9, padding: '2px 7px', background: fc.bg, color: fc.c, display: 'inline-block', whiteSpace: 'nowrap' }}>{c.fit || 'Pending'}</span></div>
+                    <div style={{ fontSize: 9.5, color: MUTED, marginTop: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{c.source || 'Taltas Network'}</div>
+                  </div>
+
+                  {/* Map */}
+                  <div>
+                    <button onClick={e => { e.stopPropagation(); setProfileOpen(c); }}
+                      style={{ fontSize: 10, color: BLUE, background: 'none', border: '1px solid #C8D8FF', padding: '3px 8px', cursor: 'pointer', fontFamily: F, whiteSpace: 'nowrap' }}>
+                      Map
+                    </button>
+                  </div>
+
+                  {/* Actions */}
+                  <div style={{ display: 'flex', gap: 4 }}>
+                    <button onClick={e => { e.stopPropagation(); router.push('/candidates/' + (c.id || '')); }}
+                      style={{ fontSize: 10, color: '#fff', background: BLUE, border: 'none', padding: '3px 8px', cursor: 'pointer', fontFamily: F, whiteSpace: 'nowrap' }}>
+                      Profile
+                    </button>
+                  </div>
                 </div>
               );
             })}
           </div>
         </div>
+
+        {/* RIGHT — JOBS + EXPLORERS */}
+        <div style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+
+          {/* OPEN JOBS */}
+          <div style={{ flex: '0 0 55%', borderBottom: '1px solid ' + BORDER, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+            <div style={{ padding: '12px 20px', borderBottom: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0, background: '#F0F4FF' }}>
+              <div style={{ width: 6, height: 6, borderRadius: '50%', background: BLUE, flexShrink: 0 }} />
+              <span style={{ fontSize: 10, color: BLUE, letterSpacing: '.1em', textTransform: 'uppercase', fontFamily: MONO }}>Open Jobs</span>
+              <span style={{ fontSize: 9, background: '#E8F0FF', color: BLUE, padding: '2px 7px', fontFamily: MONO }}>API</span>
+              <span style={{ fontSize: 11, color: MID, fontWeight: 300 }}>24 active</span>
+              <button onClick={() => {}} style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 4, padding: '5px 12px', background: BLUE, border: 'none', fontSize: 11, color: '#fff', cursor: 'pointer', fontFamily: F }}>
+                + New Job
+              </button>
+            </div>
+            <div style={{ overflowY: 'auto', flex: 1 }}>
+              {jobs.map((j: any, i: number) => {
+                const st = jobSt[j.status] || jobSt.OPEN;
+                return (
+                  <div key={j.id || i} style={{ padding: '14px 20px', borderBottom: i < jobs.length - 1 ? '1px solid ' + BLIGHT : 'none', cursor: 'pointer', transition: 'background .1s' }}
+                    onMouseEnter={e => (e.currentTarget.style.background = 'rgba(37,99,235,.015)')}
+                    onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
+                    <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 }}>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 3 }}>
+                          <div style={{ fontSize: 13, fontWeight: 400, color: DARK }}>{j.title}</div>
+                          <span style={{ fontSize: 9, padding: '2px 7px', background: st.bg, color: st.c, fontWeight: 500, letterSpacing: '.04em', flexShrink: 0 }}>{j.status}</span>
+                        </div>
+                        <div style={{ fontSize: 11.5, color: MID, fontWeight: 300, marginBottom: 2 }}>{j.sub}</div>
+                        <div style={{ fontSize: 11, color: MUTED, fontWeight: 300 }}>{j.comp}</div>
+                      </div>
+                      <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                        <div style={{ fontSize: 22, fontWeight: 300, color: DARK, letterSpacing: '-0.02em', lineHeight: 1 }}>{j.candidates ?? j.candidateCount ?? 0}</div>
+                        <div style={{ fontSize: 9, color: MUTED, textTransform: 'uppercase', letterSpacing: '.05em', fontFamily: MONO }}>cands</div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* EXPLORER INTERACTIONS */}
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+            <div style={{ padding: '12px 20px', borderBottom: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0, background: '#F0FFF8' }}>
+              <div style={{ width: 6, height: 6, borderRadius: '50%', background: TEAL, flexShrink: 0 }} />
+              <span style={{ fontSize: 10, color: TEAL, letterSpacing: '.1em', textTransform: 'uppercase', fontFamily: MONO }}>Explorer Interactions</span>
+              <span style={{ fontSize: 9, background: '#E8F0FF', color: BLUE, padding: '2px 7px', fontFamily: MONO }}>API</span>
+              <button style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 4, padding: '5px 10px', border: '1px solid ' + BORDER, background: 'none', fontSize: 11, color: MID, cursor: 'pointer', fontFamily: F }}>
+                + New Explorer
+              </button>
+            </div>
+            <div style={{ overflowY: 'auto', flex: 1 }}>
+              {expls.map((e: any, i: number) => {
+                const isAct = e.mode === 'ACTIVE' || e.status === 'active';
+                return (
+                  <div key={e.id || i} style={{ padding: '12px 20px', borderBottom: i < expls.length - 1 ? '1px solid ' + BLIGHT : 'none', cursor: 'pointer', transition: 'background .1s' }}
+                    onMouseEnter={el => (el.currentTarget.style.background = 'rgba(29,158,117,.015)')}
+                    onMouseLeave={el => (el.currentTarget.style.background = 'transparent')}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                      <div style={{ width: 30, height: 30, background: BLIGHT, border: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={MUTED} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M19 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2z"/><path d="M12 3a4 4 0 0 0-4 4v4h8V7a4 4 0 0 0-4-4z"/></svg>
+                      </div>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 2 }}>
+                          <span style={{ fontSize: 13, fontWeight: 400, color: DARK }}>{e.name}</span>
+                          <span style={{ fontSize: 9, padding: '2px 7px', background: isAct ? '#E6F5EE' : '#E8F0FF', color: isAct ? '#15703A' : BLUE, fontFamily: MONO }}>{e.mode || e.status || 'AUTO'}</span>
+                          {isAct && <div style={{ width: 5, height: 5, borderRadius: '50%', background: '#22C55E', flexShrink: 0 }} />}
+                        </div>
+                        <div style={{ fontSize: 11, color: MUTED, fontWeight: 300 }}>{e.role}{e.company ? ' · ' + e.company : ''}</div>
+                      </div>
+                    </div>
+                    <div style={{ display: 'flex', gap: 16, paddingLeft: 40, marginTop: 6 }}>
+                      <span style={{ fontSize: 11, color: MUTED, fontWeight: 300 }}>{e.convos || 0} convos</span>
+                      <span style={{ fontSize: 11, color: MUTED, fontWeight: 300 }}>{e.a2a || 0} A2A</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
       </div>
-      <CandidateModal open={!!candModal} onClose={() => setCandModal(null)} candidate={selectedCandidate} />
-      <NewRoleModal open={newRoleOpen} onClose={() => setNewRoleOpen(false)} onCreateExplorer={(title) => { setNewRoleOpen(false); setTimeout(() => setNewExplorerOpen(true), 200); }} />
-      <NewExplorerModal open={newExplorerOpen} onClose={() => setNewExplorerOpen(false)} />
-      <ExplorerDetailModal open={!!explorerDetail} onClose={() => setExplorerDetail(null)} explorerId={explorerDetail} />
-      <EditExplorerModal open={!!editExplorer} onClose={() => setEditExplorer(null)} explorer={editExplorer} />
+
+      {/* ── PROFILE SLIDE-OVER ── */}
+      {profileOpen && (
+        <div style={{ position: 'fixed', inset: 0, zIndex: 200, display: 'flex', justifyContent: 'flex-end' }}
+          onClick={() => setProfileOpen(null)}>
+          <div style={{ position: 'absolute', inset: 0, background: 'rgba(10,10,10,.2)' }} />
+          <div style={{ position: 'relative', width: 540, background: '#FFFFFF', borderLeft: '1px solid ' + BORDER, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}
+            onClick={e => e.stopPropagation()}>
+
+            <div style={{ padding: '20px 24px', borderBottom: '1px solid ' + BORDER, display: 'flex', alignItems: 'flex-start', gap: 14, flexShrink: 0 }}>
+              <Avatar name={profileOpen.name || ''} size={52} />
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 4, flexWrap: 'wrap' }}>
+                  <span style={{ fontSize: 22, fontWeight: 300, letterSpacing: '-0.02em' }}>{profileOpen.name}</span>
+                  <span style={{ fontSize: 9.5, padding: '2px 8px', background: (SC[profileOpen.stage] || { bg: BLIGHT }).bg, color: (SC[profileOpen.stage] || { c: MUTED }).c }}>{profileOpen.stage}</span>
+                </div>
+                <div style={{ fontSize: 13, color: MID, fontWeight: 300, marginBottom: 4 }}>{profileOpen.role} · {profileOpen.company}</div>
+                {profileOpen.score > 0 && (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 4 }}>
+                    <Dots v={profileOpen.score} />
+                    <span style={{ fontSize: 12, fontWeight: 400, color: BLUE }}>{profileOpen.score} AI Match</span>
+                    <span style={{ fontSize: 12, fontWeight: 400, color: TEAL }}>{profileOpen.deepMatch} Deep Match</span>
+                  </div>
+                )}
+              </div>
+              <button onClick={() => setProfileOpen(null)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: MUTED, fontSize: 20, lineHeight: 1, padding: '2px', flexShrink: 0 }}>×</button>
+            </div>
+
+            {profileOpen.score > 0 && (
+              <div style={{ padding: '18px 24px', borderBottom: '1px solid ' + BORDER, flexShrink: 0 }}>
+                <div style={{ fontSize: 10, color: MUTED, letterSpacing: '.1em', textTransform: 'uppercase', marginBottom: 12, fontFamily: MONO }}>6-Dimension Match</div>
+                {[['Technical Depth', 96], ['System Thinking', 91], ['Communication', 88], ['Culture Alignment', 90], ['Compensation Fit', 94], ['Timeline', 97]].map(([l, v]: any) => (
+                  <div key={l} style={{ marginBottom: 10 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 3 }}>
+                      <span style={{ fontSize: 12, color: MID, fontWeight: 300 }}>{l}</span>
+                      <span style={{ fontSize: 12, fontWeight: 400, color: v >= 90 ? TEAL : BLUE }}>{v}</span>
+                    </div>
+                    <div style={{ height: 3, background: '#EBEBEB' }}>
+                      <div style={{ height: 3, width: v + '%', background: v >= 90 ? TEAL : BLUE }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div style={{ padding: '16px 24px', borderBottom: '1px solid ' + BORDER, flexShrink: 0 }}>
+              <div style={{ fontSize: 10, color: MUTED, letterSpacing: '.1em', textTransform: 'uppercase', marginBottom: 10, fontFamily: MONO }}>Compensation</div>
+              <div style={{ display: 'flex', gap: 24 }}>
+                <div><div style={{ fontSize: 9, color: MUTED, textTransform: 'uppercase', letterSpacing: '.07em', marginBottom: 2, fontFamily: MONO }}>Expecting</div><div style={{ fontSize: 20, fontWeight: 300, color: DARK }}>{profileOpen.salaryExpectation || '—'}</div></div>
+                <div><div style={{ fontSize: 9, color: MUTED, textTransform: 'uppercase', letterSpacing: '.07em', marginBottom: 2, fontFamily: MONO }}>Band</div><div style={{ fontSize: 20, fontWeight: 300, color: TEAL }}>{profileOpen.salaryBand || '—'}</div></div>
+                <div><div style={{ fontSize: 9, color: MUTED, textTransform: 'uppercase', letterSpacing: '.07em', marginBottom: 2, fontFamily: MONO }}>Start</div><div style={{ fontSize: 20, fontWeight: 300, color: DARK }}>{profileOpen.startDate || '—'}</div></div>
+              </div>
+            </div>
+
+            <div style={{ padding: '16px 24px', display: 'flex', flexDirection: 'column', gap: 8, flexShrink: 0 }}>
+              <div style={{ display: 'flex', gap: 8 }}>
+                <button style={{ flex: 1, background: TEAL, border: 'none', color: '#fff', fontFamily: F, fontSize: 13, padding: '10px', cursor: 'pointer' }}>Advance →</button>
+                <button style={{ flex: 1, background: 'none', border: '1px solid ' + BORDER, color: MID, fontFamily: F, fontSize: 13, padding: '10px', cursor: 'pointer' }}>Hold</button>
+                <button style={{ flex: 1, background: 'none', border: '1px solid #FFDDD8', color: '#CC3300', fontFamily: F, fontSize: 13, padding: '10px', cursor: 'pointer' }}>Pass</button>
+              </div>
+              <button onClick={() => { setProfileOpen(null); router.push('/candidates/' + (profileOpen.id || '')); }}
+                style={{ width: '100%', background: 'none', border: '1px solid ' + BORDER, color: BLUE, fontFamily: F, fontSize: 12, padding: '8px', cursor: 'pointer' }}>
+                Open full profile →
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── FOOTER ── */}
+      <div style={{ height: 32, borderTop: '1px solid ' + BORDER, background: '#FFFFFF', display: 'flex', alignItems: 'center', padding: '0 28px', justifyContent: 'space-between', flexShrink: 0 }}>
+        <span style={{ fontSize: 9.5, color: MUTED, letterSpacing: '.06em', textTransform: 'uppercase', fontFamily: MONO }}>Taltas · Talent Atlas</span>
+        <span style={{ fontSize: 9.5, color: MUTED, fontFamily: MONO }}>Last updated · API live</span>
+      </div>
     </div>
   );
 }
-
