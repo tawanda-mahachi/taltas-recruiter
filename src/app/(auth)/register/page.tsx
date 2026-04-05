@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRegister } from '@/lib/hooks/use-auth';
 
 const BENEFITS = ["AI-powered structured candidate conversations","Six-dimension fit scoring on every candidate","Agent-to-agent negotiation before the first call","Full candidate summaries with sentiment analysis","ATS integration with Greenhouse, Lever, and Workday","Push candidates directly to your ATS on match"];
-const ACC = '#0033FF';
+const ACC = '#2563eb';
 const font = 'Helvetica Neue,Helvetica,Arial,sans-serif';
 
 export default function RegisterPage() {
@@ -57,8 +57,8 @@ export default function RegisterPage() {
           <div style={{display:'flex',flexDirection:'column',gap:14}}>
             {BENEFITS.map((b,i) => (
               <div key={i} style={{display:'flex',alignItems:'center',gap:12}}>
-                <div style={{width:20,height:20,borderRadius:'50%',background:'rgba(0,51,255,.06)',border:'1px solid rgba(0,51,255,.14)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
-                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#0033FF" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                <div style={{width:20,height:20,borderRadius:'50%',background:'rgba(37,99,235,.06)',border:'1px solid rgba(37,99,235,.14)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                 </div>
                 <span style={{fontSize:13,fontWeight:300,color:'#6B6B6B'}}>{b}</span>
               </div>

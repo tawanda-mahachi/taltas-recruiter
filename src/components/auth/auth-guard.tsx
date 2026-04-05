@@ -17,7 +17,7 @@ export function AuthGuard({ children }) {
   if (!ready || !isAuthenticated) {
     return (
       <div style={{minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',background:'#F4F4F2'}}>
-        <div style={{width:24,height:24,border:'2.5px solid #E8E8E5',borderTopColor:'#0033FF',borderRadius:'50%',animation:'spin 0.8s linear infinite'}}/>
+        <div style={{width:24,height:24,border:'2.5px solid #E8E8E5',borderTopColor:'#2563eb',borderRadius:'50%',animation:'spin 0.8s linear infinite'}}/>
         <style>{'@keyframes spin{to{transform:rotate(360deg)}}'}</style>
       </div>
     );

@@ -37,15 +37,15 @@ export default function LoginPage() {
       <nav style={{position:'sticky',top:0,zIndex:50,background:'rgba(255,255,255,.92)',backdropFilter:'blur(8px)',WebkitBackdropFilter:'blur(8px)',borderBottom:'1px solid #E8E8E5',height:64,display:'flex',alignItems:'center',padding:'0 56px',fontFamily:'Helvetica Neue,Helvetica,Arial,sans-serif'}}>
         <a href="https://taltas.ai" style={{display:'flex',alignItems:'center',gap:12,marginRight:'auto',textDecoration:'none'}}>
           <svg width="50" height="50" viewBox="0 0 60 60" fill="none">
-            <circle cx="30" cy="30" r="27" fill="#0033FF"/>
+            <circle cx="30" cy="30" r="27" fill="#2563eb"/>
             <polygon points="30,8 36,32 30,28 24,32" fill="white"/>
             <polygon points="30,52 34,32 30,36 26,32" fill="white" opacity="0.28"/>
             <line x1="12" y1="30" x2="48" y2="30" stroke="white" strokeWidth="1" opacity="0.25"/>
             <circle cx="30" cy="30" r="3.5" fill="white"/>
-            <circle cx="30" cy="30" r="1.8" fill="#0033FF"/>
+            <circle cx="30" cy="30" r="1.8" fill="#2563eb"/>
           </svg>
           <div style={{display:'flex',alignItems:'flex-end',gap:10}}>
-            <div style={{fontSize:40,fontWeight:300,letterSpacing:'-0.03em',lineHeight:1}}><span style={{color:'#0A0A0A'}}>Tal</span><span style={{color:"#0033FF"}}>tas</span></div>
+            <div style={{fontSize:40,fontWeight:300,letterSpacing:'-0.03em',lineHeight:1}}><span style={{color:'#0A0A0A'}}>Tal</span><span style={{color:"#2563eb"}}>tas</span></div>
             <div style={{fontSize:11,color:'#AAAAAA',letterSpacing:'.1em',textTransform:'uppercase',fontWeight:400,lineHeight:1,marginBottom:7}}>Your Talent Atlas</div>
           </div>
         </a>
@@ -57,7 +57,7 @@ export default function LoginPage() {
       </nav>
       <div style={{position:'fixed',top:20,right:'30%',pointerEvents:'none',zIndex:0,opacity:.1}}>
         <svg width="700" height="700" viewBox="0 0 60 60" fill="none">
-          <circle cx="30" cy="30" r="27" fill="none" stroke="#1D9E75" strokeWidth=".3"/>
+          <circle cx="30" cy="30" r="27" fill="none" stroke="#2563eb" strokeWidth=".3"/>
                     <g>
               <animateTransform attributeName="transform" type="rotate"
                 values="0 30 30;-28 30 30;33 30 30;-12 30 30;6 30 30;0 30 30;0 30 30;0 30 30"
@@ -65,27 +65,27 @@ export default function LoginPage() {
                 dur="6s" begin="1s" repeatCount="indefinite"
                 calcMode="spline"
                 keySplines="0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1"/>
-              <polygon points="30,8 36,32 30,28 24,32" fill="#1D9E75" opacity="0.7"/>
-              <polygon points="30,52 34,32 30,36 26,32" fill="#1D9E75" opacity="0.25"/>
-              <circle cx="30" cy="30" r="2.5" fill="#1D9E75" opacity="0.6"/>
+              <polygon points="30,8 36,32 30,28 24,32" fill="#2563eb" opacity="0.7"/>
+              <polygon points="30,52 34,32 30,36 26,32" fill="#2563eb" opacity="0.25"/>
+              <circle cx="30" cy="30" r="2.5" fill="#2563eb" opacity="0.6"/>
             </g>
           <g transform="rotate(23 30 30)">
-            <ellipse cx="30" cy="10" rx="12" ry="3.5" fill="none" stroke="#1D9E75" strokeWidth=".18"/>
-            <ellipse cx="30" cy="18" rx="22" ry="6" fill="none" stroke="#1D9E75" strokeWidth=".2"/>
-            <ellipse cx="30" cy="26" rx="26.5" ry="7" fill="none" stroke="#1D9E75" strokeWidth=".22"/>
-            <ellipse cx="30" cy="30" rx="27" ry="7.5" fill="none" stroke="#1D9E75" strokeWidth=".28"/>
-            <ellipse cx="30" cy="34" rx="26.5" ry="7" fill="none" stroke="#1D9E75" strokeWidth=".22"/>
-            <ellipse cx="30" cy="42" rx="22" ry="6" fill="none" stroke="#1D9E75" strokeWidth=".2"/>
-            <ellipse cx="30" cy="50" rx="12" ry="3.5" fill="none" stroke="#1D9E75" strokeWidth=".18"/>
-            <ellipse cx="30" cy="30" rx="27" ry="27" fill="none" stroke="#1D9E75" strokeWidth=".28">
+            <ellipse cx="30" cy="10" rx="12" ry="3.5" fill="none" stroke="#2563eb" strokeWidth=".18"/>
+            <ellipse cx="30" cy="18" rx="22" ry="6" fill="none" stroke="#2563eb" strokeWidth=".2"/>
+            <ellipse cx="30" cy="26" rx="26.5" ry="7" fill="none" stroke="#2563eb" strokeWidth=".22"/>
+            <ellipse cx="30" cy="30" rx="27" ry="7.5" fill="none" stroke="#2563eb" strokeWidth=".28"/>
+            <ellipse cx="30" cy="34" rx="26.5" ry="7" fill="none" stroke="#2563eb" strokeWidth=".22"/>
+            <ellipse cx="30" cy="42" rx="22" ry="6" fill="none" stroke="#2563eb" strokeWidth=".2"/>
+            <ellipse cx="30" cy="50" rx="12" ry="3.5" fill="none" stroke="#2563eb" strokeWidth=".18"/>
+            <ellipse cx="30" cy="30" rx="27" ry="27" fill="none" stroke="#2563eb" strokeWidth=".28">
               <animate attributeName="rx" values="27;0;27;0;27" dur="22s" repeatCount="indefinite" calcMode="spline" keySplines="0.5 0 0.5 1;0.5 0 0.5 1;0.5 0 0.5 1;0.5 0 0.5 1"/>
               <animate attributeName="opacity" values="1;0.15;1;0.15;1" dur="22s" repeatCount="indefinite"/>
             </ellipse>
-            <ellipse cx="30" cy="30" rx="19" ry="27" fill="none" stroke="#1D9E75" strokeWidth=".22">
+            <ellipse cx="30" cy="30" rx="19" ry="27" fill="none" stroke="#2563eb" strokeWidth=".22">
               <animate attributeName="rx" values="19;0;19;27;19;0;19" dur="22s" begin="-5.5s" repeatCount="indefinite" calcMode="spline" keySplines="0.5 0 0.5 1;0.5 0 0.5 1;0.5 0 0.5 1;0.5 0 0.5 1;0.5 0 0.5 1;0.5 0 0.5 1"/>
               <animate attributeName="opacity" values="0.65;0.12;0.65;1;0.65;0.12;0.65" dur="22s" begin="-5.5s" repeatCount="indefinite"/>
             </ellipse>
-            <ellipse cx="30" cy="30" rx="0" ry="27" fill="none" stroke="#1D9E75" strokeWidth=".28">
+            <ellipse cx="30" cy="30" rx="0" ry="27" fill="none" stroke="#2563eb" strokeWidth=".28">
               <animate attributeName="rx" values="0;27;0;27;0" dur="22s" begin="-11s" repeatCount="indefinite" calcMode="spline" keySplines="0.5 0 0.5 1;0.5 0 0.5 1;0.5 0 0.5 1;0.5 0 0.5 1"/>
               <animate attributeName="opacity" values="0.15;1;0.15;1;0.15" dur="22s" begin="-11s" repeatCount="indefinite"/>
             </ellipse>
@@ -99,7 +99,7 @@ export default function LoginPage() {
           <div style={{border:'1px solid #E8E8E5',marginBottom:40}}>
             {METRICS.map((m,i) => (
               <div key={i} style={{display:'flex',alignItems:'center',gap:24,padding:'8px 16px',borderBottom:i<METRICS.length-1?'1px solid #E8E8E5':'none'}}>
-                <div style={{fontSize:26,fontWeight:300,letterSpacing:'-2px',color:'#0033FF',lineHeight:1,flexShrink:0,width:72}}>{m.num}</div>
+                <div style={{fontSize:26,fontWeight:300,letterSpacing:'-2px',color:'#2563eb',lineHeight:1,flexShrink:0,width:72}}>{m.num}</div>
                 <div style={{fontSize:12,fontWeight:300,color:'#6B6B6B',lineHeight:1.5}}>{m.label}</div>
               </div>
             ))}
@@ -107,8 +107,8 @@ export default function LoginPage() {
           <div style={{display:'flex',flexDirection:'column'}}>
             {STEPS.map((s,i) => (
               <div key={i} style={{display:'flex',gap:16,padding:'14px 0',borderBottom:'1px solid #E8E8E5',borderTop:i===0?'1px solid #E8E8E5':'none'}}>
-                <div style={{width:30,height:30,borderRadius:'50%',background:'rgba(0,51,255,.06)',border:'1px solid rgba(0,51,255,.14)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,marginTop:1}}>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0033FF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d={s.icon}/></svg>
+                <div style={{width:30,height:30,borderRadius:'50%',background:'rgba(37,99,235,.06)',border:'1px solid rgba(37,99,235,.14)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,marginTop:1}}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d={s.icon}/></svg>
                 </div>
                 <div>
                   <div style={{fontSize:13,fontWeight:400,color:'#0A0A0A',marginBottom:3}}>{s.title}</div>
@@ -118,7 +118,7 @@ export default function LoginPage() {
             ))}
           </div>
         </div>
-        <div style={{background:'#0033FF',display:'flex',flexDirection:'column',justifyContent:'flex-start',padding:'48px 48px',position:'relative',overflow:'hidden'}}>
+        <div style={{background:'#2563eb',display:'flex',flexDirection:'column',justifyContent:'flex-start',padding:'48px 48px',position:'relative',overflow:'hidden'}}>
           <div style={{position:'absolute',top:-80,left:-80,width:300,height:300,borderRadius:'50%',background:'rgba(255,255,255,.04)',pointerEvents:'none'}}/>
           <div style={{position:'absolute',bottom:-60,right:-60,width:220,height:220,borderRadius:'50%',background:'rgba(255,255,255,.03)',pointerEvents:'none'}}/>
           <div style={{position:'relative',zIndex:1}}>
@@ -141,7 +141,7 @@ export default function LoginPage() {
               </div>
             </div>
 
-            <button onClick={handleSubmit} disabled={loading} style={{width:'100%',padding:'14px',background:'#fff',color:'#0033FF',border:'none',fontSize:14,fontWeight:500,fontFamily:'Helvetica Neue,Helvetica,Arial,sans-serif',cursor:loading?'not-allowed':'pointer',opacity:loading?0.7:1}}>
+            <button onClick={handleSubmit} disabled={loading} style={{width:'100%',padding:'14px',background:'#fff',color:'#2563eb',border:'none',fontSize:14,fontWeight:500,fontFamily:'Helvetica Neue,Helvetica,Arial,sans-serif',cursor:loading?'not-allowed':'pointer',opacity:loading?0.7:1}}>
               {loading ? 'Signing in...' : 'Sign In'}
             </button>
 
@@ -173,14 +173,14 @@ export default function LoginPage() {
           <div>
             <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:12}}>
               <svg width="36" height="36" viewBox="0 0 60 60" fill="none">
-                <circle cx="30" cy="30" r="27" fill="#0033FF"/>
+                <circle cx="30" cy="30" r="27" fill="#2563eb"/>
                 <polygon points="30,8 36,32 30,28 24,32" fill="white"/>
                 <polygon points="30,52 34,32 30,36 26,32" fill="white" opacity="0.28"/>
                 <line x1="12" y1="30" x2="48" y2="30" stroke="white" strokeWidth="1" opacity="0.25"/>
                 <circle cx="30" cy="30" r="3.5" fill="white"/>
-                <circle cx="30" cy="30" r="1.8" fill="#0033FF"/>
+                <circle cx="30" cy="30" r="1.8" fill="#2563eb"/>
               </svg>
-              <div style={{fontSize:20,fontWeight:300,letterSpacing:'-0.03em',lineHeight:1}}><span style={{color:'#fff'}}>Tal</span><span style={{color:"#0033FF"}}>tas</span></div>
+              <div style={{fontSize:20,fontWeight:300,letterSpacing:'-0.03em',lineHeight:1}}><span style={{color:'#fff'}}>Tal</span><span style={{color:"#2563eb"}}>tas</span></div>
             </div>
             <div style={{display:'flex',gap:14,marginTop:4}}>
               <a href="https://linkedin.com/company/taltas-ai" target="_blank" style={{width:28,height:28,background:'rgba(255,255,255,.08)',border:'1px solid rgba(255,255,255,.12)',display:'flex',alignItems:'center',justifyContent:'center',textDecoration:'none',color:'rgba(255,255,255,.5)'}}>

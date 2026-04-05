@@ -26,11 +26,11 @@ function Inner() {
         <div style={{textAlign:'center',padding:32}}>
           <div style={{fontSize:18,fontWeight:300,color:'#0A0A0A',marginBottom:8}}>Authentication Error</div>
           <div style={{fontSize:13,fontWeight:300,color:'#AAAAAA',marginBottom:24}}>{err}</div>
-          <a href='/login' style={{padding:'10px 20px',background:'#0033FF',color:'#fff',textDecoration:'none',fontSize:13}}>Back to Login</a>
+          <a href='/login' style={{padding:'10px 20px',background:'#2563eb',color:'#fff',textDecoration:'none',fontSize:13}}>Back to Login</a>
         </div>
       ) : (
         <div style={{textAlign:'center'}}>
-          <div style={{width:32,height:32,border:'2px solid #0033FF',borderTopColor:'transparent',borderRadius:'50%',animation:'spin 0.8s linear infinite',margin:'0 auto 16px'}}/>
+          <div style={{width:32,height:32,border:'2px solid #2563eb',borderTopColor:'transparent',borderRadius:'50%',animation:'spin 0.8s linear infinite',margin:'0 auto 16px'}}/>
           <div style={{fontFamily:'Courier New,monospace',fontSize:10,color:'#AAAAAA',letterSpacing:'.1em'}}>SIGNING IN...</div>
           <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
         </div>

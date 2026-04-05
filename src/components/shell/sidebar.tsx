@@ -40,16 +40,16 @@ export function Sidebar() {
       {/* Logo */}
       <div className="sidebar-logo">
         <svg width="50" height="50" viewBox="0 0 60 60" fill="none">
-          <circle cx="30" cy="30" r="27" fill="#0033FF"/>
+          <circle cx="30" cy="30" r="27" fill="#2563eb"/>
           <polygon points="30,8 36,32 30,28 24,32" fill="white"/>
           <polygon points="30,52 34,32 30,36 26,32" fill="white" opacity="0.28"/>
           <line x1="12" y1="30" x2="48" y2="30" stroke="white" strokeWidth="1" opacity="0.25"/>
           <circle cx="30" cy="30" r="3.5" fill="white"/>
-          <circle cx="30" cy="30" r="1.8" fill="#0033FF"/>
+          <circle cx="30" cy="30" r="1.8" fill="#2563eb"/>
         </svg>
         <div>
           <div className="sidebar-wordmark">
-            <span className="t">Tal</span><span style={{color:"#0033FF"}}>tas</span>
+            <span className="t">Tal</span><span style={{color:"#2563eb"}}>tas</span>
           </div>
           <div className="sidebar-tagline">Talent Atlas</div>
         </div>
