@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useCandidates, useRoles, useExplorers } from '@/lib/data-provider';
 
 const F = "'Helvetica Neue',Helvetica,Arial,sans-serif";
-const MONO = "'Courier New',monospace";
+const MONO = "'Helvetica Neue',Helvetica,Arial,sans-serif";
 const BLUE = '#2563eb';
 const TEAL = '#1D9E75';
 const DARK = '#0A0A0A';

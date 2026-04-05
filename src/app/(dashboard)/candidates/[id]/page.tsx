@@ -7,7 +7,7 @@ import { MOCK_CANDIDATES } from '@/lib/mock-data';
 import { CandidateModal } from '@/components/modals/candidate-modal';
 
 const F = "'Helvetica Neue',Helvetica,Arial,sans-serif";
-const MONO = "'Courier New',monospace";
+const MONO = "'Helvetica Neue',Helvetica,Arial,sans-serif";
 const BLUE = '#2563eb';
 const TEAL = '#1D9E75';
 const DARK = '#0A0A0A';

@@ -65,7 +65,7 @@ export function Sidebar() {
             return (
               <div key={item.href}>
                 {showGroup && (
-                  <div style={{ fontFamily:"'Courier New',monospace", fontSize: 8, color: 'var(--muted)', letterSpacing: '.12em', textTransform: 'uppercase', padding: '12px 20px 4px', opacity: 0.7 }}>
+                  <div style={{ fontFamily:"'Helvetica Neue',Helvetica,Arial,sans-serif", fontSize: 10, fontWeight: 300, color: 'var(--muted)', letterSpacing: '.12em', textTransform: 'uppercase', padding: '12px 20px 4px' }}>
                     {item.group}
                   </div>
                 )}

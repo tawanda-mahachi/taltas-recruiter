@@ -78,7 +78,7 @@ export default function RegisterPage() {
             <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:14}}>
               {[['First name',firstName,setFirstName],['Last name',lastName,setLastName]].map(([lbl,val,set]) => (
                 <div key={lbl}>
-                  <label style={{display:'block',fontFamily:'Courier New,monospace',fontSize:9,letterSpacing:'.14em',textTransform:'uppercase',color:'rgba(255,255,255,.45)',marginBottom:6}}>{lbl}</label>
+                  <label style={{display:'block',fontFamily:'Helvetica Neue',Helvetica,Arial,sans-serif,fontSize:9,letterSpacing:'.14em',textTransform:'uppercase',color:'rgba(255,255,255,.45)',marginBottom:6}}>{lbl}</label>
                   <input value={val} onChange={e=>set(e.target.value)} placeholder={lbl} style={{width:'100%',background:'rgba(255,255,255,.1)',border:'1px solid rgba(255,255,255,.2)',padding:'11px 14px',fontSize:13,fontWeight:300,fontFamily:font,color:'#fff',outline:'none',boxSizing:'border-box'}}/>
                 </div>
               ))}
@@ -86,7 +86,7 @@ export default function RegisterPage() {
 
             {[['Email',email,setEmail,'email','you@company.com'],['Password',password,setPassword,'password','password']].map(([lbl,val,set,type,ph]) => (
               <div key={lbl} style={{marginBottom:14}}>
-                <label style={{display:'block',fontFamily:'Courier New,monospace',fontSize:9,letterSpacing:'.14em',textTransform:'uppercase',color:'rgba(255,255,255,.45)',marginBottom:6}}>{lbl}</label>
+                <label style={{display:'block',fontFamily:'Helvetica Neue',Helvetica,Arial,sans-serif,fontSize:9,letterSpacing:'.14em',textTransform:'uppercase',color:'rgba(255,255,255,.45)',marginBottom:6}}>{lbl}</label>
                 <input type={type} value={val} onChange={e=>set(e.target.value)} onKeyDown={e=>e.key==='Enter'&&handleSubmit()} placeholder={ph} style={{width:'100%',background:'rgba(255,255,255,.1)',border:'1px solid rgba(255,255,255,.2)',padding:'11px 14px',fontSize:13,fontWeight:300,fontFamily:font,color:'#fff',outline:'none',boxSizing:'border-box'}}/>
               </div>
             ))}
@@ -125,14 +125,14 @@ export default function RegisterPage() {
           </div>
           <div style={{display:'flex',gap:48}}>
             <div>
-              <div style={{fontSize:9,color:'rgba(255,255,255,.4)',letterSpacing:'.1em',textTransform:'uppercase',marginBottom:12,fontFamily:'Courier New,monospace'}}>Platform</div>
+              <div style={{fontSize:9,color:'rgba(255,255,255,.4)',letterSpacing:'.1em',textTransform:'uppercase',marginBottom:12,fontFamily:'Helvetica Neue',Helvetica,Arial,sans-serif}}>Platform</div>
               <div style={{display:'flex',flexDirection:'column',gap:8}}>
                 <a href="https://candidates.taltas.ai" style={{fontSize:12,fontWeight:300,color:'rgba(255,255,255,.5)',textDecoration:'none'}}>Candidate Portal</a>
                 <a href="https://recruiters.taltas.ai" style={{fontSize:12,fontWeight:300,color:'rgba(255,255,255,.5)',textDecoration:'none'}}>Recruiter Portal</a>
               </div>
             </div>
             <div>
-              <div style={{fontSize:9,color:'rgba(255,255,255,.4)',letterSpacing:'.1em',textTransform:'uppercase',marginBottom:12,fontFamily:'Courier New,monospace'}}>Legal</div>
+              <div style={{fontSize:9,color:'rgba(255,255,255,.4)',letterSpacing:'.1em',textTransform:'uppercase',marginBottom:12,fontFamily:'Helvetica Neue',Helvetica,Arial,sans-serif}}>Legal</div>
               <div style={{display:'flex',flexDirection:'column',gap:8}}>
                 <a href="https://taltas.ai/privacy.html" style={{fontSize:12,fontWeight:300,color:'rgba(255,255,255,.5)',textDecoration:'none'}}>Privacy</a>
                 <a href="https://taltas.ai/terms.html" style={{fontSize:12,fontWeight:300,color:'rgba(255,255,255,.5)',textDecoration:'none'}}>Terms</a>
