@@ -79,6 +79,7 @@ body {
   display: flex;
   height: 100vh;
   overflow: hidden;
+  background: #FFFFFF;
 }
 
 /* -- Sidebar -- */
@@ -103,7 +104,7 @@ body {
 }
 
 .sidebar-wordmark {
-    font-size: 36px;
+  font-size: 40px;
   font-weight: 300;
   letter-spacing: -0.03em;
   line-height: 1;
@@ -232,6 +233,7 @@ body {
   overflow-y: auto;
   display: flex;
   flex-direction: column;
+  background: #FFFFFF;
 }
 
 .page-header {
@@ -250,12 +252,12 @@ body {
 .card {
   background: var(--white);
   border: 1px solid var(--border);
-  padding: 20px;
+  padding: 28px 32px;
 }
 
 /* -- Section label -- */
 .section-label {
-  font-size: 9px;
+  font-size: 10px;
   color: var(--muted);
   letter-spacing: .12em;
   text-transform: uppercase;
@@ -452,8 +454,8 @@ body {
 .pipeline-stage.active { border-color: var(--blue); background: var(--blue-bg); }
 
 /* -- KPI Cards ------------------------------------- */
-.kpi { background: #FFFFFF; border: 0.5px solid #E8E8E5; padding: 18px 20px; }
-.kpi-num { font-size: 32px; font-weight: 300; color: var(--dark); letter-spacing: -0.02em; line-height: 1; }
+.kpi { background: #FFFFFF; border: 0.5px solid #E8E8E5; padding: 28px 28px; }
+.kpi-num { font-size: 40px; font-weight: 300; color: var(--dark); letter-spacing: -0.03em; line-height: 1; }
 .kpi-delta { font-size: 11px; color: var(--muted); margin-top: 4px; }
 .kpi-delta.up { color: var(--blue); }
 
@@ -497,12 +499,12 @@ body {
 
 /* -- Agents / Explorer ----------------------------- */
 .agent { background: var(--white); border: 1px solid var(--border); padding: 16px 18px; }
-.agent-blob { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #2563eb, #1d4ed8); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.agent-blob { width: 20px; height: 20px; border-radius: 50%; background: #2563eb; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .agent-blob-glow { outline: 1px solid rgba(37,99,235,.2); }
 .jbot { background: var(--white); border: 1px solid var(--border); }
 .jbot-header { padding: 14px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
 .jbot-body { padding: 12px 16px; }
-.jbot-icon { width: 32px; height: 32px; border-radius: 50%; background: var(--blue-bg); border: 1px solid var(--blue-border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.jbot-icon { width: 32px; height: 32px; background: var(--blue-bg); border: 1px solid var(--blue-border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .jbot-main { flex: 1; min-width: 0; }
 .jbot-name { font-size: 13px; font-weight: 500; color: var(--dark); }
 .jbot-role { font-size: 11px; color: var(--muted); }
