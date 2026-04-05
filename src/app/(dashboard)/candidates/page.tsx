@@ -131,7 +131,7 @@ export default function CandidatesPage() {
             </tr></thead>
             <tbody>
               {filtered.map(c => (
-                <tr key={c.id} onClick={() => setCandModal(c.id)} style={{ cursor: 'pointer' }} className="hover:bg-[var(--surface2)]">
+                <tr key={c.id} style={{ cursor: 'default' }} className="hover:bg-[var(--surface2)]">
                   <td>
                     <div className="flex items-center gap-[8px]">
                       <img src={c.avatar} alt="" className="w-[28px] h-[28px] rounded-full object-cover flex-shrink-0" />
