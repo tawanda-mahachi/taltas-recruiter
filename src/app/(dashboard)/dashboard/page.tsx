@@ -52,8 +52,8 @@ function SentimentBar({ value, trend = '' }: { value: number; trend?: string }) 
   const col = value >= 80 ? 'var(--green)' : value >= 65 ? 'var(--blue)' : 'var(--orange)';
   return (
     <div className="flex items-center gap-[5px]">
-      <div className="w-[44px] h-[4px] rounded-[2px] overflow-hidden" style={{ background: 'var(--surface3)' }}>
-        <div className="h-full rounded-[2px]" style={{ width: `${value}%`, background: col }} />
+      <div className="w-[44px] h-[4px] overflow-hidden" style={{ background: 'var(--surface3)' }}>
+        <div className="h-full" style={{ width: `${value}%`, background: col }} />
       </div>
       <span className="font-mono text-[10px]" style={{ color: col }}>{value}%</span>
       <span className="font-mono text-[8px]" style={{ color: (trend || '').includes('+') ? 'var(--green)' : !trend || trend === '0' ? 'var(--muted)' : 'var(--orange)' }}>{!trend || trend === '0' ? '—' : trend}</span>
@@ -144,7 +144,7 @@ export default function DashboardPage() {
             <div className="flex gap-[7px] px-[14px] py-[8px] flex-wrap" style={{ borderBottom: '1px solid var(--border)', position: 'sticky', top: 0, background: 'var(--surface)', zIndex: 2 }}>
               <div className="relative flex-1" style={{ minWidth: 140 }}>
                 <IconSearch size={12} className="absolute left-[9px] top-1/2 -translate-y-1/2 pointer-events-none opacity-40" />
-                <input className="w-full bg-[var(--surface2)] rounded-lg pr-3 py-[5px] text-[11.5px] outline-none" style={{ border: '1px solid var(--border)', height: 30, paddingLeft: 32 }} placeholder="Search candidates…" value={search} onChange={(e) => setSearch(e.target.value)} />
+                <input className="w-full bg-[var(--surface2)] pr-3 py-[5px] text-[11.5px] outline-none" style={{ border: '1px solid var(--border)', height: 30, paddingLeft: 32 }} placeholder="Search candidates…" value={search} onChange={(e) => setSearch(e.target.value)} />
               </div>
               <select className="filter-select" style={{ fontSize: '10px' }} value={stageFilter} onChange={e => setStageFilter(e.target.value)}><option value="">All Stages</option><option>Explorer Screen</option><option>Recruiter Review</option><option>Interview</option><option>Hiring Mgr Review</option><option>Final Round</option><option>Offer Extended</option></select>
               <select className="filter-select" style={{ fontSize: '10px' }} value={fitFilter} onChange={e => setFitFilter(e.target.value)}><option value="">All Fit</option><option>Deep Match</option><option>Strong Fit</option><option>Good Fit</option></select>
@@ -189,11 +189,11 @@ export default function DashboardPage() {
             <div className="int-grid" style={{ maxHeight: 360, overflowY: 'auto' }}>
               {apiIntegrations.map((int) => (
                 <div key={int.name} className="int-tile">
-                  <div className="w-[32px] h-[32px] rounded-[7px] flex items-center justify-center flex-shrink-0" style={{ background: int.iconBg, border: '1px solid var(--border)' }}>{resolveIcon(int.icon, { size: 16 })}</div>
+                  <div className="w-[32px] h-[32px] flex items-center justify-center flex-shrink-0" style={{ background: int.iconBg, border: '1px solid var(--border)' }}>{resolveIcon(int.icon, { size: 16 })}</div>
                   <div className="flex-1">
                     <div className="text-[11.5px] font-medium" style={{ color: 'var(--text-bright)' }}>{int.name}</div>
                     <div className="font-mono text-[8.5px]" style={{ color: 'var(--muted)' }}>{int.category}</div>
-                    <div className="flex items-center gap-[5px] mt-[5px]"><div className="w-[5px] h-[5px] rounded-full" style={{ background: intToggles[int.name || int.id || ""] ? 'var(--green)' : 'var(--orange)' }} /><span className="font-mono text-[9px]" style={{ color: intToggles[int.name || int.id || ""] ? 'var(--green)' : 'var(--orange)' }}>{intToggles[int.name || int.id || ""] ? 'Connected' : int.needsAttention ? 'Needs Setup' : 'Disconnected'}</span></div>
+                    <div className="flex items-center gap-[5px] mt-[5px]"><div className="w-[5px] h-[5px]" style={{ background: intToggles[int.name || int.id || ""] ? 'var(--green)' : 'var(--orange)' }} /><span className="font-mono text-[9px]" style={{ color: intToggles[int.name || int.id || ""] ? 'var(--green)' : 'var(--orange)' }}>{intToggles[int.name || int.id || ""] ? 'Connected' : int.needsAttention ? 'Needs Setup' : 'Disconnected'}</span></div>
                     {intToggles[int.name || int.id || ""] && <div className="font-mono text-[8px] mt-[2px]" style={{ color: 'var(--muted)' }}>{(int.records || 0).toLocaleString()} records · {int.lastSync || 'Never'}</div>}
                   </div>
                   <button className={`int-toggle ${intToggles[int.name || int.id || ""] ? (int.needsAttention ? 'warn' : 'on') : 'off'}`} onClick={(e) => { e.stopPropagation(); setIntToggles(prev => ({ ...prev, [int.name]: !prev[int.name] })); }} />
@@ -207,7 +207,7 @@ export default function DashboardPage() {
             <div className="flex items-center justify-between mb-[14px]">
               <span className="mono-label flex items-center gap-[6px]"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" /></svg> Open Jobs<DataSourceBadge fromApi={!!rolesQuery.data?.fromApi} /></span>
               <div className="flex gap-[6px] items-center">
-                <span className="font-mono text-[9px] px-[8px] py-[2px] rounded" style={{ color: 'var(--text-dim)', background: 'var(--surface2)', border: '1px solid var(--border2)' }}>24 active</span>
+                <span className="font-mono text-[9px] px-[8px] py-[2px] " style={{ color: 'var(--text-dim)', background: 'var(--surface2)', border: '1px solid var(--border2)' }}>24 active</span>
                 <button className="ctrl-btn flex items-center gap-[4px]" style={{ fontSize: '9px', background: 'var(--blue)', color: '#fff', borderColor: 'var(--blue)' }} onClick={() => setNewRoleOpen(true)}><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg> New Job</button>
               </div>
             </div>

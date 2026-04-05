@@ -29,9 +29,9 @@ export default function PipelinePage() {
       <div className="card" style={{ padding: '12px 18px' }}>
         <div className="flex items-center justify-between mb-[10px] flex-wrap gap-[6px]">
           <span className="mono-label flex items-center gap-[6px]"><IconCalendar size={11} /> Pipeline Parameters</span>
-          <div className="flex gap-[2px] p-[3px] rounded-[7px]" style={{ background: 'var(--surface3)' }}>
+          <div className="flex gap-[2px] p-[3px]" style={{ background: 'var(--surface3)' }}>
             {[{ k: '1m', l: '1M' }, { k: '3m', l: '3M' }, { k: '6m', l: '6M' }, { k: '12m', l: '12M' }].map(({ k, l }) => (
-              <button key={k} onClick={() => setDateRange(k)} className="font-mono text-[9px] px-[10px] py-[4px] rounded-[5px] transition-all" style={{ color: dateRange === k ? 'var(--blue)' : 'var(--text-dim)', background: dateRange === k ? 'var(--surface)' : 'transparent', fontWeight: dateRange === k ? 600 : 400, boxShadow: dateRange === k ? '0 1px 3px rgba(0,0,0,.08)' : 'none' }}>{l}</button>
+              <button key={k} onClick={() => setDateRange(k)} className="font-mono text-[9px] px-[10px] py-[4px] transition-all" style={{ color: dateRange === k ? 'var(--blue)' : 'var(--text-dim)', background: dateRange === k ? 'var(--surface)' : 'transparent', fontWeight: dateRange === k ? 600 : 400 }}>{l}</button>
             ))}
           </div>
         </div>
@@ -50,7 +50,7 @@ export default function PipelinePage() {
             Pipeline Funnel · All Roles<DataSourceBadge fromApi={fromApi} />
           </span>
           <div className="flex gap-[6px]">
-            <span className="font-mono text-[9px] px-[8px] py-[2px] rounded" style={{ color: 'var(--blue)', background: 'var(--blue-bg)', border: '1px solid var(--blue-border)' }}>{dateLabel}</span>
+            <span className="font-mono text-[9px] px-[8px] py-[2px] " style={{ color: 'var(--blue)', background: 'var(--blue-bg)', border: '1px solid var(--blue-border)' }}>{dateLabel}</span>
             <button className="ctrl-btn blue flex items-center gap-[3px]"><IconDownload size={10} /> Export</button>
           </div>
         </div>
@@ -78,13 +78,13 @@ export default function PipelinePage() {
         </div>
         <div className="grid gap-[10px]" style={{ gridTemplateColumns: 'repeat(4, 1fr)' }}>
           {weeklyTrend.map(w => (
-            <div key={w.week} className="p-[12px] rounded-[9px] text-center" style={{ background: 'var(--surface2)', border: '1px solid var(--border)' }}>
+            <div key={w.week} className="p-[12px] text-center" style={{ background: 'var(--surface2)', border: '1px solid var(--border)' }}>
               <div className="font-mono text-[9px] mb-[6px]" style={{ color: 'var(--muted)' }}>{w.week}</div>
-              <div className="text-[20px] font-bold" style={{ fontFamily: "'Roboto Slab', serif", color: 'var(--text-bright)', lineHeight: 1 }}>{w.applied}</div>
+              <div className="text-[20px] font-medium" style={{ fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif", color: 'var(--text-bright)', lineHeight: 1 }}>{w.applied}</div>
               <div className="font-mono text-[8px] mt-[4px]" style={{ color: 'var(--muted)' }}>Applied</div>
               <div className="flex gap-[8px] justify-center mt-[8px]">
-                <div><div className="text-[14px] font-semibold" style={{ fontFamily: "'Roboto Slab', serif", color: 'var(--blue)' }}>{w.screened}</div><div className="font-mono text-[7px]" style={{ color: 'var(--muted)' }}>Screened</div></div>
-                <div><div className="text-[14px] font-semibold" style={{ fontFamily: "'Roboto Slab', serif", color: 'var(--green)' }}>{w.offered}</div><div className="font-mono text-[7px]" style={{ color: 'var(--muted)' }}>Offered</div></div>
+                <div><div className="text-[14px] font-medium" style={{ fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif", color: 'var(--blue)' }}>{w.screened}</div><div className="font-mono text-[7px]" style={{ color: 'var(--muted)' }}>Screened</div></div>
+                <div><div className="text-[14px] font-medium" style={{ fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif", color: 'var(--green)' }}>{w.offered}</div><div className="font-mono text-[7px]" style={{ color: 'var(--muted)' }}>Offered</div></div>
               </div>
             </div>
           ))}
@@ -95,7 +95,7 @@ export default function PipelinePage() {
       <div className="card">
         <div className="flex items-center justify-between mb-[14px]">
           <span className="mono-label flex items-center gap-[6px]"><IconClock size={11} /> Time-in-Stage Analysis</span>
-          <span className="font-mono text-[9px] px-[8px] py-[2px] rounded" style={{ color: 'var(--orange)', background: 'var(--orange-bg)', border: '1px solid var(--orange-border)' }}>3 bottlenecks detected</span>
+          <span className="font-mono text-[9px] px-[8px] py-[2px] " style={{ color: 'var(--orange)', background: 'var(--orange-bg)', border: '1px solid var(--orange-border)' }}>3 bottlenecks detected</span>
         </div>
         {apiBottlenecks.map((b) => (
           <div key={b.stage} className="bottleneck-row">
@@ -124,8 +124,8 @@ export default function PipelinePage() {
                     <td className="text-[11px]" style={{ color: 'var(--text-mid)' }}>{s.source}</td>
                     <td className="font-mono text-[11px]" style={{ color: 'var(--text-dim)' }}>{s.applied}</td>
                     <td className="font-mono text-[11px]" style={{ color: 'var(--text-dim)' }}>{s.screened}</td>
-                    <td className="font-mono text-[11px] font-semibold" style={{ color: 'var(--green)' }}>{s.offered}</td>
-                    <td><span className="font-mono text-[10px] font-bold px-[6px] py-[1px] rounded" style={{ color: s.color, background: `color-mix(in srgb, ${s.color} 10%, transparent)` }}>{s.convRate}</span></td>
+                    <td className="font-mono text-[11px] font-medium" style={{ color: 'var(--green)' }}>{s.offered}</td>
+                    <td><span className="font-mono text-[10px] font-medium px-[6px] py-[1px] " style={{ color: s.color, background: `color-mix(in srgb, ${s.color} 10%, transparent)` }}>{s.convRate}</span></td>
                   </tr>
                 ))}
               </tbody>
@@ -144,11 +144,11 @@ export default function PipelinePage() {
             return (
               <div key={r.role} className="flex items-center gap-[10px] mb-[10px]">
                 <span className="text-[11px] flex-shrink-0" style={{ color: 'var(--text-mid)', width: 120, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{r.role}</span>
-                <div className="flex-1 h-[6px] rounded overflow-hidden" style={{ background: 'var(--surface3)' }}>
-                  <div className="h-full rounded" style={{ width: `${pct}%`, background: col }} />
+                <div className="flex-1 h-[6px]  overflow-hidden" style={{ background: 'var(--surface3)' }}>
+                  <div className="h-full " style={{ width: `${pct}%`, background: col }} />
                 </div>
-                <span className="font-mono text-[11px] font-semibold" style={{ color: col, width: 34, textAlign: 'right' }}>{r.avgDays}d</span>
-                <span className="font-mono text-[8px] px-[6px] py-[1px] rounded" style={{ color: col, background: `color-mix(in srgb, ${col} 12%, transparent)`, border: `1px solid color-mix(in srgb, ${col} 25%, transparent)` }}>{r.status === 'fast' ? '↓ Fast' : r.status === 'slow' ? '↑ Slow' : '— OK'}</span>
+                <span className="font-mono text-[11px] font-medium" style={{ color: col, width: 34, textAlign: 'right' }}>{r.avgDays}d</span>
+                <span className="font-mono text-[8px] px-[6px] py-[1px] " style={{ color: col, background: `color-mix(in srgb, ${col} 12%, transparent)`, border: `1px solid color-mix(in srgb, ${col} 25%, transparent)` }}>{r.status === 'fast' ? '↓ Fast' : r.status === 'slow' ? '↑ Slow' : '— OK'}</span>
               </div>
             );
           })}

@@ -37,8 +37,8 @@ function SentimentBar({ value, trend = '' }: { value: string; trend?: string }) 
   const col = pct >= 75 ? 'var(--green)' : pct >= 50 ? 'var(--blue)' : 'var(--orange)';
   return (
     <div className="flex items-center gap-[6px]">
-      <div className="w-[50px] h-[4px] rounded-[2px] overflow-hidden" style={{ background: 'var(--surface3)' }}>
-        <div className="h-full rounded-[2px]" style={{ width: `${pct}%`, background: col }} />
+      <div className="w-[50px] h-[4px] overflow-hidden" style={{ background: 'var(--surface3)' }}>
+        <div className="h-full" style={{ width: `${pct}%`, background: col }} />
       </div>
       <span className="font-mono text-[10px]" style={{ color: col }}>{value}%</span>
       <span className="font-mono text-[8px]" style={{ color: (trend || '').includes('↑') ? 'var(--green)' : 'var(--orange)' }}>{trend || '—'}</span>

@@ -110,10 +110,10 @@ export default function MessagesPage() {
     <div className="flex flex-col gap-[13px]">
       <div className="card" style={{ padding: '14px 20px' }}>
         <div className="flex items-center justify-between">
-          <span className="text-[16px] font-semibold" style={{ fontFamily: "'Roboto Slab', serif", color: 'var(--text-bright)' }}>Messages<DataSourceBadge fromApi={fromApi} /></span>
-          <div className="flex gap-[2px] p-[3px] rounded-[7px]" style={{ background: 'var(--surface3)' }}>
+          <span className="text-[16px] font-medium" style={{ fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif", color: 'var(--text-bright)' }}>Messages<DataSourceBadge fromApi={fromApi} /></span>
+          <div className="flex gap-[2px] p-[3px]" style={{ background: 'var(--surface3)' }}>
             {([['all', 'All'], ['agent', 'Agents'], ['a2a', 'A2A Sessions'], ['team', 'Team']] as const).map(([k, l]) => (
-              <button key={k} onClick={() => setFilter(k as any)} className="font-mono text-[9px] px-[10px] py-[4px] rounded-[5px] transition-all" style={{
+              <button key={k} onClick={() => setFilter(k as any)} className="font-mono text-[9px] px-[10px] py-[4px] transition-all" style={{
                 color: filter === k ? 'var(--blue)' : 'var(--text-dim)',
                 background: filter === k ? 'var(--surface)' : 'transparent',
                 fontWeight: filter === k ? 600 : 400,
@@ -128,7 +128,7 @@ export default function MessagesPage() {
         <div className="card" style={{ padding: '8px', overflow: 'auto', maxHeight: 'calc(100vh - 200px)' }}>
           {filtered.map(t => (
             <div key={t.id} className={`msg-thread ${t.unread ? 'unread' : ''} ${selectedId === t.id ? 'selected' : ''}`} onClick={() => { setSelectedId(t.id); setShowA2ATranscript(false); }} style={{ padding: '10px 12px' }}>
-              <div className="w-[32px] h-[32px] rounded-[8px] flex items-center justify-center flex-shrink-0" style={{
+              <div className="w-[32px] h-[32px] flex items-center justify-center flex-shrink-0" style={{
                 background: t.type === 'agent' ? 'var(--green-bg)' : t.type === 'a2a' ? 'var(--purple-bg)' : 'var(--blue-bg)',
                 border: '1px solid var(--border)',
               }}>
@@ -138,7 +138,7 @@ export default function MessagesPage() {
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between gap-[6px]">
-                  <span className="text-[11.5px] font-semibold truncate" style={{ color: 'var(--text-bright)' }}>{t.title}</span>
+                  <span className="text-[11.5px] font-medium truncate" style={{ color: 'var(--text-bright)' }}>{t.title}</span>
                   <span className="font-mono text-[8px] flex-shrink-0" style={{ color: 'var(--muted)' }}>{t.time}</span>
                 </div>
                 <div className="font-mono text-[8.5px] mt-[1px]" style={{ color: t.type === 'a2a' ? 'var(--purple)' : 'var(--muted)' }}>{t.subtitle}</div>
@@ -154,7 +154,7 @@ export default function MessagesPage() {
             <>
               <div className="flex items-center justify-between pb-[12px] mb-[12px]" style={{ borderBottom: '1px solid var(--border)' }}>
                 <div>
-                  <div className="text-[14px] font-semibold" style={{ color: 'var(--text-bright)' }}>{selected.title}</div>
+                  <div className="text-[14px] font-medium" style={{ color: 'var(--text-bright)' }}>{selected.title}</div>
                   <div className="font-mono text-[9px] mt-[1px]" style={{ color: selected.type === 'a2a' ? 'var(--purple)' : 'var(--muted)' }}>{selected.subtitle}</div>
                 </div>
                 {selected.a2aTranscript && (
@@ -168,13 +168,13 @@ export default function MessagesPage() {
               <div className="flex-1 overflow-y-auto pr-[4px]" style={{ scrollbarWidth: 'thin' }}>
                 {showA2ATranscript && selected.a2aTranscript ? (
                   <div>
-                    <div className="p-[10px_12px] rounded-[8px] mb-[14px]" style={{ background: 'var(--purple-bg)', border: '1px solid var(--purple-border)' }}>
-                      <div className="font-mono text-[9px] font-bold" style={{ color: 'var(--purple)' }}>AGENT-TO-AGENT TRANSCRIPT</div>
+                    <div className="p-[10px_12px] mb-[14px]" style={{ background: 'var(--purple-bg)', border: '1px solid var(--purple-border)' }}>
+                      <div className="font-mono text-[9px] font-medium" style={{ color: 'var(--purple)' }}>AGENT-TO-AGENT TRANSCRIPT</div>
                       <div className="text-[10.5px] mt-[2px]" style={{ color: 'var(--text-dim)' }}>Full conversation between recruiting agent and candidate agent</div>
                     </div>
                     {selected.a2aTranscript.map(msg => (
                       <div key={msg.id} className={`flex gap-[10px] mb-[10px] ${msg.type === 'a2a-right' ? 'flex-row-reverse' : ''}`}>
-                        <div className="w-[28px] h-[28px] rounded-[7px] flex items-center justify-center flex-shrink-0" style={{
+                        <div className="w-[28px] h-[28px] flex items-center justify-center flex-shrink-0" style={{
                           background: msg.type === 'a2a-left' ? 'var(--blue-bg)' : 'var(--purple-bg)',
                           border: `1px solid ${msg.type === 'a2a-left' ? 'var(--blue-border)' : 'var(--purple-border)'}`,
                         }}>
@@ -184,7 +184,7 @@ export default function MessagesPage() {
                           <div className="font-mono text-[8.5px] mb-[2px]" style={{ color: msg.type === 'a2a-left' ? 'var(--blue)' : 'var(--purple)' }}>
                             {msg.sender} <span style={{ color: 'var(--muted)' }}>{msg.time}</span>
                           </div>
-                          <div className="text-[11.5px] leading-[1.55] p-[8px_11px] rounded-[8px] inline-block" style={{
+                          <div className="text-[11.5px] leading-[1.55] p-[8px_11px] inline-block" style={{
                             color: 'var(--text-mid)',
                             background: msg.type === 'a2a-left' ? 'var(--surface2)' : 'var(--purple-bg)',
                             maxWidth: '85%', textAlign: 'left',
@@ -196,12 +196,12 @@ export default function MessagesPage() {
                 ) : (
                   selected.messages.map(msg => (
                     <div key={msg.id} className={`flex gap-[10px] mb-[10px] ${msg.type === 'user' ? 'flex-row-reverse' : ''}`}>
-                      {msg.type === 'agent' && <div className="w-[28px] h-[28px] rounded-[7px] flex items-center justify-center flex-shrink-0" style={{ background: 'var(--green-bg)', border: '1px solid var(--border)' }}><IconBot size={13} color="var(--green)" /></div>}
-                      {msg.type === 'user' && <div className="w-[28px] h-[28px] rounded-full flex items-center justify-center flex-shrink-0 font-mono text-[9px] font-bold" style={{ background: 'var(--blue-bg)', color: 'var(--blue)', border: '1px solid var(--border)' }}>You</div>}
+                      {msg.type === 'agent' && <div className="w-[28px] h-[28px] flex items-center justify-center flex-shrink-0" style={{ background: 'var(--green-bg)', border: '1px solid var(--border)' }}><IconBot size={13} color="var(--green)" /></div>}
+                      {msg.type === 'user' && <div className="w-[28px] h-[28px] rounded-full flex items-center justify-center flex-shrink-0 font-mono text-[9px] font-medium" style={{ background: 'var(--blue-bg)', color: 'var(--blue)', border: '1px solid var(--border)' }}>You</div>}
                       <div className={`flex-1 min-w-0 ${msg.type === 'user' ? 'text-right' : ''}`}>
                         <div className="font-mono text-[8.5px] mb-[2px]" style={{ color: 'var(--muted)' }}>{msg.sender} · {msg.time}</div>
                         <div className="chat-bubble agent inline-block" style={{ textAlign: 'left' }}>
-                          {msg.signal && <div className="font-mono text-[8px] font-bold mb-[3px]" style={{ color: 'var(--green)' }}>⚡ {msg.signal.toUpperCase()} SIGNAL</div>}
+                          {msg.signal && <div className="font-mono text-[8px] font-medium mb-[3px]" style={{ color: 'var(--green)' }}>⚡ {msg.signal.toUpperCase()} SIGNAL</div>}
                           <span style={{ whiteSpace: 'pre-line' }}>{msg.text}</span>
                         </div>
                       </div>
@@ -235,7 +235,7 @@ export default function MessagesPage() {
                       <div className="mb-[8px]">
                         {extraMsgs.map(msg => (
                           <div key={msg.id} className="flex gap-[10px] mb-[8px] flex-row-reverse">
-                            <div className="w-[28px] h-[28px] rounded-full flex items-center justify-center flex-shrink-0 font-mono text-[9px] font-bold" style={{ background: 'var(--blue-bg)', color: 'var(--blue)', border: '1px solid var(--border)' }}>You</div>
+                            <div className="w-[28px] h-[28px] rounded-full flex items-center justify-center flex-shrink-0 font-mono text-[9px] font-medium" style={{ background: 'var(--blue-bg)', color: 'var(--blue)', border: '1px solid var(--border)' }}>You</div>
                             <div className="flex-1 min-w-0 text-right">
                               <div className="font-mono text-[8.5px] mb-[2px]" style={{ color: 'var(--muted)' }}>{msg.sender} · {msg.time}</div>
                               <div className="chat-bubble agent inline-block" style={{ textAlign: 'left', background: 'var(--blue-bg)', border: '1px solid var(--blue-border)' }}>{msg.text}</div>
