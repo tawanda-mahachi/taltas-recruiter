@@ -55,7 +55,7 @@ function MiniBarChart({ data, color }: { data: number[]; color: string }) {
   return (
     <div className="flex items-end gap-[4px]" style={{ height: 60 }}>
       {data.map((val, i) => (
-        <div key={i} className="flex-1 rounded-t-[3px] cursor-pointer transition-opacity hover:opacity-75" style={{ height: `${(val / max) * 100}%`, background: color, minHeight: 4 }} title={`${val}`} />
+        <div key={i} className="flex-1 cursor-pointer transition-opacity hover:opacity-75" style={{ height: `${(val / max) * 100}%`, background: color, minHeight: 4 }} title={`${val}`} />
       ))}
     </div>
   );
@@ -113,9 +113,9 @@ export default function ReportsPage() {
       <div className="card" style={{ padding: '12px 18px' }}>
         <div className="flex items-center justify-between mb-[10px] flex-wrap gap-[6px]">
           <span className="mono-label flex items-center gap-[6px]"><IconCalendar size={11} /> Report Parameters</span>
-          <div className="flex gap-[2px] p-[3px] rounded-[7px]" style={{ background: 'var(--surface3)' }}>
+          <div className="flex gap-[2px] p-[3px] " style={{ background: 'var(--surface3)' }}>
             {[{ k: '1m', l: '1M' }, { k: '3m', l: '3M' }, { k: '6m', l: '6M' }, { k: '12m', l: '12M' }].map(({ k, l }) => (
-              <button key={k} onClick={() => setDateRange(k)} className="font-mono text-[9px] px-[10px] py-[4px] rounded-[5px] transition-all" style={{ color: dateRange === k ? 'var(--blue)' : 'var(--text-dim)', background: dateRange === k ? 'var(--surface)' : 'transparent', fontWeight: dateRange === k ? 600 : 400, boxShadow: dateRange === k ? '0 1px 3px rgba(0,0,0,.08)' : 'none' }}>{l}</button>
+              <button key={k} onClick={() => setDateRange(k)} className="font-mono text-[9px] px-[10px] py-[4px]  transition-all" style={{ color: dateRange === k ? 'var(--blue)' : 'var(--text-dim)', background: dateRange === k ? 'var(--surface)' : 'transparent', fontWeight: dateRange === k ? 600 : 400, boxShadow: dateRange === k ? '0 1px 3px rgba(0,0,0,.08)' : 'none' }}>{l}</button>
             ))}
           </div>
         </div>
@@ -154,9 +154,9 @@ export default function ReportsPage() {
           <MiniBarChart data={rangeData} color="var(--blue)" />
           <div className="flex gap-[4px] mt-[4px]">{rangeMonths.map(m => <div key={m} className="flex-1 text-center font-mono text-[7.5px]" style={{ color: 'var(--muted)' }}>{m}</div>)}</div>
           <div className="flex gap-[22px] mt-[14px] flex-wrap">
-            <div><div className="font-mono text-[8px] uppercase mb-[2px]" style={{ color: 'var(--muted)', letterSpacing: '.06em' }}>Total Applied</div><span className="text-[17px] font-semibold" style={{ fontFamily: "'Roboto Slab', serif", color: 'var(--text-bright)' }}>162</span></div>
-            <div><div className="font-mono text-[8px] uppercase mb-[2px]" style={{ color: 'var(--muted)', letterSpacing: '.06em' }}>vs Last Period</div><span className="text-[17px] font-semibold" style={{ fontFamily: "'Roboto Slab', serif", color: 'var(--green)' }}>+9.5%</span></div>
-            <div><div className="font-mono text-[8px] uppercase mb-[2px]" style={{ color: 'var(--muted)', letterSpacing: '.06em' }}>Avg/Month</div><span className="text-[17px] font-semibold" style={{ fontFamily: "'Roboto Slab', serif", color: 'var(--text-bright)' }}>131</span></div>
+            <div><div className="font-mono text-[8px] uppercase mb-[2px]" style={{ color: 'var(--muted)', letterSpacing: '.06em' }}>Total Applied</div><span className="text-[17px] font-semibold" style={{ fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif", color: 'var(--text-bright)' }}>162</span></div>
+            <div><div className="font-mono text-[8px] uppercase mb-[2px]" style={{ color: 'var(--muted)', letterSpacing: '.06em' }}>vs Last Period</div><span className="text-[17px] font-semibold" style={{ fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif", color: 'var(--green)' }}>+9.5%</span></div>
+            <div><div className="font-mono text-[8px] uppercase mb-[2px]" style={{ color: 'var(--muted)', letterSpacing: '.06em' }}>Avg/Month</div><span className="text-[17px] font-semibold" style={{ fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif", color: 'var(--text-bright)' }}>131</span></div>
           </div>
         </div>
 
@@ -166,15 +166,15 @@ export default function ReportsPage() {
           {SOURCES.map(s => (
             <div key={s.name} className="flex items-center gap-[9px] mb-[8px]">
               <span className="text-[11.5px] flex-shrink-0" style={{ color: 'var(--text-mid)', width: 120 }}>{s.name}</span>
-              <div className="flex-1 h-[6px] rounded-[3px] overflow-hidden" style={{ background: 'var(--surface3)' }}><div className="h-full rounded-[3px]" style={{ width: `${s.quality}%`, background: s.color }} /></div>
+              <div className="flex-1 h-[6px]  overflow-hidden" style={{ background: 'var(--surface3)' }}><div className="h-full " style={{ width: `${s.quality}%`, background: s.color }} /></div>
               <span className="font-mono text-[10px] w-[32px] text-right" style={{ color: 'var(--text-dim)' }}>{s.quality}</span>
             </div>
           ))}
-          <div className="mt-[10px] p-[9px_11px] rounded-[8px]" style={{ background: 'var(--surface2)', border: '1px solid var(--border)' }}>
-            <div className="font-mono text-[8.5px] font-bold mb-[6px]" style={{ color: 'var(--blue)' }}>HOW QUALITY SCORE IS WEIGHTED</div>
+          <div className="mt-[10px] p-[9px_11px] " style={{ background: 'var(--surface2)', border: '1px solid var(--border)' }}>
+            <div className="font-mono text-[8.5px] font-medium mb-[6px]" style={{ color: 'var(--blue)' }}>HOW QUALITY SCORE IS WEIGHTED</div>
             <div className="grid gap-[6px] mb-[7px]" style={{ gridTemplateColumns: '1fr 1fr 1fr' }}>
               {[{ pct: '40%', label: 'Offer Rate' }, { pct: '35%', label: 'Deep Match Avg' }, { pct: '25%', label: '90-Day Retention' }].map(w => (
-                <div key={w.label} className="text-center p-[6px] rounded-[6px]" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}><div className="text-[13px] font-bold" style={{ color: 'var(--text-bright)' }}>{w.pct}</div><div className="font-mono text-[8px]" style={{ color: 'var(--muted)' }}>{w.label}</div></div>
+                <div key={w.label} className="text-center p-[6px] " style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}><div className="text-[13px] font-medium" style={{ color: 'var(--text-bright)' }}>{w.pct}</div><div className="font-mono text-[8px]" style={{ color: 'var(--muted)' }}>{w.label}</div></div>
               ))}
             </div>
           </div>
@@ -187,10 +187,10 @@ export default function ReportsPage() {
             <div><div className="font-mono text-[8.5px] mb-[4px]" style={{ color: 'var(--muted)' }}>ATS-ONLY QUALITY RATE</div><div className="h-[20px] rounded overflow-hidden" style={{ background: 'var(--surface3)' }}><div className="h-full flex items-center pl-[8px]" style={{ width: '64%', background: 'var(--border2)' }}><span className="font-mono text-[9px]" style={{ color: 'var(--text-dim)' }}>64%</span></div></div></div>
             <div><div className="font-mono text-[8.5px] mb-[4px]" style={{ color: 'var(--blue)' }}>TALTAS EXPLORER QUALITY RATE</div><div className="h-[20px] rounded overflow-hidden" style={{ background: 'var(--surface3)' }}><div className="h-full flex items-center pl-[8px]" style={{ width: '91%', background: 'linear-gradient(90deg, var(--blue), #60a5fa)' }}><span className="font-mono text-[9px] font-semibold" style={{ color: '#fff' }}>91%</span></div></div></div>
           </div>
-          <div className="p-[11px_13px] rounded-[9px]" style={{ background: 'var(--blue-bg)', border: '1px solid var(--blue-border)' }}>
-            <div className="flex items-center justify-between mb-[8px]"><span className="font-mono text-[9px] font-bold flex items-center gap-[5px]" style={{ color: 'var(--blue)' }}><IconDiamond size={10} color="var(--blue)" /> HIDDEN GEMS UNCOVERED</span><span className="font-mono text-[18px] font-[800]" style={{ color: 'var(--blue)' }}>34</span></div>
+          <div className="p-[11px_13px] " style={{ background: 'var(--blue-bg)', border: '1px solid var(--blue-border)' }}>
+            <div className="flex items-center justify-between mb-[8px]"><span className="font-mono text-[9px] font-medium flex items-center gap-[5px]" style={{ color: 'var(--blue)' }}><IconDiamond size={10} color="var(--blue)" /> HIDDEN GEMS UNCOVERED</span><span className="font-mono text-[18px] font-[800]" style={{ color: 'var(--blue)' }}>34</span></div>
             <div className="text-[11px] mb-[10px]" style={{ color: 'var(--text-mid)' }}>Candidates passed by ATS (AI Match &lt;70) advanced by Explorer</div>
-            <div className="p-[7px_10px] rounded-[6px] flex items-center gap-[8px]" style={{ background: 'rgba(22, 163, 74, 0.08)', border: '1px solid rgba(22, 163, 74, 0.2)' }}><span className="text-[16px] font-[800]" style={{ color: 'var(--green)' }}>11</span><span className="text-[11px]" style={{ color: 'var(--text-mid)' }}>now in <strong>Final Round or Offer</strong> stage</span></div>
+            <div className="p-[7px_10px]  flex items-center gap-[8px]" style={{ background: 'rgba(22, 163, 74, 0.08)', border: '1px solid rgba(22, 163, 74, 0.2)' }}><span className="text-[16px] font-[800]" style={{ color: 'var(--green)' }}>11</span><span className="text-[11px]" style={{ color: 'var(--text-mid)' }}>now in <strong>Final Round or Offer</strong> stage</span></div>
           </div>
         </div>
 
@@ -223,7 +223,7 @@ export default function ReportsPage() {
                     <td>
                       <div className="flex gap-[2px]" style={{ width: 120 }}>
                         {[r.applied, r.screened, r.interview, r.offer].map((v, i) => (
-                          <div key={i} className="h-[8px] rounded-[2px]" style={{ width: `${(v / maxApplied) * 100}%`, background: ['var(--blue)', 'var(--purple)', 'var(--orange)', 'var(--green)'][i], minWidth: v > 0 ? 3 : 0 }} />
+                          <div key={i} className="h-[8px] " style={{ width: `${(v / maxApplied) * 100}%`, background: ['var(--blue)', 'var(--purple)', 'var(--orange)', 'var(--green)'][i], minWidth: v > 0 ? 3 : 0 }} />
                         ))}
                       </div>
                     </td>
@@ -243,11 +243,11 @@ export default function ReportsPage() {
           {DIVERSITY_DATA.map(cat => (
             <div key={cat.category} className="mb-[14px]">
               <div className="font-mono text-[8.5px] uppercase tracking-[.08em] mb-[6px]" style={{ color: 'var(--muted)' }}>{cat.category} — Pipeline Representation</div>
-              <div className="flex rounded-[4px] overflow-hidden h-[18px] mb-[6px]">
-                {cat.segments.map(s => <div key={s.label} style={{ width: `${s.pct}%`, background: s.color }} className="flex items-center justify-center"><span className="font-mono text-[7px] text-white font-bold">{s.pct > 10 ? `${s.pct}%` : ''}</span></div>)}
+              <div className="flex  overflow-hidden h-[18px] mb-[6px]">
+                {cat.segments.map(s => <div key={s.label} style={{ width: `${s.pct}%`, background: s.color }} className="flex items-center justify-center"><span className="font-mono text-[7px] text-white font-medium">{s.pct > 10 ? `${s.pct}%` : ''}</span></div>)}
               </div>
               <div className="flex gap-[10px] flex-wrap">
-                {cat.segments.map(s => <div key={s.label} className="flex items-center gap-[4px]"><div className="w-[6px] h-[6px] rounded-[2px]" style={{ background: s.color }} /><span className="font-mono text-[8px]" style={{ color: 'var(--text-dim)' }}>{s.label} {s.pct}%</span></div>)}
+                {cat.segments.map(s => <div key={s.label} className="flex items-center gap-[4px]"><div className="w-[6px] h-[6px] " style={{ background: s.color }} /><span className="font-mono text-[8px]" style={{ color: 'var(--text-dim)' }}>{s.label} {s.pct}%</span></div>)}
               </div>
             </div>
           ))}
@@ -263,8 +263,8 @@ export default function ReportsPage() {
               { l: 'Explorer API Cost', v: '$42.80', color: 'var(--text-dim)', sub: 'This billing period' },
               { l: 'Net ROI', v: '18.4x', color: 'var(--green)', sub: 'Return on investment' },
             ].map(s => (
-              <div key={s.l} className="p-[10px] rounded-[8px] text-center" style={{ background: 'var(--surface2)', border: '1px solid var(--border)' }}>
-                <div className="text-[18px] font-bold" style={{ fontFamily: "'Roboto Slab', serif", color: s.color }}>{s.v}</div>
+              <div key={s.l} className="p-[10px]  text-center" style={{ background: 'var(--surface2)', border: '1px solid var(--border)' }}>
+                <div className="text-[18px] font-medium" style={{ fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif", color: s.color }}>{s.v}</div>
                 <div className="font-mono text-[8px]" style={{ color: 'var(--muted)' }}>{s.l}</div>
                 <div className="font-mono text-[7px] mt-[2px]" style={{ color: s.sub.startsWith('↓') || s.sub.startsWith('+') || s.sub.startsWith('Return') ? 'var(--green)' : 'var(--muted)' }}>{s.sub}</div>
               </div>
@@ -362,8 +362,8 @@ export default function ReportsPage() {
             </svg>
           </div>
           <div className="flex justify-center gap-[16px] mt-[4px]">
-            <div className="flex items-center gap-[5px]"><div className="w-[10px] h-[3px] rounded" style={{ background: 'var(--blue)' }} /><span className="font-mono text-[8px]" style={{ color: 'var(--text-dim)' }}>Explorer Candidates</span></div>
-            <div className="flex items-center gap-[5px]"><div className="w-[10px] h-[3px] rounded" style={{ background: '#94a3b8', opacity: 0.5 }} /><span className="font-mono text-[8px]" style={{ color: 'var(--text-dim)' }}>ATS-Only Candidates</span></div>
+            <div className="flex items-center gap-[5px]"><div className="w-[10px] h-[3px]" style={{ background: 'var(--blue)' }} /><span className="font-mono text-[8px]" style={{ color: 'var(--text-dim)' }}>Explorer Candidates</span></div>
+            <div className="flex items-center gap-[5px]"><div className="w-[10px] h-[3px]" style={{ background: '#94a3b8', opacity: 0.5 }} /><span className="font-mono text-[8px]" style={{ color: 'var(--text-dim)' }}>ATS-Only Candidates</span></div>
           </div>
           <div className="font-mono text-[8px] text-center mt-[8px]" style={{ color: 'var(--muted)' }}>Explorer candidates score 27% higher across all dimensions on average</div>
         </div>
@@ -435,8 +435,8 @@ export default function ReportsPage() {
                   <text x={barW + 40} y={barH - 0.8 * (barH - 10) + 13} fontSize="7" fontFamily="var(--font-mono)" fill="var(--orange)">80%</text>
                 </svg>
                 <div className="flex justify-center gap-[16px] mt-[4px]">
-                  <div className="flex items-center gap-[5px]"><div className="w-[10px] h-[3px] rounded" style={{ background: 'var(--red)' }} /><span className="font-mono text-[8px]" style={{ color: 'var(--text-dim)' }}>Count (bars)</span></div>
-                  <div className="flex items-center gap-[5px]"><div className="w-[10px] h-[3px] rounded" style={{ background: 'var(--orange)' }} /><span className="font-mono text-[8px]" style={{ color: 'var(--text-dim)' }}>Cumulative % (line)</span></div>
+                  <div className="flex items-center gap-[5px]"><div className="w-[10px] h-[3px]" style={{ background: 'var(--red)' }} /><span className="font-mono text-[8px]" style={{ color: 'var(--text-dim)' }}>Count (bars)</span></div>
+                  <div className="flex items-center gap-[5px]"><div className="w-[10px] h-[3px]" style={{ background: 'var(--orange)' }} /><span className="font-mono text-[8px]" style={{ color: 'var(--text-dim)' }}>Cumulative % (line)</span></div>
                 </div>
                 <div className="font-mono text-[8px] text-center mt-[8px]" style={{ color: 'var(--muted)' }}>Top 3 rejection reasons account for 70% of all rejections</div>
               </div>
@@ -453,7 +453,7 @@ export default function ReportsPage() {
         </div>
         <div className="grid gap-[9px]" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
           {REPORT_TILES.map(r => (
-            <div key={r.title} className="p-[14px] rounded-[9px] transition-all hover:border-[var(--blue)]" style={{ background: generating === r.title ? 'var(--blue-bg)' : 'var(--surface2)', border: `1px solid ${generating === r.title ? 'var(--blue-border)' : 'var(--border)'}` }}>
+            <div key={r.title} className="p-[14px] transition-all hover:border-[var(--blue)]" style={{ background: generating === r.title ? 'var(--blue-bg)' : 'var(--surface2)', border: `1px solid ${generating === r.title ? 'var(--blue-border)' : 'var(--border)'}` }}>
               <div className="mb-[7px]">{resolveIcon(r.iconKey, { size: 18 })}</div>
               <div className="text-[11.5px] font-medium mb-[3px]" style={{ color: 'var(--text-bright)' }}>{r.title}</div>
               <div className="font-mono text-[8.5px] mb-[8px]" style={{ color: generating === r.title ? 'var(--blue)' : 'var(--muted)' }}>{generating === r.title ? 'Generating…' : r.desc}</div>
@@ -467,7 +467,7 @@ export default function ReportsPage() {
 
       {/* Schedule Report Modal */}
       <Modal open={scheduleOpen} onClose={() => setScheduleOpen(false)} maxWidth="480px">
-        <div className="text-[17px] font-bold mb-[2px]" style={{ fontFamily: "'Roboto Slab', serif", color: 'var(--text-bright)' }}>Schedule Report</div>
+        <div style={{ fontSize:17, fontWeight:300, marginBottom:2 }} style={{ fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif", color: 'var(--text-bright)' }}>Schedule Report</div>
         <div className="text-[11px] mb-[16px]" style={{ color: 'var(--muted)' }}>Set up automated report delivery to your team</div>
         <div className="flex flex-col gap-[10px]">
           <div><label className="form-label">Report Type</label><select className="form-select" value={scheduleForm.reportType} onChange={e => setScheduleForm(f => ({ ...f, reportType: e.target.value }))}>{REPORT_TILES.map(r => <option key={r.title}>{r.title}</option>)}</select></div>
@@ -491,12 +491,12 @@ export default function ReportsPage() {
           <div>
             <div className="flex items-center justify-between mb-[14px]">
               <div>
-                <div className="text-[17px] font-bold" style={{ fontFamily: "'Roboto Slab', serif", color: 'var(--text-bright)' }}>{previewReport.title}</div>
+                <div style={{ fontSize:17, fontWeight:300 }} style={{ fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif", color: 'var(--text-bright)' }}>{previewReport.title}</div>
                 <div className="text-[11px]" style={{ color: 'var(--muted)' }}>{previewReport.desc}</div>
               </div>
               <button className="ctrl-btn" onClick={() => setPreviewReport(null)}><IconX size={10} /></button>
             </div>
-            <div className="mb-[14px] p-[12px] rounded-[8px]" style={{ background: 'var(--surface2)', border: '1px solid var(--border)' }}>
+            <div className="mb-[14px] p-[12px]" style={{ background: 'var(--surface2)', border: '1px solid var(--border)' }}>
               <div className="font-mono text-[8.5px] uppercase tracking-[.1em] mb-[8px]" style={{ color: 'var(--muted)' }}>Report Settings</div>
               <div className="grid grid-cols-2 gap-[8px]">
                 <div><label className="form-label">Date Range</label><div className="flex gap-[4px]"><input type="date" className="form-input" style={{ fontSize: 10, padding: '4px 8px' }} value={startDate} onChange={e => setStartDate(e.target.value)} /><input type="date" className="form-input" style={{ fontSize: 10, padding: '4px 8px' }} value={endDate} onChange={e => setEndDate(e.target.value)} /></div></div>
@@ -507,7 +507,7 @@ export default function ReportsPage() {
             </div>
             <div className="report-preview-page">
               <div className="font-mono text-[8.5px] uppercase tracking-[.1em] mb-[10px]" style={{ color: 'var(--muted)' }}>Preview</div>
-              <div className="text-[14px] font-bold mb-[10px]" style={{ fontFamily: "'Roboto Slab', serif", color: 'var(--text-bright)' }}>{previewReport.title}</div>
+              <div style={{ fontSize:14, fontWeight:300, marginBottom:10 }} style={{ fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif", color: 'var(--text-bright)' }}>{previewReport.title}</div>
               <table className="cand-table" style={{ minWidth: 0 }}>
                 <thead><tr><th>Metric</th>{rangeMonths.map(m => <th key={m}>{m}</th>)}<th>Trend</th></tr></thead>
                 <tbody>{METRICS_ROWS.map(r => (<tr key={r.label}><td className="text-[11px]" style={{ color: 'var(--text-mid)' }}>{r.label}</td>{r.values.map((v, i) => <td key={i} className="font-mono text-[10px]" style={{ color: 'var(--text-dim)' }}>{v}</td>)}<td><span className="font-mono text-[9px]" style={{ color: r.trend === 'up' ? 'var(--green)' : 'var(--blue)' }}>{r.trend === 'up' ? '↑' : '↓'}</span></td></tr>))}</tbody>

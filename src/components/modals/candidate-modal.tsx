@@ -181,18 +181,18 @@ export function CandidateModal({ open, onClose, candidate }: Props) {
       <div style={{ display: 'flex', gap: 13, alignItems: 'flex-start', marginBottom: 14, position: 'relative' }}>
         <img src={c.avatar} alt="" style={{ width: 64, height: 64, borderRadius: 12, objectFit: 'cover', flexShrink: 0, border: '2px solid var(--border)' }} />
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontSize: 19, fontWeight: 700, fontFamily: "'Roboto Slab', serif", color: 'var(--text-bright)' }}>{c.name}</div>
+          <div style={{ fontSize: 19, fontWeight: 300, fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif", color: 'var(--text-bright)' }}>{c.name}</div>
           <div style={{ fontSize: 13, marginTop: 3, color: 'var(--muted)' }}>{c.title}</div>
           <div style={{ fontSize: 12, marginTop: 2, fontWeight: 600, color: 'var(--text-mid)' }}>{c.company}</div>
           <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', alignItems: 'center', marginTop: 9 }}>
             <span className={`fit-badge ${c.fitLabel === 'Deep Match' ? 'fit-deep' : c.fitLabel === 'Strong Fit' ? 'fit-strong' : 'fit-good'}`}>{c.fitLabel}</span>
-            <span className="font-mono" style={{ fontSize: 9, padding: '1px 8px', borderRadius: 4, fontWeight: 600, color: 'var(--blue)', background: 'var(--blue-bg)', border: '1px solid var(--blue-border)' }}>{c.stage}</span>
+            <span className="font-mono" style={{ fontSize: 9, padding: '1px 8px', fontWeight: 500, color: 'var(--blue)', background: 'var(--blue-bg)', border: '1px solid var(--blue-border)' }}>{c.stage}</span>
             <span className="font-mono" style={{ fontSize: 9, color: 'var(--muted)' }}>{c.source}</span>
           </div>
           <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap', marginTop: 7 }}>{(c.tags || []).map(t => <span key={t} className="tag">{t}</span>)}</div>
         </div>
         <div style={{ textAlign: 'center', padding: '10px 18px', borderRadius: 12, background: 'var(--blue-bg)', border: '1px solid var(--blue-border)', flexShrink: 0 }}>
-          <div style={{ fontSize: 32, fontWeight: 800, color: 'var(--blue)', lineHeight: 1, fontFamily: "'Roboto Slab', serif" }}>{c.score}</div>
+          <div style={{ fontSize: 32, fontWeight: 300, color: 'var(--blue)', lineHeight: 1, fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif" }}>{c.score}</div>
           <div className="font-mono" style={{ fontSize: 9, marginTop: 2, color: 'var(--muted)' }}>DEEP MATCH</div>
         </div>
         <button onClick={onClose} className="ctrl-btn" style={{ position: 'absolute', top: 0, right: 0, fontSize: 9, padding: '4px 8px' }}><IconX size={10} /></button>
@@ -237,7 +237,7 @@ export function CandidateModal({ open, onClose, candidate }: Props) {
             </div>
             <div>
               <div style={{ marginBottom: 16 }}><div className="resume-section-title">Fit Dimensions</div>
-                {FIT_DIMS.map(d => { const v = dimScores[d.key] || 75; const col = dimColor(v); return (<div key={d.key} style={{ marginBottom: 7 }}><div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10, marginBottom: 2, color: 'var(--muted)' }}><span>{d.label}</span><span style={{ color: col, fontWeight: 600 }}>{v}</span></div><div style={{ height: 5, borderRadius: 3, overflow: 'hidden', background: 'var(--border2)' }}><div style={{ height: '100%', borderRadius: 3, width: `${v}%`, background: col }} /></div></div>); })}
+                {FIT_DIMS.map(d => { const v = dimScores[d.key] || 75; const col = dimColor(v); return (<div key={d.key} style={{ marginBottom: 7 }}><div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10, marginBottom: 2, color: 'var(--muted)' }}><span>{d.label}</span><span style={{ color: col, fontWeight: 600 }}>{v}</span></div><div style={{ height: 5, overflow: 'hidden', background: 'var(--border2)' }}><div style={{ height: '100%', width: `${v}%`, background: col }} /></div></div>); })}
               </div>
               {resume.experience?.[0] && (<div style={{ marginBottom: 16 }}><div className="resume-section-title">Current Role</div><div style={{ padding: 12, borderRadius: 9, background: 'var(--surface2)', border: '1px solid var(--border)' }}><div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-bright)' }}>{resume.experience[0].role}</div><div style={{ fontSize: 11.5, marginTop: 2, color: 'var(--muted)' }}>{resume.experience[0].company} · {resume.experience[0].dates}</div>{resume.experience[0].desc && <div style={{ fontSize: 11.5, marginTop: 5, lineHeight: 1.5, color: 'var(--text-mid)' }}>{resume.experience[0].desc}</div>}</div></div>)}
             </div>
@@ -278,17 +278,17 @@ export function CandidateModal({ open, onClose, candidate }: Props) {
                   <polygon points={reqPoly} fill="rgba(99,102,241,.12)" stroke="rgba(99,102,241,.5)" strokeWidth="1.5" />
                   <polygon points={valPoly} fill="rgba(16,185,129,.15)" stroke="var(--green)" strokeWidth="2" />
                   {candProfile.map((v, idx) => <circle key={idx} cx={spt(idx, v * sR)[0]} cy={spt(idx, v * sR)[1]} r="3" fill="var(--green)" />)}
-                  {FIT_DIMS.map((d, idx) => { const [x, y] = spt(idx, sR + 18); const v = dimScores[d.key] || 75; return <text key={d.key} x={x} y={y} textAnchor="middle" dominantBaseline="middle" fontSize="8" fill="var(--muted)" fontFamily="Roboto,sans-serif">{d.label.split(' ')[0]}</text>; })}
-                  {FIT_DIMS.map((d, idx) => { const [x, y] = spt(idx, sR + 28); const v = dimScores[d.key] || 75; const col = v >= 80 ? 'var(--green)' : v >= 60 ? 'var(--blue)' : 'var(--orange)'; return <text key={`v-${d.key}`} x={x} y={y} textAnchor="middle" dominantBaseline="middle" fontSize="9" fill={col} fontFamily="Roboto Mono,monospace" fontWeight="600">{v}</text>; })}
+                  {FIT_DIMS.map((d, idx) => { const [x, y] = spt(idx, sR + 18); const v = dimScores[d.key] || 75; return <text key={d.key} x={x} y={y} textAnchor="middle" dominantBaseline="middle" fontSize="8" fill="var(--muted)" fontFamily="Helvetica Neue,Arial,sans-serif">{d.label.split(' ')[0]}</text>; })}
+                  {FIT_DIMS.map((d, idx) => { const [x, y] = spt(idx, sR + 28); const v = dimScores[d.key] || 75; const col = v >= 80 ? 'var(--green)' : v >= 60 ? 'var(--blue)' : 'var(--orange)'; return <text key={`v-${d.key}`} x={x} y={y} textAnchor="middle" dominantBaseline="middle" fontSize="9" fill={col} fontFamily="Courier New,monospace" fontWeight="600">{v}</text>; })}
                 </svg>
                 <div style={{ display: 'flex', gap: 14, justifyContent: 'center', marginTop: 8 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}><div style={{ width: 8, height: 8, borderRadius: 2, background: 'rgba(99,102,241,.5)' }} /><span className="font-mono" style={{ fontSize: 9, color: 'var(--muted)' }}>Role Requirement</span></div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}><div style={{ width: 8, height: 8, borderRadius: 2, background: 'var(--green)' }} /><span className="font-mono" style={{ fontSize: 9, color: 'var(--muted)' }}>Candidate Profile</span></div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}><div style={{ width: 8, height: 8, background: 'rgba(99,102,241,.5)' }} /><span className="font-mono" style={{ fontSize: 9, color: 'var(--muted)' }}>Role Requirement</span></div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}><div style={{ width: 8, height: 8, background: 'var(--green)' }} /><span className="font-mono" style={{ fontSize: 9, color: 'var(--muted)' }}>Candidate Profile</span></div>
                 </div>
               </div>
               <div style={{ flex: 1, minWidth: 160 }}>
                 <div className="resume-section-title" style={{ marginBottom: 8 }}>Fit Dimensions</div>
-                {FIT_DIMS.map(d => { const v = dimScores[d.key] || 75; const col = dimColor(v); return (<div key={d.key} style={{ marginBottom: 7 }}><div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10, color: 'var(--muted)', marginBottom: 2 }}><span>{d.label}</span><span style={{ fontFamily: "'Roboto Mono', monospace", fontWeight: 500, color: col }}>{v}</span></div><div style={{ height: 5, background: 'var(--border2)', borderRadius: 3, overflow: 'hidden' }}><div style={{ height: '100%', width: `${v}%`, background: col }} /></div></div>); })}
+                {FIT_DIMS.map(d => { const v = dimScores[d.key] || 75; const col = dimColor(v); return (<div key={d.key} style={{ marginBottom: 7 }}><div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10, color: 'var(--muted)', marginBottom: 2 }}><span>{d.label}</span><span style={{ fontFamily: "'Courier New', monospace", fontWeight: 500, color: col }}>{v}</span></div><div style={{ height: 5, background: 'var(--border2)', overflow: 'hidden' }}><div style={{ height: '100%', width: `${v}%`, background: col }} /></div></div>); })}
               </div>
             </div>
 
@@ -301,9 +301,9 @@ export function CandidateModal({ open, onClose, candidate }: Props) {
                 {timeline.map((t, i) => {
                   const x = tPad + i * tStep, y = yMap[t.s], col = cMap[t.s];
                   return <g key={i}>
-                    {t.sig && <text x={x} y={y - 11} fontFamily="Roboto Mono,monospace" fontSize="6.5" fill={col} textAnchor="middle">{t.sig}</text>}
+                    {t.sig && <text x={x} y={y - 11} fontFamily="Courier New,monospace" fontSize="6.5" fill={col} textAnchor="middle">{t.sig}</text>}
                     <circle cx={x} cy={y} r="5" fill={col} opacity="0.85" />
-                    <text x={x} y={tH - 3} fontFamily="Roboto Mono,monospace" fontSize="7" fill="#9aa0ad" textAnchor="middle">{t.label}</text>
+                    <text x={x} y={tH - 3} fontFamily="Courier New,monospace" fontSize="7" fill="#9aa0ad" textAnchor="middle">{t.label}</text>
                   </g>;
                 })}
               </svg>
@@ -316,14 +316,14 @@ export function CandidateModal({ open, onClose, candidate }: Props) {
 
             {/* Topic Heatmap — Agent-to-Agent Comparison */}
             <div className="resume-section-title" style={{ marginBottom: 8 }}>🔥 Topic Interaction Heatmap</div>
-            <div style={{ fontFamily: "'Roboto Mono', monospace", fontSize: 8.5, color: 'var(--muted)', marginBottom: 10 }}>Each agent independently evaluates signal strength per topic (0–100)</div>
+            <div style={{ fontFamily: "'Courier New', monospace", fontSize: 8.5, color: 'var(--muted)', marginBottom: 10 }}>Each agent independently evaluates signal strength per topic (0–100)</div>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead><tr>
-                <th style={{ fontFamily: "'Roboto Mono', monospace", fontSize: 8.5, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '.08em', padding: '6px 10px', borderBottom: '1px solid var(--border)', textAlign: 'left', background: 'var(--surface2)' }}>Topic</th>
-                <th style={{ fontFamily: "'Roboto Mono', monospace", fontSize: 8.5, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '.08em', padding: '6px 10px', borderBottom: '1px solid var(--border)', textAlign: 'center', background: 'var(--surface2)', width: 80 }}>Explorer</th>
-                <th style={{ fontFamily: "'Roboto Mono', monospace", fontSize: 8.5, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '.08em', padding: '6px 10px', borderBottom: '1px solid var(--border)', textAlign: 'center', background: 'var(--surface2)', width: 80 }}>Candidate</th>
-                <th style={{ fontFamily: "'Roboto Mono', monospace", fontSize: 8.5, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '.08em', padding: '6px 10px', borderBottom: '1px solid var(--border)', textAlign: 'center', background: 'var(--surface2)', width: 50 }}>Δ</th>
-                <th style={{ fontFamily: "'Roboto Mono', monospace", fontSize: 8.5, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '.08em', padding: '6px 10px', borderBottom: '1px solid var(--border)', textAlign: 'left', background: 'var(--surface2)' }}>Verdict</th>
+                <th style={{ fontFamily: "'Courier New', monospace", fontSize: 8.5, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '.08em', padding: '6px 10px', borderBottom: '1px solid var(--border)', textAlign: 'left', background: 'var(--surface2)' }}>Topic</th>
+                <th style={{ fontFamily: "'Courier New', monospace", fontSize: 8.5, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '.08em', padding: '6px 10px', borderBottom: '1px solid var(--border)', textAlign: 'center', background: 'var(--surface2)', width: 80 }}>Explorer</th>
+                <th style={{ fontFamily: "'Courier New', monospace", fontSize: 8.5, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '.08em', padding: '6px 10px', borderBottom: '1px solid var(--border)', textAlign: 'center', background: 'var(--surface2)', width: 80 }}>Candidate</th>
+                <th style={{ fontFamily: "'Courier New', monospace", fontSize: 8.5, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '.08em', padding: '6px 10px', borderBottom: '1px solid var(--border)', textAlign: 'center', background: 'var(--surface2)', width: 50 }}>Δ</th>
+                <th style={{ fontFamily: "'Courier New', monospace", fontSize: 8.5, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '.08em', padding: '6px 10px', borderBottom: '1px solid var(--border)', textAlign: 'left', background: 'var(--surface2)' }}>Verdict</th>
               </tr></thead>
               <tbody>{heatmap.map((row, idx) => {
                 const ec = scoreColor(row.exp), cc = scoreColor(row.cand);
@@ -333,20 +333,20 @@ export function CandidateModal({ open, onClose, candidate }: Props) {
                   <td style={{ fontSize: 11.5, color: 'var(--text-mid)', padding: '8px 10px', fontWeight: 500 }}>{row.topic}</td>
                   <td style={{ textAlign: 'center', padding: '6px 10px' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
-                      <span style={{ fontFamily: "'Roboto Mono', monospace", fontSize: 11, fontWeight: 600, padding: '3px 10px', borderRadius: 4, background: ec.bg, color: ec.fg }}>{row.exp}</span>
-                      <div style={{ width: 50, height: 3, borderRadius: 2, background: 'var(--surface3)', overflow: 'hidden' }}><div style={{ width: `${row.exp}%`, height: '100%', borderRadius: 2, background: ec.fg, opacity: 0.6 }} /></div>
+                      <span style={{ fontFamily: "'Courier New', monospace", fontSize: 11, fontWeight: 600, padding: '3px 10px', background: ec.bg, color: ec.fg }}>{row.exp}</span>
+                      <div style={{ width: 50, height: 3, background: 'var(--surface3)', overflow: 'hidden' }}><div style={{ width: `${row.exp}%`, height: '100%', background: ec.fg, opacity: 0.6 }} /></div>
                     </div>
                   </td>
                   <td style={{ textAlign: 'center', padding: '6px 10px' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
-                      <span style={{ fontFamily: "'Roboto Mono', monospace", fontSize: 11, fontWeight: 600, padding: '3px 10px', borderRadius: 4, background: cc.bg, color: cc.fg }}>{row.cand}</span>
-                      <div style={{ width: 50, height: 3, borderRadius: 2, background: 'var(--surface3)', overflow: 'hidden' }}><div style={{ width: `${row.cand}%`, height: '100%', borderRadius: 2, background: cc.fg, opacity: 0.6 }} /></div>
+                      <span style={{ fontFamily: "'Courier New', monospace", fontSize: 11, fontWeight: 600, padding: '3px 10px', background: cc.bg, color: cc.fg }}>{row.cand}</span>
+                      <div style={{ width: 50, height: 3, background: 'var(--surface3)', overflow: 'hidden' }}><div style={{ width: `${row.cand}%`, height: '100%', background: cc.fg, opacity: 0.6 }} /></div>
                     </div>
                   </td>
                   <td style={{ textAlign: 'center', padding: '6px 10px' }}>
-                    <span style={{ fontFamily: "'Roboto Mono', monospace", fontSize: 9, fontWeight: 500, color: delta >= 0 ? '#16a34a' : '#ea580c' }}>{delta >= 0 ? '+' : ''}{delta}</span>
+                    <span style={{ fontFamily: "'Courier New', monospace", fontSize: 9, fontWeight: 500, color: delta >= 0 ? '#16a34a' : '#ea580c' }}>{delta >= 0 ? '+' : ''}{delta}</span>
                   </td>
-                  <td style={{ padding: '6px 10px' }}><span style={{ fontFamily: "'Roboto Mono', monospace", fontSize: 9, padding: '2px 7px', borderRadius: 4, color: vc.fg, background: vc.bg }}>{row.verdict}</span></td>
+                  <td style={{ padding: '6px 10px' }}><span style={{ fontFamily: "'Courier New', monospace", fontSize: 9, padding: '2px 7px', color: vc.fg, background: vc.bg }}>{row.verdict}</span></td>
                 </tr>);
               })}</tbody>
             </table>
