@@ -31,7 +31,7 @@ function Inner() {
       ) : (
         <div style={{textAlign:'center'}}>
           <div style={{width:32,height:32,border:'2px solid #2563eb',borderTopColor:'transparent',borderRadius:'50%',animation:'spin 0.8s linear infinite',margin:'0 auto 16px'}}/>
-          <div style={{fontFamily:'Courier New,monospace',fontSize:10,color:'#AAAAAA',letterSpacing:'.1em'}}>SIGNING IN...</div>
+          <div style={{fontFamily:'Helvetica Neue,Arial,sans-serif',fontSize:10,color:'#AAAAAA',letterSpacing:'.1em'}}>SIGNING IN...</div>
           <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
         </div>
       )}
