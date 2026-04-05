@@ -2,7 +2,7 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useCandidates, useJobs, useExplorers } from '@/lib/data-provider';
+import { useCandidates, useRoles, useExplorers } from '@/lib/data-provider';
 
 const F = "'Helvetica Neue',Helvetica,Arial,sans-serif";
 const MONO = "'Courier New',monospace";
@@ -130,7 +130,7 @@ export default function DashboardPage() {
   const [hovMetric, setHovMetric] = useState<number | null>(null);
 
   const candsQuery = useCandidates();
-  const jobsQuery = useJobs();
+  const jobsQuery = useRoles();
   const explsQuery = useExplorers();
 
   const cands = candsQuery.data?.data?.length ? candsQuery.data.data : MOCK_CANDS;
