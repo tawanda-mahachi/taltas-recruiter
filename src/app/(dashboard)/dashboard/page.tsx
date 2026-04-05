@@ -134,7 +134,7 @@ export default function DashboardPage() {
   const explsQuery = useExplorers();
 
   const cands = candsQuery.data?.data?.length ? candsQuery.data.data : MOCK_CANDS;
-  const jobs  = jobsQuery.data?.data?.length  ? jobsQuery.data.data  : MOCK_JOBS;
+  const jobs  = jobsQuery?.data?.data?.length  ? jobsQuery.data.data  : MOCK_JOBS;
   const expls = explsQuery.data?.data?.length ? explsQuery.data.data : MOCK_EXPLS;
 
   const filtered = cands.filter(c => {
@@ -170,7 +170,7 @@ export default function DashboardPage() {
             onMouseEnter={() => setHovMetric(i)}
             onMouseLeave={() => setHovMetric(null)}
             style={{ padding: '24px 28px', borderRight: i < 5 ? '1px solid rgba(255,255,255,.15)' : 'none', cursor: 'default', transition: 'background .15s', background: hovMetric === i ? 'rgba(255,255,255,.06)' : 'transparent' }}>
-            <div style={{ fontSize: 11, color: 'rgba(255,255,255,.55)', letterSpacing: '.06em', textTransform: 'uppercase', marginBottom: 10, fontFamily: F }}>{m.l}</div>
+            <div style={{ fontSize: 9.5, color: 'rgba(255,255,255,.55)', letterSpacing: '.1em', textTransform: 'uppercase', marginBottom: 10, fontFamily: MONO }}>{m.l}</div>
             <div style={{ fontSize: 36, fontWeight: 300, letterSpacing: '-0.03em', lineHeight: 1, color: '#fff' }}>{m.v}</div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginTop: 8 }}>
               {m.d && <span style={{ fontSize: 12, color: m.up ? '#6FECB8' : '#FF9E91', fontWeight: 500 }}>{m.d}</span>}
@@ -192,7 +192,7 @@ export default function DashboardPage() {
           {/* Pipeline header */}
           <div style={{ padding: '12px 24px', borderBottom: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
             <div style={{ width: 7, height: 7, borderRadius: '50%', background: TEAL, flexShrink: 0 }} />
-            <span style={{ fontSize: 12, color: MUTED, letterSpacing: '.08em', textTransform: 'uppercase', fontFamily: F }}>Active Pipeline</span>
+            <span style={{ fontSize: 10, color: MUTED, letterSpacing: '.1em', textTransform: 'uppercase', fontFamily: MONO }}>Active Pipeline</span>
             <span style={{ fontSize: 9, background: '#E8F0FF', color: BLUE, padding: '2px 7px', fontFamily: MONO }}>API</span>
             <span style={{ marginLeft: 'auto', fontSize: 11, color: BLUE, fontWeight: 400 }}>{filtered.length} candidates</span>
           </div>
@@ -231,9 +231,9 @@ export default function DashboardPage() {
           </div>
 
           {/* Table header — all columns */}
-          <div style={{ display: 'grid', gridTemplateColumns: '180px 110px 130px 80px 90px 70px 100px 60px 90px', padding: '0 16px', height: 34, alignItems: 'center', background: BLIGHT, borderBottom: '1px solid ' + BORDER, flexShrink: 0, gap: 8 }}>
-            {['Candidate', 'Role', 'Stage', 'AI Match', 'Deep Match', 'Sentiment', 'Fit · Source', 'Map', 'Actions'].map((h, i) => (
-              <div key={i} style={{ fontSize: 11, color: MUTED, letterSpacing: '.06em', textTransform: 'uppercase', fontFamily: F, fontWeight: 400, whiteSpace: 'nowrap' }}>{h}</div>
+          <div style={{ display: 'grid', gridTemplateColumns: '180px 110px 130px 80px 90px 110px 100px 90px', padding: '0 16px', height: 34, alignItems: 'center', background: BLIGHT, borderBottom: '1px solid ' + BORDER, flexShrink: 0, gap: 8 }}>
+            {['Candidate', 'Role', 'Stage', 'AI Match', 'Deep Match', 'Sentiment Map', 'Fit · Source', 'Actions'].map((h, i) => (
+              <div key={i} style={{ fontSize: 9, color: MUTED, letterSpacing: '.09em', textTransform: 'uppercase', fontFamily: MONO, fontWeight: 400, whiteSpace: 'nowrap' }}>{h}</div>
             ))}
           </div>
 
@@ -244,7 +244,7 @@ export default function DashboardPage() {
               const fc = fitCol[c.fit || 'Pending'] || { bg: BLIGHT, c: MUTED };
               return (
                 <div key={c.id || i} onClick={() => setProfileOpen(c)}
-                  style={{ display: 'grid', gridTemplateColumns: '180px 110px 130px 80px 90px 70px 100px 60px 90px', padding: '0 16px', height: 52, alignItems: 'center', borderBottom: '1px solid ' + BLIGHT, gap: 8, cursor: 'pointer', transition: 'background .1s', background: '#FFFFFF' }}
+                  style={{ display: 'grid', gridTemplateColumns: '180px 110px 130px 80px 90px 110px 100px 90px', padding: '0 16px', height: 52, alignItems: 'center', borderBottom: '1px solid ' + BLIGHT, gap: 8, cursor: 'pointer', transition: 'background .1s', background: '#FFFFFF' }}
                   onMouseEnter={e => (e.currentTarget.style.background = 'rgba(37,99,235,.016)')}
                   onMouseLeave={e => (e.currentTarget.style.background = '#FFFFFF')}>
 
@@ -286,16 +286,12 @@ export default function DashboardPage() {
                     <div style={{ fontSize: 9.5, color: MUTED, marginTop: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{c.source || 'Taltas Network'}</div>
                   </div>
 
-                  {/* Map */}
-                  <div>
+                  {/* Actions */}
+                  <div style={{ display: 'flex', gap: 4 }}>
                     <button onClick={e => { e.stopPropagation(); setProfileOpen(c); }}
                       style={{ fontSize: 10, color: BLUE, background: 'none', border: '1px solid #C8D8FF', padding: '3px 8px', cursor: 'pointer', fontFamily: F, whiteSpace: 'nowrap' }}>
                       Map
                     </button>
-                  </div>
-
-                  {/* Actions */}
-                  <div style={{ display: 'flex', gap: 4 }}>
                     <button onClick={e => { e.stopPropagation(); router.push('/candidates/' + (c.id || '')); }}
                       style={{ fontSize: 10, color: '#fff', background: BLUE, border: 'none', padding: '3px 8px', cursor: 'pointer', fontFamily: F, whiteSpace: 'nowrap' }}>
                       Profile
@@ -314,7 +310,7 @@ export default function DashboardPage() {
           <div style={{ flex: '0 0 55%', borderBottom: '1px solid ' + BORDER, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
             <div style={{ padding: '12px 20px', borderBottom: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0, background: '#F0F4FF' }}>
               <div style={{ width: 6, height: 6, borderRadius: '50%', background: BLUE, flexShrink: 0 }} />
-              <span style={{ fontSize: 12, color: BLUE, letterSpacing: '.08em', textTransform: 'uppercase', fontFamily: F }}>Open Jobs</span>
+              <span style={{ fontSize: 10, color: BLUE, letterSpacing: '.1em', textTransform: 'uppercase', fontFamily: MONO }}>Open Jobs</span>
               <span style={{ fontSize: 9, background: '#E8F0FF', color: BLUE, padding: '2px 7px', fontFamily: MONO }}>API</span>
               <span style={{ fontSize: 11, color: MID, fontWeight: 300 }}>24 active</span>
               <button onClick={() => {}} style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 4, padding: '5px 12px', background: BLUE, border: 'none', fontSize: 11, color: '#fff', cursor: 'pointer', fontFamily: F }}>
@@ -331,14 +327,14 @@ export default function DashboardPage() {
                     <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 }}>
                       <div style={{ flex: 1, minWidth: 0 }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 3 }}>
-                          <div style={{ fontSize: 13, fontWeight: 400, color: DARK }}>{j.title}</div>
+                          <div style={{ fontSize: 13, fontWeight: 400, color: DARK }}>{j.title || j.roleName || j.name}</div>
                           <span style={{ fontSize: 9, padding: '2px 7px', background: st.bg, color: st.c, fontWeight: 500, letterSpacing: '.04em', flexShrink: 0 }}>{j.status}</span>
                         </div>
                         <div style={{ fontSize: 11.5, color: MID, fontWeight: 300, marginBottom: 2 }}>{j.sub}</div>
                         <div style={{ fontSize: 11, color: MUTED, fontWeight: 300 }}>{j.comp}</div>
                       </div>
                       <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                        <div style={{ fontSize: 22, fontWeight: 300, color: DARK, letterSpacing: '-0.02em', lineHeight: 1 }}>{j.candidates ?? j.candidateCount ?? 0}</div>
+                        <div style={{ fontSize: 22, fontWeight: 300, color: DARK, letterSpacing: '-0.02em', lineHeight: 1 }}>{j.candidateCount ?? j.candidates ?? 0}</div>
                         <div style={{ fontSize: 9, color: MUTED, textTransform: 'uppercase', letterSpacing: '.05em', fontFamily: MONO }}>cands</div>
                       </div>
                     </div>
@@ -352,7 +348,7 @@ export default function DashboardPage() {
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
             <div style={{ padding: '12px 20px', borderBottom: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0, background: '#F0FFF8' }}>
               <div style={{ width: 6, height: 6, borderRadius: '50%', background: TEAL, flexShrink: 0 }} />
-              <span style={{ fontSize: 12, color: TEAL, letterSpacing: '.08em', textTransform: 'uppercase', fontFamily: F }}>Explorer Interactions</span>
+              <span style={{ fontSize: 10, color: TEAL, letterSpacing: '.1em', textTransform: 'uppercase', fontFamily: MONO }}>Explorer Interactions</span>
               <span style={{ fontSize: 9, background: '#E8F0FF', color: BLUE, padding: '2px 7px', fontFamily: MONO }}>API</span>
               <button style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 4, padding: '5px 10px', border: '1px solid ' + BORDER, background: 'none', fontSize: 11, color: MID, cursor: 'pointer', fontFamily: F }}>
                 + New Explorer
@@ -385,6 +381,23 @@ export default function DashboardPage() {
                   </div>
                 );
               })}
+            </div>
+          </div>
+
+          {/* INTEGRATIONS */}
+          <div style={{ flexShrink: 0, borderTop: '1px solid ' + BORDER }}>
+            <div style={{ padding: '10px 20px', borderBottom: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', gap: 8, background: BLIGHT }}>
+              <span style={{ fontSize: 10, color: MID, letterSpacing: '.08em', textTransform: 'uppercase', fontFamily: F, fontWeight: 300 }}>HR Integrations</span>
+              <span style={{ fontSize: 9, background: '#E8F0FF', color: BLUE, padding: '2px 7px', fontFamily: MONO }}>API</span>
+              <span style={{ marginLeft: 'auto', fontSize: 10, color: TEAL }}>10 Connected</span>
+            </div>
+            <div style={{ padding: '12px 20px', display: 'flex', gap: 12 }}>
+              {[{name:'Greenhouse',status:'connected'},{name:'BambooHR',status:'connected'},{name:'Lever',status:'needs-setup'}].map((intg,i) => (
+                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <div style={{ width: 6, height: 6, borderRadius: '50%', background: intg.status === 'connected' ? TEAL : '#F5A623', flexShrink: 0 }} />
+                  <span style={{ fontSize: 11, color: MID, fontWeight: 300 }}>{intg.name}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>

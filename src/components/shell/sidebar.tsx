@@ -38,7 +38,7 @@ export function Sidebar() {
   return (
     <aside className="sidebar">
       {/* Logo */}
-      <div className="sidebar-logo" style={{padding:'24px 20px 20px'}}>
+      <div className="sidebar-logo">
         <svg width="50" height="50" viewBox="0 0 60 60" fill="none">
           <circle cx="30" cy="30" r="27" fill="#2563eb"/>
           <polygon points="30,8 36,32 30,28 24,32" fill="white"/>
