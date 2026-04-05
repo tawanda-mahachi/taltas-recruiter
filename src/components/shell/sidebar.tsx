@@ -7,15 +7,15 @@ import { useMe } from '@/lib/hooks/use-auth';
 import { initials } from '@/lib/utils';
 
 const NAV = [
-  { href: '/dashboard',    label: 'Dashboard'    },
-  { href: '/pipeline',     label: 'Pipeline'     },
-  { href: '/jobs',         label: 'Live Jobs'    },
-  { href: '/job-bank',     label: 'Job Bank'     },
-  { href: '/candidates',   label: 'Candidates'   },
-  { href: '/explorers',    label: 'Explorers'    },
-  { href: '/integrations', label: 'Integrations' },
-  { href: '/messages',     label: 'Messages',  badge: true },
-  { href: '/reports',      label: 'Reports'      },
+  { href: '/dashboard',    label: 'Dashboard',    group: 'Overview' },
+  { href: '/pipeline',     label: 'Pipeline',     group: 'Hiring' },
+  { href: '/jobs',         label: 'Live Jobs',    group: 'Hiring' },
+  { href: '/job-bank',     label: 'Job Bank',     group: 'Hiring' },
+  { href: '/candidates',   label: 'Candidates',   group: 'Hiring' },
+  { href: '/explorers',    label: 'Explorers',    group: 'Agents' },
+  { href: '/integrations', label: 'Integrations', group: 'Agents' },
+  { href: '/messages',     label: 'Messages',     group: 'Comms', badge: true },
+  { href: '/reports',      label: 'Reports',      group: 'Comms' },
 ];
 
 export function Sidebar() {
@@ -56,17 +56,30 @@ export function Sidebar() {
       </div>
 
       {/* Nav */}
-      <nav className="sidebar-nav">
-        {NAV.map(item => (
-          <button
-            key={item.href}
-            className={'nav-item' + (active(item.href) ? ' active' : '')}
-            onClick={() => router.push(item.href)}
-          >
-            {item.label}
-            {item.badge && <span className="nav-badge">3</span>}
-          </button>
-        ))}
+      <nav className="sidebar-nav" style={{ paddingTop: 8 }}>
+        {(() => {
+          let lastGroup = null;
+          return NAV.map(item => {
+            const showGroup = item.group !== lastGroup;
+            lastGroup = item.group;
+            return (
+              <div key={item.href}>
+                {showGroup && (
+                  <div style={{ fontFamily:"'Courier New',monospace", fontSize: 8, color: 'var(--muted)', letterSpacing: '.12em', textTransform: 'uppercase', padding: '12px 20px 4px', opacity: 0.7 }}>
+                    {item.group}
+                  </div>
+                )}
+                <button
+                  className={'nav-item' + (active(item.href) ? ' active' : '')}
+                  onClick={() => router.push(item.href)}
+                >
+                  {item.label}
+                  {item.badge && <span className="nav-badge">3</span>}
+                </button>
+              </div>
+            );
+          });
+        })()}
       </nav>
 
       {/* Footer */}
