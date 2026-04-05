@@ -230,7 +230,7 @@ export default function DashboardPage() {
                   <div className="jbot-header" onClick={() => setOpenBots((prev) => ({ ...prev, [bot.id]: !prev[bot.id] }))}>
                     <div className="jbot-icon" style={{ background: bot.iconBg }}>{resolveIcon(bot.icon, { size: 16 })}</div>
                     <div className="jbot-main">
-                      <div className="jbot-title-row"><span className="jbot-name">{bot.name}</span><span className={`jbot-mode ${bot.mode === 'AUTO' ? 'bm-auto' : bot.mode === 'ASSIST' ? 'bm-assist' : 'bm-draft'}`}>{bot.mode}</span>{bot.mode !== 'DRAFT' && <div className="agent-blob"><div className={`agent-blob-inner live ${bot.id === 'jbot1' ? 'v2' : bot.id === 'jbot2' ? 'v3' : ''}`}><div className="agent-blob-glow" /></div></div>}</div>
+                      <div className="jbot-title-row"><span className="jbot-name">{bot.name}</span><span className={`jbot-mode ${bot.mode === 'AUTO' ? 'bm-auto' : bot.mode === 'ASSIST' ? 'bm-assist' : 'bm-draft'}`}>{bot.mode}</span>{bot.mode !== 'DRAFT' && <div className="agent-blob"><div className={`agent-blob-inner live ${bot.id === 'jbot1' ? 'v2' : bot.id === 'jbot2' ? 'v3' : ''}`}></div></div>}</div>
                       <div className="jbot-role"><IconChevronRight size={10} /> {bot.role} · {bot.ats}</div>
                       <div className="jbot-stats-row"><div className="jbot-chip"><IconMessageCircle size={10} /> {bot.conversations} convos</div><div className="jbot-chip"><IconHandshake size={10} /> {bot.a2aSessions} A2A</div>{bot.interviewsSet > 0 && <div className="jbot-chip"><IconCalendar size={10} /> {bot.interviewsSet} interviews</div>}</div>
                     </div>

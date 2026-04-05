@@ -6,7 +6,7 @@ import { ToastProvider } from '@/components/ui/toast';
 
 function DashboardShell({ children }) {
   return (
-    <div className='app-shell'>
+    <div className='app-shell' style={{background:'#FFFFFF'}}>
       <Sidebar />
       <div className='main-content'>
         <main style={{ padding: '40px 48px', flex: 1, minWidth: 0 }}>

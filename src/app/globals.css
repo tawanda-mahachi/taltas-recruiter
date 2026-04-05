@@ -16,7 +16,7 @@
   --font:   'Helvetica Neue', Helvetica, Arial, sans-serif;
 
   /* Legacy compat � keeps all existing page components working */
-  --bg:           #F4F4F2;
+  --bg: #FFFFFF;
   --surface:      #FFFFFF;
   --surface2:     #F4F4F2;
   --surface3:     #EEEEED;
@@ -60,7 +60,7 @@
 html, body { height: 100%; }
 
 body {
-  background: var(--blight);
+  background: #FFFFFF;
   color: var(--dark);
   font-family: var(--font);
   font-size: 13px;
