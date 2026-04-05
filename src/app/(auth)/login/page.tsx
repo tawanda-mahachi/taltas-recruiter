@@ -52,8 +52,7 @@ export default function LoginPage() {
         <div style={{display:'flex',gap:32,alignItems:'center'}}>
           
           <a href="https://candidates.taltas.ai" style={{fontSize:14,color:'#AAAAAA',fontWeight:300,textDecoration:'none'}}>Candidates</a>
-          <a href="https://recruiters.taltas.ai/login" style={{fontSize:14,color:'#AAAAAA',fontWeight:300,textDecoration:'none'}}>Recruiters</a>
-        </div>
+          </div>
       </nav>
       <div style={{position:'fixed',top:20,right:'30%',pointerEvents:'none',zIndex:0,opacity:.1}}>
         <svg width="700" height="700" viewBox="0 0 60 60" fill="none">
