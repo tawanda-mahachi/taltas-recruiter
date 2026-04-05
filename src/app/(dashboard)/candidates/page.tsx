@@ -2,6 +2,7 @@
 'use client';
 
 import { useState, useMemo, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { MOCK_CANDIDATES, fitBadgeClass, stageBadgeClass } from '@/lib/mock-data';
 import { useCandidates } from '@/lib/data-provider';
 import { DataSourceBadge } from '@/components/shared/api-status';
@@ -47,6 +48,7 @@ function SentimentBar({ value, trend = '' }: { value: string; trend?: string }) 
 }
 
 export default function CandidatesPage() {
+  const router = useRouter();
   const { token } = useAuthStore();
   const [pushLogs, setPushLogs] = useState<Record<string, any>>({});
   const API = process.env.NEXT_PUBLIC_API_URL || 'https://api.taltas.ai/api/v1';
@@ -151,8 +153,8 @@ export default function CandidatesPage() {
                   </td>
                   <td onClick={e => e.stopPropagation()}>
                     <div className="flex gap-[4px]">
-                      <button className="ctrl-btn purple flex items-center gap-[3px]" style={{ fontSize: '8.5px' }} onClick={() => setCandModal(c.id)}><IconMap size={9} /> Map</button>
-                      <button className="ctrl-btn blue flex items-center gap-[3px]" style={{ fontSize: '8.5px' }} onClick={() => setCandModal(c.id)}><IconUser size={9} /> Profile</button>
+                      <button className="ctrl-btn purple flex items-center gap-[3px]" style={{ fontSize: '8.5px' }} onClick={(e) => { e.stopPropagation(); setCandModal(c.id); }}><IconMap size={9} /> Map</button>
+                      <button className="ctrl-btn blue flex items-center gap-[3px]" style={{ fontSize: '8.5px' }} onClick={(e) => { e.stopPropagation(); router.push('/candidates/' + c.id); }}><IconUser size={9} /> Profile</button>
                     </div>
                   </td>
                 </tr>
