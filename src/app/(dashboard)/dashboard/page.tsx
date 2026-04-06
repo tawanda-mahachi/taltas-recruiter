@@ -307,7 +307,7 @@ export default function DashboardPage() {
         <div style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
 
           {/* OPEN JOBS */}
-          <div style={{ flex: '0 0 auto', maxHeight: '45%', borderBottom: '1px solid ' + BORDER, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+          <div style={{ flex: '0 0 auto', maxHeight: '42%', borderBottom: '1px solid ' + BORDER, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
             <div style={{ padding: '12px 20px', borderBottom: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0, background: '#F0F4FF' }}>
               <div style={{ width: 6, height: 6, borderRadius: '50%', background: BLUE, flexShrink: 0 }} />
               <span style={{ fontSize: 10, color: BLUE, letterSpacing: '.1em', textTransform: 'uppercase', fontFamily: MONO }}>Open Jobs</span>
@@ -327,7 +327,7 @@ export default function DashboardPage() {
                     <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 }}>
                       <div style={{ flex: 1, minWidth: 0 }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 3 }}>
-                          <div style={{ fontSize: 13, fontWeight: 400, color: DARK }}>{j.title || j.roleName || j.name}</div>
+                          <div style={{ fontSize: 12, fontWeight: 300, color: DARK }}>{j.title || j.roleName || j.name}</div>
                           <span style={{ fontSize: 9, padding: '2px 7px', background: st.bg, color: st.c, fontWeight: 500, letterSpacing: '.04em', flexShrink: 0 }}>{j.status}</span>
                         </div>
                         <div style={{ fontSize: 11.5, color: MID, fontWeight: 300, marginBottom: 2 }}>{j.sub}</div>
@@ -367,7 +367,7 @@ export default function DashboardPage() {
                       </div>
                       <div style={{ flex: 1, minWidth: 0 }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 2 }}>
-                          <span style={{ fontSize: 13, fontWeight: 400, color: DARK }}>{e.name}</span>
+                          <span style={{ fontSize: 12, fontWeight: 300, color: DARK }}>{e.name}</span>
                           <span style={{ fontSize: 9, padding: '2px 7px', background: isAct ? '#E6F5EE' : '#E8F0FF', color: isAct ? '#15703A' : BLUE, fontFamily: MONO }}>{e.mode || e.status || 'AUTO'}</span>
                           {isAct && <div style={{ width: 5, height: 5, borderRadius: '50%', background: '#22C55E', flexShrink: 0 }} />}
                         </div>
