@@ -128,12 +128,12 @@ export default function LoginPage() {
             {error && <div style={{background:'rgba(255,255,255,.12)',border:'1px solid rgba(255,100,100,.4)',padding:'10px 14px',fontSize:12,fontWeight:300,color:'#fca5a5',marginBottom:16,lineHeight:1.5}}>{error}</div>}
 
             <div style={{marginBottom:14}}>
-              <label style={{display:'block',fontFamily:'Helvetica Neue',Helvetica,Arial,sans-serif,fontSize:9,letterSpacing:'.14em',textTransform:'uppercase',color:'rgba(255,255,255,.45)',marginBottom:6}}>Email</label>
+              <label style={{display:'block',fontFamily:'Courier New,monospace',fontSize:9,letterSpacing:'.14em',textTransform:'uppercase',color:'rgba(255,255,255,.45)',marginBottom:6}}>Email</label>
               <input type="email" value={email} onChange={e=>setEmail(e.target.value)} onKeyDown={e=>e.key==='Enter'&&handleSubmit()} placeholder="you@email.com" style={{width:'100%',background:'rgba(255,255,255,.1)',border:'1px solid rgba(255,255,255,.2)',padding:'12px 16px',fontSize:13,fontWeight:300,fontFamily:'Helvetica Neue,Helvetica,Arial,sans-serif',color:'#fff',outline:'none',boxSizing:'border-box'}}/>
             </div>
 
             <div style={{marginBottom:24}}>
-              <label style={{display:'block',fontFamily:'Helvetica Neue',Helvetica,Arial,sans-serif,fontSize:9,letterSpacing:'.14em',textTransform:'uppercase',color:'rgba(255,255,255,.45)',marginBottom:6}}>Password</label>
+              <label style={{display:'block',fontFamily:'Courier New,monospace',fontSize:9,letterSpacing:'.14em',textTransform:'uppercase',color:'rgba(255,255,255,.45)',marginBottom:6}}>Password</label>
               <div style={{position:'relative'}}>
                 <input type={showPw?'text':'password'} value={password} onChange={e=>setPassword(e.target.value)} onKeyDown={e=>e.key==='Enter'&&handleSubmit()} placeholder="password" style={{width:'100%',background:'rgba(255,255,255,.1)',border:'1px solid rgba(255,255,255,.2)',padding:'12px 48px 12px 16px',fontSize:13,fontWeight:300,fontFamily:'Helvetica Neue,Helvetica,Arial,sans-serif',color:'#fff',outline:'none',boxSizing:'border-box'}}/>
                 <button onClick={()=>setShowPw(!showPw)} type="button" style={{position:'absolute',right:14,top:'50%',transform:'translateY(-50%)',background:'none',border:'none',cursor:'pointer',color:'rgba(255,255,255,.4)',fontSize:11,fontFamily:'Helvetica Neue,Helvetica,Arial,sans-serif',fontWeight:300}}>{showPw?'hide':'show'}</button>
@@ -192,14 +192,14 @@ export default function LoginPage() {
           </div>
           <div style={{display:'flex',gap:48}}>
             <div>
-              <div style={{fontSize:9,color:'rgba(255,255,255,.4)',letterSpacing:'.1em',textTransform:'uppercase',marginBottom:12,fontFamily:'Helvetica Neue',Helvetica,Arial,sans-serif}}>Platform</div>
+              <div style={{fontSize:9,color:'rgba(255,255,255,.4)',letterSpacing:'.1em',textTransform:'uppercase',marginBottom:12,fontFamily:'Courier New,monospace'}}>Platform</div>
               <div style={{display:'flex',flexDirection:'column',gap:8}}>
                 <a href="https://candidates.taltas.ai" style={{fontSize:12,fontWeight:300,color:'rgba(255,255,255,.5)',textDecoration:'none'}}>Candidate Portal</a>
                 <a href="https://recruiters.taltas.ai/login" style={{fontSize:12,fontWeight:300,color:'rgba(255,255,255,.5)',textDecoration:'none'}}>Recruiter Portal</a>
               </div>
             </div>
             <div>
-              <div style={{fontSize:9,color:'rgba(255,255,255,.4)',letterSpacing:'.1em',textTransform:'uppercase',marginBottom:12,fontFamily:'Helvetica Neue',Helvetica,Arial,sans-serif}}>Legal</div>
+              <div style={{fontSize:9,color:'rgba(255,255,255,.4)',letterSpacing:'.1em',textTransform:'uppercase',marginBottom:12,fontFamily:'Courier New,monospace'}}>Legal</div>
               <div style={{display:'flex',flexDirection:'column',gap:8}}>
                 <a href="https://taltas.ai/privacy.html" style={{fontSize:12,fontWeight:300,color:'rgba(255,255,255,.5)',textDecoration:'none'}}>Privacy</a>
                 <a href="https://taltas.ai/terms.html" style={{fontSize:12,fontWeight:300,color:'rgba(255,255,255,.5)',textDecoration:'none'}}>Terms</a>
