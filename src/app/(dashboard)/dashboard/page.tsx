@@ -411,6 +411,17 @@ export default function DashboardPage() {
       )}
 
 
+      {/* Integrations strip */}
+      <div style={{ height: 36, display: 'flex', alignItems: 'center', padding: '0 24px', gap: 20, flexShrink: 0, borderTop: '1px solid ' + BORDER }}>
+        <span style={{ fontSize: 9, color: MUTED, letterSpacing: '.1em', textTransform: 'uppercase', fontWeight: 400, marginRight: 4, fontFamily: F }}>Integrations</span>
+        {[{name:'Greenhouse',ok:true},{name:'BambooHR',ok:true},{name:'Lever',ok:true},{name:'Deel',ok:false},{name:'Bullhorn',ok:false}].map((intg,i) => (
+          <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+            <div style={{ width: 6, height: 6, borderRadius: '50%', background: intg.ok ? '#22C55E' : BORDER, flexShrink: 0 }} />
+            <span style={{ fontSize: 11, color: intg.ok ? DARK : MUTED, fontWeight: intg.ok ? 400 : 300, fontFamily: F }}>{intg.name}</span>
+          </div>
+        ))}
+        <span style={{ marginLeft: 'auto', fontSize: 9.5, color: MUTED, fontFamily: F }}>Last updated · API live</span>
+      </div>
     </div>
   );
 }
