@@ -131,7 +131,7 @@ export default function DashboardPage() {
   });
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 46px)', fontFamily: F, color: DARK, background: '#FFFFFF', overflow: 'hidden', margin: '-32px -40px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', fontFamily: F, color: DARK, background: '#FFFFFF', overflow: 'hidden', margin: '-32px -40px' }}>
 
       {/* TOPBAR */}
       <div style={{ padding: '12px 28px', borderBottom: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
@@ -410,23 +410,7 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {/* FOOTER — Integrations strip */}
-      <div style={{ height: 40, display: 'flex', alignItems: 'center', padding: '0 24px', gap: 20, flexShrink: 0, background: '#FAFAFA' }}>
-        <span style={{ fontSize: 9, color: MUTED, letterSpacing: '.1em', textTransform: 'uppercase', fontWeight: 400, marginRight: 4 }}>Integrations</span>
-        {[
-          { name: 'Greenhouse', color: '#24A86E', ok: true },
-          { name: 'BambooHR',   color: '#75C045', ok: true },
-          { name: 'Lever',      color: '#0F6EFF', ok: true },
-          { name: 'Deel',       color: '#18181B', ok: false },
-          { name: 'Bullhorn',   color: '#E33D2B', ok: false },
-        ].map((intg, i) => (
-          <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-            <div style={{ width: 6, height: 6, borderRadius: '50%', background: intg.ok ? '#22C55E' : BORDER, flexShrink: 0 }} />
-            <span style={{ fontSize: 11, color: intg.ok ? DARK : MUTED, fontWeight: intg.ok ? 400 : 300 }}>{intg.name}</span>
-          </div>
-        ))}
-        <span style={{ marginLeft: 'auto', fontSize: 9.5, color: MUTED }}>Last updated · API live</span>
-      </div>
+
     </div>
   );
 }
