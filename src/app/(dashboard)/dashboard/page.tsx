@@ -300,6 +300,23 @@ export default function DashboardPage() {
                 </div>
               );
             })}
+
+          {/* Integrations strip */}
+          <div style={{ flexShrink: 0, borderTop: '1px solid ' + BORDER }}>
+            <div style={{ padding: '8px 16px', display: 'flex', alignItems: 'center', gap: 8, background: BLIGHT }}>
+              <span style={{ fontSize: 9, color: MID, letterSpacing: '.08em', textTransform: 'uppercase', fontFamily: F, fontWeight: 400 }}>HR Integrations</span>
+              <span style={{ fontSize: 9, background: '#E8F0FF', color: BLUE, padding: '1px 6px', fontFamily: MONO }}>API</span>
+              <span style={{ marginLeft: 'auto', fontSize: 10, color: TEAL }}>10 Connected</span>
+            </div>
+            <div style={{ padding: '8px 16px', display: 'flex', gap: 16 }}>
+              {[{name:'Greenhouse',status:'connected'},{name:'BambooHR',status:'connected'},{name:'Lever',status:'needs-setup'}].map((intg,i) => (
+                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                  <div style={{ width: 5, height: 5, borderRadius: '50%', background: intg.status === 'connected' ? TEAL : '#F5A623', flexShrink: 0 }} />
+                  <span style={{ fontSize: 11, color: MID, fontWeight: 300 }}>{intg.name}</span>
+                </div>
+              ))}
+            </div>
+          </div>
           </div>
         </div>
 
@@ -307,13 +324,13 @@ export default function DashboardPage() {
         <div style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
 
           {/* OPEN JOBS */}
-          <div style={{ flex: '0 0 auto', maxHeight: '42%', borderBottom: '1px solid ' + BORDER, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+          <div style={{ flex: '0 0 auto', maxHeight: '52%', borderBottom: '1px solid ' + BORDER, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
             <div style={{ padding: '12px 20px', borderBottom: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0, background: '#F0F4FF' }}>
               <div style={{ width: 6, height: 6, borderRadius: '50%', background: BLUE, flexShrink: 0 }} />
               <span style={{ fontSize: 10, color: BLUE, letterSpacing: '.1em', textTransform: 'uppercase', fontFamily: MONO }}>Open Jobs</span>
               <span style={{ fontSize: 9, background: '#E8F0FF', color: BLUE, padding: '2px 7px', fontFamily: MONO }}>API</span>
               <span style={{ fontSize: 11, color: MID, fontWeight: 300 }}>24 active</span>
-              <button onClick={() => router.push('/jobs')} style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 4, padding: '5px 12px', background: BLUE, border: 'none', fontSize: 11, color: '#fff', cursor: 'pointer', fontFamily: F }}>
+              <button onClick={() => {}} onClick={() => router.push('/jobs')} style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 4, padding: '5px 12px', background: BLUE, border: 'none', fontSize: 11, color: '#fff', cursor: 'pointer', fontFamily: F }}>
                 + New Job
               </button>
             </div>
@@ -327,7 +344,7 @@ export default function DashboardPage() {
                     <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 }}>
                       <div style={{ flex: 1, minWidth: 0 }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 3 }}>
-                          <div style={{ fontSize: 12, fontWeight: 300, color: DARK }}>{j.title || j.roleName || j.name}</div>
+                          <div style={{ fontSize: 13, fontWeight: 400, color: DARK }}>{j.title || j.roleName || j.name}</div>
                           <span style={{ fontSize: 9, padding: '2px 7px', background: st.bg, color: st.c, fontWeight: 500, letterSpacing: '.04em', flexShrink: 0 }}>{j.status}</span>
                         </div>
                         <div style={{ fontSize: 11.5, color: MID, fontWeight: 300, marginBottom: 2 }}>{j.sub}</div>
@@ -367,7 +384,7 @@ export default function DashboardPage() {
                       </div>
                       <div style={{ flex: 1, minWidth: 0 }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 2 }}>
-                          <span style={{ fontSize: 12, fontWeight: 300, color: DARK }}>{e.name}</span>
+                          <span style={{ fontSize: 13, fontWeight: 400, color: DARK }}>{e.name}</span>
                           <span style={{ fontSize: 9, padding: '2px 7px', background: isAct ? '#E6F5EE' : '#E8F0FF', color: isAct ? '#15703A' : BLUE, fontFamily: MONO }}>{e.mode || e.status || 'AUTO'}</span>
                           {isAct && <div style={{ width: 5, height: 5, borderRadius: '50%', background: '#22C55E', flexShrink: 0 }} />}
                         </div>
@@ -386,19 +403,7 @@ export default function DashboardPage() {
 
           {/* INTEGRATIONS */}
           <div style={{ flexShrink: 0, borderTop: '1px solid ' + BORDER }}>
-            <div style={{ padding: '10px 20px', borderBottom: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', gap: 8, background: BLIGHT }}>
-              <span style={{ fontSize: 10, color: MID, letterSpacing: '.08em', textTransform: 'uppercase', fontFamily: F, fontWeight: 300 }}>HR Integrations</span>
-              <span style={{ fontSize: 9, background: '#E8F0FF', color: BLUE, padding: '2px 7px', fontFamily: MONO }}>API</span>
-              <span style={{ marginLeft: 'auto', fontSize: 10, color: TEAL }}>10 Connected</span>
-            </div>
-            <div style={{ padding: '12px 20px', display: 'flex', gap: 12 }}>
-              {[{name:'Greenhouse',status:'connected'},{name:'BambooHR',status:'connected'},{name:'Lever',status:'needs-setup'}].map((intg,i) => (
-                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <div style={{ width: 6, height: 6, borderRadius: '50%', background: intg.status === 'connected' ? TEAL : '#F5A623', flexShrink: 0 }} />
-                  <span style={{ fontSize: 11, color: MID, fontWeight: 300 }}>{intg.name}</span>
-                </div>
-              ))}
-            </div>
+  
           </div>
         </div>
       </div>

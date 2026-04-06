@@ -1,6 +1,10 @@
 // @ts-nocheck
 'use client';
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
+import dynamic from 'next/dynamic';
+
+const RadarChart = dynamic(() => import('@/components/charts/pipeline-charts').then(m => m.RadarChart), { ssr: false, loading: () => <div style={{ height: 280, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#AAAAAA', fontSize: 12 }}>Loading chart...</div> });
+const ParetoChart = dynamic(() => import('@/components/charts/pipeline-charts').then(m => m.ParetoChart), { ssr: false, loading: () => <div style={{ height: 280, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#AAAAAA', fontSize: 12 }}>Loading chart...</div> });
 import { usePipeline } from '@/lib/data-provider';
 import { DataSourceBadge } from '@/components/shared/api-status';
 
@@ -74,70 +78,8 @@ const MOCK_WEEKLY = [
 ];
 
 
-/* ── ECharts Radar — Quality Dimensions ── */
-function RadarChart({ dims }: { dims: { name: string; value: number; target: number }[] }) {
-  const ref = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (!ref.current || typeof window === 'undefined') return;
-    import('echarts').then(echarts => {
-      const chart = echarts.init(ref.current);
-      const indicators = dims.map(d => ({ name: d.name, max: 100 }));
-      const candidateData = dims.map(d => d.value);
-      const targetData = dims.map(d => d.target);
-      chart.setOption({
-        animation: false,
-        tooltip: { trigger: 'item' },
-        legend: { data: ['Explorer Candidates', 'ATS-Only'], bottom: 0, textStyle: { fontSize: 10, color: '#AAAAAA', fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif" } },
-        radar: {
-          indicator: indicators,
-          shape: 'polygon',
-          splitNumber: 4,
-          axisName: { fontSize: 10, color: '#AAAAAA', fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif" },
-          splitLine: { lineStyle: { color: '#E8E8E5' } },
-          splitArea: { show: false },
-          axisLine: { lineStyle: { color: '#E8E8E5' } },
-        },
-        series: [{
-          type: 'radar',
-          data: [
-            { value: candidateData, name: 'Explorer Candidates', lineStyle: { color: '#1D9E75', width: 2 }, areaStyle: { color: 'rgba(29,158,117,.1)' }, itemStyle: { color: '#1D9E75' } },
-            { value: targetData, name: 'ATS-Only', lineStyle: { color: '#2563eb', width: 1.5, type: 'dashed' }, areaStyle: { color: 'rgba(37,99,235,.05)' }, itemStyle: { color: '#2563eb' } },
-          ]
-        }]
-      });
-      return () => chart.dispose();
-    });
-  }, [dims]);
-  return <div ref={ref} style={{ width: '100%', height: 280 }} />;
-}
 
-/* ── ECharts Bar+Line — Pareto Rejection Analysis ── */
-function ParetoChart({ data }: { data: { name: string; count: number; cumPct: number }[] }) {
-  const ref = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (!ref.current || typeof window === 'undefined') return;
-    import('echarts').then(echarts => {
-      const chart = echarts.init(ref.current);
-      chart.setOption({
-        animation: false,
-        tooltip: { trigger: 'axis', axisPointer: { type: 'cross' } },
-        legend: { data: ['Count', 'Cumulative %'], bottom: 0, textStyle: { fontSize: 10, color: '#AAAAAA', fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif" } },
-        grid: { top: 20, right: 60, bottom: 40, left: 40, containLabel: false },
-        xAxis: { type: 'category', data: data.map(d => d.name), axisLabel: { fontSize: 9, color: '#AAAAAA', fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif", rotate: 20 }, axisLine: { lineStyle: { color: '#E8E8E5' } }, splitLine: { show: false } },
-        yAxis: [
-          { type: 'value', name: 'Count', nameTextStyle: { fontSize: 9, color: '#AAAAAA' }, axisLabel: { fontSize: 9, color: '#AAAAAA' }, splitLine: { lineStyle: { color: '#F4F4F2' } } },
-          { type: 'value', name: '%', min: 0, max: 100, axisLabel: { fontSize: 9, color: '#AAAAAA', formatter: '{value}%' }, splitLine: { show: false } },
-        ],
-        series: [
-          { name: 'Count', type: 'bar', data: data.map(d => d.count), itemStyle: { color: '#E85B3A' }, barMaxWidth: 40 },
-          { name: 'Cumulative %', type: 'line', yAxisIndex: 1, data: data.map(d => d.cumPct), lineStyle: { color: '#D97706', width: 2 }, itemStyle: { color: '#D97706' }, symbol: 'circle', symbolSize: 6 },
-        ]
-      });
-      return () => chart.dispose();
-    });
-  }, [data]);
-  return <div ref={ref} style={{ width: '100%', height: 280 }} />;
-}
+
 
 function SL({ t }: { t: string }) {
   return <div style={{ fontSize: 10, color: MUTED, letterSpacing: '.1em', textTransform: 'uppercase', marginBottom: 12, fontFamily: F, fontWeight: 400 }}>{t}</div>;
