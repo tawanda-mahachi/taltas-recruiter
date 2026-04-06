@@ -3,18 +3,17 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/lib/stores/auth-store';
-
 export function AuthGuard({ children }) {
   const router = useRouter();
   const isAuthenticated = useAuthStore(s => s.isAuthenticated);
-  const [ready, setReady] = useState(false);
-
+  const [hasHydrated, setHasHydrated] = useState(false);
   useEffect(() => {
-    setReady(true);
-    if (!isAuthenticated) router.replace('/login');
-  }, [isAuthenticated, router]);
-
-  if (!ready || !isAuthenticated) {
+    setHasHydrated(true);
+  }, []);
+  useEffect(() => {
+    if (hasHydrated && !isAuthenticated) router.replace('/login');
+  }, [hasHydrated, isAuthenticated, router]);
+  if (!hasHydrated) {
     return (
       <div style={{minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',background:'#F4F4F2'}}>
         <div style={{width:24,height:24,border:'2.5px solid #E8E8E5',borderTopColor:'#2563eb',borderRadius:'50%',animation:'spin 0.8s linear infinite'}}/>
@@ -22,5 +21,6 @@ export function AuthGuard({ children }) {
       </div>
     );
   }
+  if (!isAuthenticated) return null;
   return <>{children}</>;
 }
