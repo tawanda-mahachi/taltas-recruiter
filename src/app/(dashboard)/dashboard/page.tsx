@@ -165,7 +165,7 @@ export default function DashboardPage() {
       </div>
 
       {/* MAIN GRID */}
-      <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '1fr 420px', overflow: 'hidden', borderBottom: '1px solid ' + BORDER }}>
+      <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '1fr 420px', overflow: 'hidden' }}>
 
         {/* LEFT — PIPELINE + TABLE */}
         <div style={{ borderRight: '1px solid ' + BORDER, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
