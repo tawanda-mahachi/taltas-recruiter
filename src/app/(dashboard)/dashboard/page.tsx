@@ -424,10 +424,22 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {/* FOOTER */}
-      <div style={{ height: 24, borderTop: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', padding: '0 20px', justifyContent: 'space-between', flexShrink: 0 }}>
-        <span style={{ fontSize: 9.5, color: MUTED, letterSpacing: '.06em', textTransform: 'uppercase' }}>Taltas · Talent Atlas</span>
-        <span style={{ fontSize: 9.5, color: MUTED }}>Last updated · API live</span>
+      {/* FOOTER — Integrations strip */}
+      <div style={{ height: 36, borderTop: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', padding: '0 20px', gap: 20, flexShrink: 0 }}>
+        <span style={{ fontSize: 9, color: MUTED, letterSpacing: '.1em', textTransform: 'uppercase', fontWeight: 400, marginRight: 4 }}>Connected</span>
+        {[
+          { name: 'Greenhouse', color: '#24A86E', ok: true },
+          { name: 'BambooHR',   color: '#75C045', ok: true },
+          { name: 'Lever',      color: '#0F6EFF', ok: true },
+          { name: 'Deel',       color: '#18181B', ok: false },
+          { name: 'Bullhorn',   color: '#E33D2B', ok: false },
+        ].map((intg, i) => (
+          <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+            <div style={{ width: 6, height: 6, borderRadius: '50%', background: intg.ok ? '#22C55E' : BORDER, flexShrink: 0 }} />
+            <span style={{ fontSize: 11, color: intg.ok ? DARK : MUTED, fontWeight: intg.ok ? 400 : 300 }}>{intg.name}</span>
+          </div>
+        ))}
+        <span style={{ marginLeft: 'auto', fontSize: 9.5, color: MUTED }}>Last updated · API live</span>
       </div>
     </div>
   );
