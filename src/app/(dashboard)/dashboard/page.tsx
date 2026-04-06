@@ -411,7 +411,7 @@ export default function DashboardPage() {
       )}
 
       {/* FOOTER — Integrations strip */}
-      <div style={{ height: 40, display: 'flex', alignItems: 'center', padding: '0 24px', gap: 20, flexShrink: 0 }}>
+      <div style={{ height: 40, display: 'flex', alignItems: 'center', padding: '0 24px', gap: 20, flexShrink: 0, boxShadow: '0 -1px 0 0 #E8E8E5' }}>
         <span style={{ fontSize: 9, color: MUTED, letterSpacing: '.1em', textTransform: 'uppercase', fontWeight: 400, marginRight: 4 }}>Integrations</span>
         {[
           { name: 'Greenhouse', color: '#24A86E', ok: true },
