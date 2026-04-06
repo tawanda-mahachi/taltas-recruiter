@@ -1,6 +1,6 @@
 // @ts-nocheck
 'use client';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { usePipeline } from '@/lib/data-provider';
 import { DataSourceBadge } from '@/components/shared/api-status';
 
@@ -13,6 +13,26 @@ const MID = '#6B6B6B';
 const MUTED = '#AAAAAA';
 const BORDER = '#E8E8E5';
 const BLIGHT = '#F4F4F2';
+
+
+const MOCK_RADAR_DIMS = [
+  { name: 'Technical',   value: 88, target: 64 },
+  { name: 'Cultural',    value: 92, target: 58 },
+  { name: 'Leadership',  value: 85, target: 70 },
+  { name: 'Growth',      value: 78, target: 65 },
+  { name: 'Application', value: 90, target: 55 },
+  { name: 'Behavioural', value: 86, target: 62 },
+];
+
+const MOCK_PARETO = [
+  { name: 'Skill Mismatch', count: 42, cumPct: 38 },
+  { name: 'Experience Gap', count: 31, cumPct: 66 },
+  { name: 'Culture Fit',    count: 18, cumPct: 82 },
+  { name: 'Salary Gap',     count: 11, cumPct: 92 },
+  { name: 'Location',       count: 5,  cumPct: 97 },
+  { name: 'Timeline',       count: 2,  cumPct: 99 },
+  { name: 'Other',          count: 1,  cumPct: 100 },
+];
 
 const MOCK_STAGES = [
   { stage: 'Applied',          n: 14 },
@@ -52,6 +72,72 @@ const MOCK_WEEKLY = [
   { week: 'W3 Feb', applied: 41, screened: 30, offered: 5 },
   { week: 'W4 Feb', applied: 47, screened: 38, offered: 6 },
 ];
+
+
+/* ── ECharts Radar — Quality Dimensions ── */
+function RadarChart({ dims }: { dims: { name: string; value: number; target: number }[] }) {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!ref.current || typeof window === 'undefined') return;
+    import('echarts').then(echarts => {
+      const chart = echarts.init(ref.current);
+      const indicators = dims.map(d => ({ name: d.name, max: 100 }));
+      const candidateData = dims.map(d => d.value);
+      const targetData = dims.map(d => d.target);
+      chart.setOption({
+        animation: false,
+        tooltip: { trigger: 'item' },
+        legend: { data: ['Explorer Candidates', 'ATS-Only'], bottom: 0, textStyle: { fontSize: 10, color: '#AAAAAA', fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif" } },
+        radar: {
+          indicator: indicators,
+          shape: 'polygon',
+          splitNumber: 4,
+          axisName: { fontSize: 10, color: '#AAAAAA', fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif" },
+          splitLine: { lineStyle: { color: '#E8E8E5' } },
+          splitArea: { show: false },
+          axisLine: { lineStyle: { color: '#E8E8E5' } },
+        },
+        series: [{
+          type: 'radar',
+          data: [
+            { value: candidateData, name: 'Explorer Candidates', lineStyle: { color: '#1D9E75', width: 2 }, areaStyle: { color: 'rgba(29,158,117,.1)' }, itemStyle: { color: '#1D9E75' } },
+            { value: targetData, name: 'ATS-Only', lineStyle: { color: '#2563eb', width: 1.5, type: 'dashed' }, areaStyle: { color: 'rgba(37,99,235,.05)' }, itemStyle: { color: '#2563eb' } },
+          ]
+        }]
+      });
+      return () => chart.dispose();
+    });
+  }, [dims]);
+  return <div ref={ref} style={{ width: '100%', height: 280 }} />;
+}
+
+/* ── ECharts Bar+Line — Pareto Rejection Analysis ── */
+function ParetoChart({ data }: { data: { name: string; count: number; cumPct: number }[] }) {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!ref.current || typeof window === 'undefined') return;
+    import('echarts').then(echarts => {
+      const chart = echarts.init(ref.current);
+      chart.setOption({
+        animation: false,
+        tooltip: { trigger: 'axis', axisPointer: { type: 'cross' } },
+        legend: { data: ['Count', 'Cumulative %'], bottom: 0, textStyle: { fontSize: 10, color: '#AAAAAA', fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif" } },
+        grid: { top: 20, right: 60, bottom: 40, left: 40, containLabel: false },
+        xAxis: { type: 'category', data: data.map(d => d.name), axisLabel: { fontSize: 9, color: '#AAAAAA', fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif", rotate: 20 }, axisLine: { lineStyle: { color: '#E8E8E5' } }, splitLine: { show: false } },
+        yAxis: [
+          { type: 'value', name: 'Count', nameTextStyle: { fontSize: 9, color: '#AAAAAA' }, axisLabel: { fontSize: 9, color: '#AAAAAA' }, splitLine: { lineStyle: { color: '#F4F4F2' } } },
+          { type: 'value', name: '%', min: 0, max: 100, axisLabel: { fontSize: 9, color: '#AAAAAA', formatter: '{value}%' }, splitLine: { show: false } },
+        ],
+        series: [
+          { name: 'Count', type: 'bar', data: data.map(d => d.count), itemStyle: { color: '#E85B3A' }, barMaxWidth: 40 },
+          { name: 'Cumulative %', type: 'line', yAxisIndex: 1, data: data.map(d => d.cumPct), lineStyle: { color: '#D97706', width: 2 }, itemStyle: { color: '#D97706' }, symbol: 'circle', symbolSize: 6 },
+        ]
+      });
+      return () => chart.dispose();
+    });
+  }, [data]);
+  return <div ref={ref} style={{ width: '100%', height: 280 }} />;
+}
 
 function SL({ t }: { t: string }) {
   return <div style={{ fontSize: 10, color: MUTED, letterSpacing: '.1em', textTransform: 'uppercase', marginBottom: 12, fontFamily: F, fontWeight: 400 }}>{t}</div>;
@@ -263,6 +349,20 @@ export default function PipelinePage() {
           })}
         </div>
       </div>
+      {/* Quality Dimensions Radar + Rejection Pareto */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+        <div style={{ background: '#FFFFFF', border: '1px solid ' + BORDER, padding: '20px 24px' }}>
+          <SL t="Quality Dimensions Radar" />
+          <div style={{ fontSize: 11, color: MUTED, marginBottom: 12, fontWeight: 300 }}>Explorer candidates score 27% higher across all dimensions on average</div>
+          <RadarChart dims={MOCK_RADAR_DIMS} />
+        </div>
+        <div style={{ background: '#FFFFFF', border: '1px solid ' + BORDER, padding: '20px 24px' }}>
+          <SL t="Rejection Pareto Analysis" />
+          <div style={{ fontSize: 11, color: MUTED, marginBottom: 12, fontWeight: 300 }}>Top 3 rejection reasons account for 82% of all rejections</div>
+          <ParetoChart data={MOCK_PARETO} />
+        </div>
+      </div>
+
     </div>
   );
 }
