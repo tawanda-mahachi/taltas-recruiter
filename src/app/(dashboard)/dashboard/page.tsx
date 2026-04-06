@@ -179,7 +179,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Funnel */}
-          <div style={{ display: 'flex', height: 64, borderBottom: '1px solid ' + BORDER, borderTop: '1px solid ' + BORDER, flexShrink: 0 }}>
+          <div style={{ display: 'flex', height: 64, flexShrink: 0 }}>
             {STAGES.map((s, i) => {
               const drop = i > 0 ? Math.round((1 - s.n / STAGES[i - 1].n) * 100) : null;
               const pct = s.n / MAX_N;
