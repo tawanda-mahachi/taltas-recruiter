@@ -253,10 +253,10 @@ export default function DashboardPage() {
 
                 <div style={{ display: 'flex', gap: 6 }}>
                   <button onClick={e => { e.stopPropagation(); setProfileOpen(c); }}
-                    style={{ fontSize: 11, color: BLUE, background: 'none', border: 'none', cursor: 'pointer', fontFamily: F, padding: 0 }}>Map</button>
+                    style={{ fontSize: 11, color: BLUE, background: 'none', border: 'none', cursor: 'pointer', fontFamily: F, padding: 0 }}>Sentiment Map</button>
                   <span style={{ color: BORDER }}>·</span>
                   <button onClick={e => { e.stopPropagation(); router.push('/candidates/' + (c.id || '')); }}
-                    style={{ fontSize: 11, color: DARK, background: 'none', border: 'none', cursor: 'pointer', fontFamily: F, padding: 0, fontWeight: 400 }}>Profile</button>
+                    style={{ fontSize: 11, color: DARK, background: 'none', border: 'none', cursor: 'pointer', fontFamily: F, padding: 0, fontWeight: 400 }}>View Profile</button>
                 </div>
               </div>
             ))}
