@@ -171,7 +171,7 @@ export default function DashboardPage() {
         <div style={{ borderRight: '1px solid ' + BORDER, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
 
           {/* Section label */}
-          <div style={{ padding: '10px 24px', display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
+          <div style={{ padding: '14px 24px', display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
             <div style={{ width: 6, height: 6, borderRadius: '50%', background: TEAL, flexShrink: 0 }} />
             <span style={{ fontSize: 10, color: MUTED, letterSpacing: '.1em', textTransform: 'uppercase', fontWeight: 400 }}>Active Pipeline</span>
             <span style={{ fontSize: 10, color: BLUE, fontWeight: 300 }}>{cands.length} candidates</span>
@@ -262,7 +262,7 @@ export default function DashboardPage() {
             ))}
 
             {/* Integrations — inline, no background box */}
-            <div style={{ padding: '14px 16px 10px', borderTop: '1px solid ' + BORDER, marginTop: 4 }}>
+            <div style={{ padding: '20px 16px 16px', borderTop: '1px solid ' + BORDER, marginTop: 8 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 6 }}>
                 <span style={{ fontSize: 9, color: MUTED, letterSpacing: '.1em', textTransform: 'uppercase', fontWeight: 400 }}>HR Integrations</span>
                 <span style={{ fontSize: 10, color: TEAL }}>10 Connected</span>
@@ -284,7 +284,7 @@ export default function DashboardPage() {
 
           {/* OPEN JOBS */}
           <div style={{ flex: '0 0 auto', maxHeight: '48%', borderBottom: '1px solid ' + BORDER, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-            <div style={{ padding: '10px 18px', display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
+            <div style={{ padding: '14px 18px', display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
               <div style={{ width: 6, height: 6, borderRadius: '50%', background: BLUE, flexShrink: 0 }} />
               <span style={{ fontSize: 10, color: MUTED, letterSpacing: '.1em', textTransform: 'uppercase', fontWeight: 400 }}>Open Jobs</span>
               <span style={{ fontSize: 10, color: MID, fontWeight: 300 }}>24 active</span>
@@ -298,7 +298,7 @@ export default function DashboardPage() {
               {jobs.map((j: any, i: number) => {
                 const hotCol = j.status === 'HOT' ? '#CC3300' : j.status === 'WARM' ? '#D97706' : MID;
                 return (
-                  <div key={j.id || i} style={{ padding: '12px 18px', borderTop: i === 0 ? '1px solid ' + BORDER : 'none', borderBottom: '1px solid ' + BLIGHT, cursor: 'pointer', transition: 'background .1s' }}
+                  <div key={j.id || i} style={{ padding: '16px 18px', borderTop: i === 0 ? '1px solid ' + BORDER : 'none', borderBottom: '1px solid ' + BLIGHT, cursor: 'pointer', transition: 'background .1s' }}
                     onMouseEnter={e => (e.currentTarget.style.background = 'rgba(37,99,235,.015)')}
                     onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
                     <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 }}>
@@ -323,7 +323,7 @@ export default function DashboardPage() {
 
           {/* EXPLORER INTERACTIONS */}
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', minHeight: 0 }}>
-            <div style={{ padding: '10px 18px', borderBottom: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
+            <div style={{ padding: '14px 18px', borderBottom: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
               <div style={{ width: 6, height: 6, borderRadius: '50%', background: TEAL, flexShrink: 0 }} />
               <span style={{ fontSize: 10, color: MUTED, letterSpacing: '.1em', textTransform: 'uppercase', fontWeight: 400 }}>Explorer Agents</span>
               <span style={{ fontSize: 9, background: '#E8F0FF', color: BLUE, padding: '1px 6px' }}>API</span>
@@ -336,7 +336,7 @@ export default function DashboardPage() {
               {expls.map((e: any, i: number) => {
                 const isAct = e.mode === 'ACTIVE' || e.status === 'active';
                 return (
-                  <div key={e.id || i} style={{ padding: '12px 18px', borderBottom: '1px solid ' + BLIGHT, cursor: 'pointer', transition: 'background .1s' }}
+                  <div key={e.id || i} style={{ padding: '16px 18px', borderBottom: '1px solid ' + BLIGHT, cursor: 'pointer', transition: 'background .1s' }}
                     onMouseEnter={el => (el.currentTarget.style.background = 'rgba(29,158,117,.015)')}
                     onMouseLeave={el => (el.currentTarget.style.background = 'transparent')}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
