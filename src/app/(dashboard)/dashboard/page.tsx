@@ -349,7 +349,7 @@ export default function DashboardPage() {
                         <div style={{ fontSize: 11, color: MUTED, fontWeight: 300 }}>{e.role}{e.company ? ' · ' + e.company : ''}</div>
                       </div>
                       <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                        <div style={{ fontSize: 16, fontWeight: 300, color: DARK, letterSpacing: '-0.01em' }}>{e.convos || 0}</div>
+                        <div style={{ fontSize: 13, fontWeight: 400, color: MID }}>{e.convos || 0}</div>
                         <div style={{ fontSize: 9, color: MUTED, textTransform: 'uppercase', letterSpacing: '.05em' }}>convos</div>
                       </div>
                     </div>
