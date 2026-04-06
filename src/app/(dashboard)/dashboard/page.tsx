@@ -165,7 +165,7 @@ export default function DashboardPage() {
       </div>
 
       {/* MAIN GRID */}
-      <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '1fr 340px', overflow: 'hidden' }}>
+      <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '1fr 420px', overflow: 'hidden' }}>
 
         {/* LEFT — PIPELINE + TABLE */}
         <div style={{ borderRight: '1px solid ' + BORDER, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
@@ -209,7 +209,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Table header */}
-          <div style={{ display: 'grid', gridTemplateColumns: '180px 110px 140px 80px 80px 100px 110px 80px', padding: '0 16px', height: 30, alignItems: 'center', gap: 8, flexShrink: 0 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '160px 100px 130px 75px 75px 90px 100px 130px', padding: '0 16px', height: 30, alignItems: 'center', gap: 8, flexShrink: 0 }}>
             {['Candidate','Role','Stage','AI Match','Deep','Sentiment','Fit','Actions'].map(h => (
               <div key={h} style={{ fontSize: 9, color: MUTED, textTransform: 'uppercase', letterSpacing: '.08em', fontWeight: 400 }}>{h}</div>
             ))}
@@ -219,7 +219,7 @@ export default function DashboardPage() {
           <div style={{ flex: 1, overflowY: 'auto' }}>
             {filtered.map((c: any, i: number) => (
               <div key={c.id || i} onClick={() => setProfileOpen(c)}
-                style={{ display: 'grid', gridTemplateColumns: '180px 110px 140px 80px 80px 100px 110px 80px', padding: '0 16px', height: 56, alignItems: 'center', gap: 8, cursor: 'pointer', transition: 'background .1s', borderBottom: '1px solid ' + BLIGHT }}
+                style={{ display: 'grid', gridTemplateColumns: '160px 100px 130px 75px 75px 90px 100px 130px', padding: '0 16px', height: 56, alignItems: 'center', gap: 8, cursor: 'pointer', transition: 'background .1s', borderBottom: '1px solid ' + BLIGHT }}
                 onMouseEnter={e => (e.currentTarget.style.background = 'rgba(37,99,235,.016)')}
                 onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
 
@@ -251,7 +251,7 @@ export default function DashboardPage() {
                   <div style={{ fontSize: 9.5, color: MUTED, marginTop: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{c.source || 'Taltas Network'}</div>
                 </div>
 
-                <div style={{ display: 'flex', gap: 6 }}>
+                <div style={{ display: 'flex', gap: 8, whiteSpace: 'nowrap', alignItems: 'center' }}>
                   <button onClick={e => { e.stopPropagation(); setProfileOpen(c); }}
                     style={{ fontSize: 11, color: BLUE, background: 'none', border: 'none', cursor: 'pointer', fontFamily: F, padding: 0 }}>Sentiment Map</button>
                   <span style={{ color: BORDER }}>·</span>
