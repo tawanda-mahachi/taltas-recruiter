@@ -105,7 +105,7 @@ export default function PipelinePage() {
   const dateLabel = dateRange === '1m' ? 'Feb 2026' : dateRange === '3m' ? 'Dec 2025 - Feb 2026' : dateRange === '6m' ? 'Sep 2025 - Feb 2026' : 'Mar 2025 - Feb 2026';
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 16, fontFamily: F }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 16, fontFamily: F, overflowY: 'auto', height: '100%', padding: '24px 32px', boxSizing: 'border-box' as 'border-box' }}>
 
       {/* Parameters */}
       <div style={{ background: '#FFFFFF', border: '1px solid ' + BORDER, padding: '14px 20px' }}>
