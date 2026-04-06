@@ -262,21 +262,7 @@ export default function DashboardPage() {
             ))}
 
           </div>
-          {/* Integrations fixed at bottom */}
-          <div style={{ flexShrink: 0, borderTop: '1px solid ' + BORDER, padding: '10px 16px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 5 }}>
-              <span style={{ fontSize: 9, color: MUTED, letterSpacing: '.1em', textTransform: 'uppercase', fontWeight: 400 }}>HR Integrations</span>
-              <span style={{ fontSize: 10, color: TEAL }}>10 Connected</span>
-            </div>
-            <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
-              {[{name:'Greenhouse',ok:true},{name:'BambooHR',ok:true},{name:'Lever',ok:true},{name:'Deel',ok:false},{name:'Bullhorn',ok:false}].map((intg,i) => (
-                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-                  <div style={{ width: 5, height: 5, borderRadius: '50%', background: intg.ok ? TEAL : BORDER, flexShrink: 0 }} />
-                  <span style={{ fontSize: 11, color: intg.ok ? MID : MUTED, fontWeight: 300 }}>{intg.name}</span>
-                </div>
-              ))}
-            </div>
-          </div>
+
         </div>
 
         {/* RIGHT — JOBS + EXPLORERS */}
