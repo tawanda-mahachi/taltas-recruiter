@@ -144,7 +144,7 @@ export default function DashboardPage() {
   });
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', fontFamily: F, color: DARK, background: '#FFFFFF', overflow: 'hidden' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 46px)', fontFamily: F, color: DARK, background: '#FFFFFF', overflow: 'hidden', margin: '-32px -40px' }}>
 
       {/* ── TOPBAR ── */}
       <div style={{ padding: '14px 32px', borderBottom: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0, background: '#FFFFFF' }}>
