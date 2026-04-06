@@ -185,7 +185,7 @@ export default function DashboardPage() {
               const pct = s.n / MAX_N;
               const numSz = Math.round(11 + pct * 10);
               return (
-                <div key={s.l} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '0 2px', position: 'relative' }}>
+                <div key={s.l} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '0 2px', position: 'relative', borderRight: 'none' }}>
                   {drop !== null && drop > 0 && <div style={{ position: 'absolute', top: 4, fontSize: 7, color: '#CC3300', letterSpacing: '-.02em' }}>-{drop}%</div>}
                   <div style={{ fontSize: numSz, fontWeight: 300, color: DARK, lineHeight: 1, letterSpacing: '-0.01em' }}>{s.n}</div>
                   <div style={{ fontSize: 7.5, color: MUTED, textTransform: 'uppercase', letterSpacing: '.04em', textAlign: 'center', marginTop: 2, lineHeight: 1.2 }}>{s.l}</div>
@@ -425,7 +425,7 @@ export default function DashboardPage() {
       )}
 
       {/* FOOTER */}
-      <div style={{ height: 30, borderTop: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', padding: '0 24px', justifyContent: 'space-between', flexShrink: 0 }}>
+      <div style={{ height: 24, borderTop: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', padding: '0 20px', justifyContent: 'space-between', flexShrink: 0 }}>
         <span style={{ fontSize: 9.5, color: MUTED, letterSpacing: '.06em', textTransform: 'uppercase' }}>Taltas · Talent Atlas</span>
         <span style={{ fontSize: 9.5, color: MUTED }}>Last updated · API live</span>
       </div>
