@@ -307,7 +307,7 @@ export default function DashboardPage() {
         <div style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
 
           {/* OPEN JOBS */}
-          <div style={{ flex: '0 0 auto', maxHeight: '52%', borderBottom: '1px solid ' + BORDER, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+          <div style={{ flex: '0 0 auto', maxHeight: '45%', borderBottom: '1px solid ' + BORDER, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
             <div style={{ padding: '12px 20px', borderBottom: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0, background: '#F0F4FF' }}>
               <div style={{ width: 6, height: 6, borderRadius: '50%', background: BLUE, flexShrink: 0 }} />
               <span style={{ fontSize: 10, color: BLUE, letterSpacing: '.1em', textTransform: 'uppercase', fontFamily: MONO }}>Open Jobs</span>
