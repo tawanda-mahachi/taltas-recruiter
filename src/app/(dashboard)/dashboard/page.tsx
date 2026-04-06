@@ -165,7 +165,7 @@ export default function DashboardPage() {
       </div>
 
       {/* MAIN GRID */}
-      <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '1fr 420px', overflow: 'hidden' }}>
+      <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '1fr 420px', overflow: 'hidden', borderBottom: '1px solid ' + BORDER }}>
 
         {/* LEFT — PIPELINE + TABLE */}
         <div style={{ borderRight: '1px solid ' + BORDER, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
@@ -411,7 +411,7 @@ export default function DashboardPage() {
       )}
 
       {/* FOOTER — Integrations strip */}
-      <div style={{ height: 40, borderTop: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', padding: '0 24px', gap: 20, flexShrink: 0 }}>
+      <div style={{ height: 40, display: 'flex', alignItems: 'center', padding: '0 24px', gap: 20, flexShrink: 0 }}>
         <span style={{ fontSize: 9, color: MUTED, letterSpacing: '.1em', textTransform: 'uppercase', fontWeight: 400, marginRight: 4 }}>Integrations</span>
         {[
           { name: 'Greenhouse', color: '#24A86E', ok: true },
