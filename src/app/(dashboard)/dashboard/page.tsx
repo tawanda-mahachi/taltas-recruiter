@@ -179,16 +179,16 @@ export default function DashboardPage() {
           </div>
 
           {/* Funnel */}
-          <div style={{ display: 'flex', height: 64, flexShrink: 0 }}>
+          <div style={{ display: 'flex', height: 88, flexShrink: 0 }}>
             {STAGES.map((s, i) => {
               const drop = i > 0 ? Math.round((1 - s.n / STAGES[i - 1].n) * 100) : null;
               const pct = s.n / MAX_N;
-              const numSz = Math.round(11 + pct * 10);
+              const numSz = Math.round(16 + pct * 14);
               return (
                 <div key={s.l} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '0 2px', position: 'relative', borderRight: 'none' }}>
                   {drop !== null && drop > 0 && <div style={{ position: 'absolute', top: 4, fontSize: 7, color: '#CC3300', letterSpacing: '-.02em' }}>-{drop}%</div>}
                   <div style={{ fontSize: numSz, fontWeight: 300, color: DARK, lineHeight: 1, letterSpacing: '-0.01em' }}>{s.n}</div>
-                  <div style={{ fontSize: 7.5, color: MUTED, textTransform: 'uppercase', letterSpacing: '.04em', textAlign: 'center', marginTop: 2, lineHeight: 1.2 }}>{s.l}</div>
+                  <div style={{ fontSize: 9.5, color: MUTED, textTransform: 'uppercase', letterSpacing: '.03em', textAlign: 'center', marginTop: 4, lineHeight: 1.2 }}>{s.l}</div>
                 </div>
               );
             })}
@@ -411,8 +411,8 @@ export default function DashboardPage() {
       )}
 
       {/* FOOTER — Integrations strip */}
-      <div style={{ height: 36, borderTop: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', padding: '0 20px', gap: 20, flexShrink: 0 }}>
-        <span style={{ fontSize: 9, color: MUTED, letterSpacing: '.1em', textTransform: 'uppercase', fontWeight: 400, marginRight: 4 }}>Connected</span>
+      <div style={{ height: 40, borderTop: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', padding: '0 24px', gap: 20, flexShrink: 0 }}>
+        <span style={{ fontSize: 9, color: MUTED, letterSpacing: '.1em', textTransform: 'uppercase', fontWeight: 400, marginRight: 4 }}>Integrations</span>
         {[
           { name: 'Greenhouse', color: '#24A86E', ok: true },
           { name: 'BambooHR',   color: '#75C045', ok: true },
