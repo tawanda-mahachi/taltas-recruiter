@@ -207,7 +207,7 @@ export default function JobBankPage() {
       {/*  Filters  */}
       <div style={{ display: 'flex', gap: 8, marginBottom: 16, alignItems: 'center' }}>
         <div style={{ position: 'relative', flex: 1, maxWidth: 320 }}>
-          <IconSearch size={13} style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: 'var(--muted)', pointerEvents: 'none', display: 'block' }} />
+          <span style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: 'var(--muted)', pointerEvents: 'none', display: 'flex', alignItems: 'center' }}><IconSearch size={13} /></span>
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search jobs, departments, locations..."
             style={{ width: '100%', paddingLeft: 30, paddingRight: 10, paddingTop: 8, paddingBottom: 8, border: '1px solid var(--border)', background: '#FFFFFF', fontSize: 12, color: 'var(--dark)', outline: 'none' }} />
         </div>
