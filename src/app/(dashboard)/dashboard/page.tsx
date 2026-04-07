@@ -315,7 +315,7 @@ export default function DashboardPage() {
               <span style={{ fontSize: 9, background: '#E8F0FF', color: BLUE, padding: '1px 6px' }}>API</span>
               <button onClick={() => router.push('/explorers')}
                 style={{ marginLeft: 'auto', fontSize: 11, color: '#fff', background: TEAL, border: 'none', padding: '4px 10px', cursor: 'pointer', fontFamily: F }}>
-                + New
+                + New Agent
               </button>
             </div>
             <div style={{ overflowY: 'auto', flex: 1 }}>
