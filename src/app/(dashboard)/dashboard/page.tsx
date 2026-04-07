@@ -270,7 +270,7 @@ export default function DashboardPage() {
 
           {/* OPEN JOBS */}
           <div style={{ flex: '0 0 auto', maxHeight: '48%', borderBottom: '1px solid ' + BORDER, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-            <div style={{ padding: '10px 18px', display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
+            <div style={{ padding: '10px 18px', display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0, background: '#F0F4FF' }}>
               <div style={{ width: 6, height: 6, borderRadius: '50%', background: BLUE, flexShrink: 0 }} />
               <span style={{ fontSize: 10, color: MUTED, letterSpacing: '.1em', textTransform: 'uppercase', fontWeight: 400 }}>Open Jobs</span>
               <span style={{ fontSize: 10, color: MID, fontWeight: 300 }}>24 active</span>
@@ -309,7 +309,7 @@ export default function DashboardPage() {
 
           {/* EXPLORER INTERACTIONS */}
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', minHeight: 0 }}>
-            <div style={{ padding: '10px 18px', borderBottom: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
+            <div style={{ padding: '10px 18px', borderBottom: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0, background: '#F0FFF8' }}>
               <div style={{ width: 6, height: 6, borderRadius: '50%', background: TEAL, flexShrink: 0 }} />
               <span style={{ fontSize: 10, color: MUTED, letterSpacing: '.1em', textTransform: 'uppercase', fontWeight: 400 }}>Explorer Agents</span>
               <span style={{ fontSize: 9, background: '#E8F0FF', color: BLUE, padding: '1px 6px' }}>API</span>
