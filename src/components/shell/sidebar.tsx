@@ -106,7 +106,7 @@ export function Sidebar() {
       </nav>
 
       {/* User footer */}
-      <div style={{ borderTop: '1px solid ' + BORDER, padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 10 }}>
+      <div style={{ padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 10 }}>
         <div style={{ width: 30, height: 30, borderRadius: '50%', background: BLUE, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 400, flexShrink: 0 }}>{ini}</div>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ fontSize: 12, fontWeight: 400, color: DARK, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{name}</div>
