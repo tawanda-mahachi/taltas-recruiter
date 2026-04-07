@@ -238,7 +238,7 @@ export default function PipelinePage() {
                 <div style={{ height: 3, width: `${b.pct}%`, background: b.color }} />
               </div>
               <span style={{ fontSize: 18, fontWeight: 300, color: DARK, letterSpacing: '-0.01em', flexShrink: 0 }}>
-                {b.days}<span style={{ fontSize: 9, color: MUTED, marginLeft: 3, fontWeight: 300 }}>days</span>
+                {String(b.days).replace(/d$/,'')}<span style={{ fontSize: 9, color: MUTED, marginLeft: 3, fontWeight: 300 }}>days</span>
               </span>
               <span style={{ fontSize: 8, padding: '2px 7px', color: b.color, background: 'rgba(0,0,0,.04)', flexShrink: 0, fontFamily: F }}>{b.status}</span>
             </div>
