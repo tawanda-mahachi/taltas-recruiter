@@ -27,11 +27,11 @@ const MOCK_CANDS = [
 ];
 
 const MOCK_JOBS = [
-  { id:'j1', title:'Senior Backend Engineer',  sub:'Data Platform · SF / Remote',     comp:'$200–250K', status:'HOT',  candidates:20 },
-  { id:'j2', title:'Platform AI Lead',         sub:'AI Infrastructure · NYC / Remote', comp:'$180–220K', status:'WARM', candidates:23 },
-  { id:'j3', title:'Staff Infra Engineer',     sub:'Infrastructure · SF / Seattle',    comp:'$215–270K', status:'HOT',  candidates:18 },
-  { id:'j4', title:'Founding Engineer',        sub:'Engineering · Remote',             comp:'$170–210K', status:'HOT',  candidates:15 },
-  { id:'j5', title:'Backend Engineer',         sub:'API Platform · NYC',               comp:'$160–195K', status:'OPEN', candidates:3  },
+  { id:'j1', title:'Senior Backend Engineer',  sub:'Data Platform - SF / Remote',     comp:'$200-250K', status:'HOT',  candidates:20 },
+  { id:'j2', title:'Platform AI Lead',         sub:'AI Infrastructure - NYC / Remote', comp:'$180-220K', status:'WARM', candidates:23 },
+  { id:'j3', title:'Staff Infra Engineer',     sub:'Infrastructure - SF / Seattle',    comp:'$215-270K', status:'HOT',  candidates:18 },
+  { id:'j4', title:'Founding Engineer',        sub:'Engineering - Remote',             comp:'$170-210K', status:'HOT',  candidates:15 },
+  { id:'j5', title:'Backend Engineer',         sub:'API Platform - NYC',               comp:'$160-195K', status:'OPEN', candidates:3  },
 ];
 
 const MOCK_EXPLS = [
@@ -56,7 +56,7 @@ const METRICS = [
   { v:'18d', l:'Avg. Hire Time',    sub:'26d faster',     desc:'18 day avg vs 44 day industry avg.' },
 ];
 
-// Stage → color only (no background)
+// Stage - color only (no background)
 const SC: any = {
   'Offer Extended':   '#15703A',
   'Final Round':      BLUE,
@@ -67,7 +67,7 @@ const SC: any = {
   'Applied':          MID,
 };
 
-// Fit → color only
+// Fit - color only
 const FC: any = {
   'Deep Match':    BLUE,
   'Strong Fit':    TEAL,
@@ -101,7 +101,7 @@ function Dots({ v }: { v: number }) {
 }
 
 function SentimentBar({ v }: { v: number }) {
-  if (!v) return <span style={{ fontSize: 11, color: MUTED }}>—</span>;
+  if (!v) return <span style={{ fontSize: 11, color: MUTED }}>-</span>;
   const col = v >= 85 ? TEAL : v >= 70 ? BLUE : '#F5A623';
   return <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
     <div style={{ width: 40, height: 3, background: '#EBEBEB' }}><div style={{ width: v + '%', height: 3, background: col }} /></div>
@@ -131,18 +131,18 @@ export default function DashboardPage() {
   });
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 25px)', fontFamily: F, color: DARK, background: '#FFFFFF', overflow: 'hidden', margin: '-32px -40px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', fontFamily: F, color: DARK, background: '#FFFFFF', overflow: 'hidden' }}>
 
       {/* TOPBAR */}
       <div style={{ padding: '12px 28px', borderBottom: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
         <div>
           <div style={{ fontSize: 15, fontWeight: 400, letterSpacing: '-0.01em', color: DARK }}>Dashboard</div>
-          <div style={{ fontSize: 11, color: MUTED, fontWeight: 300 }}>Overview · Today</div>
+          <div style={{ fontSize: 11, color: MUTED, fontWeight: 300 }}>Overview - Today</div>
         </div>
         <div style={{ marginLeft: 'auto', display: 'flex', gap: 12, alignItems: 'center' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
             <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#22C55E' }} />
-            <span style={{ fontSize: 11, color: MUTED, fontWeight: 300 }}>All Synced · 2m ago</span>
+            <span style={{ fontSize: 11, color: MUTED, fontWeight: 300 }}>All Synced - 2m ago</span>
           </div>
           <button style={{ fontSize: 11, color: BLUE, background: 'none', border: 'none', cursor: 'pointer', fontFamily: F }}>Sync Now</button>
         </div>
@@ -167,8 +167,8 @@ export default function DashboardPage() {
       {/* MAIN GRID */}
       <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '1fr 420px', overflow: 'hidden' }}>
 
-        {/* LEFT — PIPELINE + TABLE */}
-        <div style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+        {/* LEFT - PIPELINE + TABLE */}
+        <div style={{ borderRight: '1px solid ' + BORDER, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
 
           {/* Section label */}
           <div style={{ padding: '10px 24px', display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
@@ -233,19 +233,19 @@ export default function DashboardPage() {
 
                 <div style={{ fontSize: 11, color: MID, fontWeight: 300, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{c.role}</div>
 
-                {/* Stage — dot + text, no box */}
+                {/* Stage - dot + text, no box */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: 5, minWidth: 0 }}>
                   <div style={{ width: 5, height: 5, borderRadius: '50%', background: SD[c.stage] || MUTED, flexShrink: 0 }} />
                   <span style={{ fontSize: 11, color: SC[c.stage] || MUTED, fontWeight: 300, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{c.stage}</span>
                 </div>
 
-                <div>{c.score > 0 ? <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}><Dots v={c.score} /><span style={{ fontSize: 9.5, color: MID }}>{c.score}</span></div> : <span style={{ fontSize: 11, color: MUTED }}>—</span>}</div>
+                <div>{c.score > 0 ? <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}><Dots v={c.score} /><span style={{ fontSize: 9.5, color: MID }}>{c.score}</span></div> : <span style={{ fontSize: 11, color: MUTED }}>-</span>}</div>
 
-                <div>{c.deepMatch > 0 ? <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}><Dots v={c.deepMatch} /><span style={{ fontSize: 9.5, color: TEAL }}>{c.deepMatch}</span></div> : <span style={{ fontSize: 11, color: MUTED }}>—</span>}</div>
+                <div>{c.deepMatch > 0 ? <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}><Dots v={c.deepMatch} /><span style={{ fontSize: 9.5, color: TEAL }}>{c.deepMatch}</span></div> : <span style={{ fontSize: 11, color: MUTED }}>-</span>}</div>
 
                 <SentimentBar v={c.sentiment || 0} />
 
-                {/* Fit — plain colored text, no box */}
+                {/* Fit - plain colored text, no box */}
                 <div>
                   <div style={{ fontSize: 11, color: FC[c.fit || 'Pending'] || MUTED, fontWeight: 400, whiteSpace: 'nowrap' }}>{c.fit || 'Pending'}</div>
                   <div style={{ fontSize: 9.5, color: MUTED, marginTop: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{c.source || 'Taltas Network'}</div>
@@ -254,7 +254,7 @@ export default function DashboardPage() {
                 <div style={{ display: 'flex', gap: 8, alignItems: 'center', whiteSpace: 'nowrap' }}>
                   <button onClick={e => { e.stopPropagation(); setProfileOpen(c); }}
                     style={{ fontSize: 11, color: BLUE, background: 'none', border: 'none', cursor: 'pointer', fontFamily: F, padding: 0 }}>Sentiment Map</button>
-                  <span style={{ color: BORDER }}>·</span>
+                  <span style={{ color: BORDER }}>-</span>
                   <button onClick={e => { e.stopPropagation(); router.push('/candidates/' + (c.id || '')); }}
                     style={{ fontSize: 11, color: DARK, background: 'none', border: 'none', cursor: 'pointer', fontFamily: F, padding: 0, fontWeight: 400 }}>View Profile</button>
                 </div>
@@ -265,10 +265,10 @@ export default function DashboardPage() {
 
         </div>
 
-        {/* RIGHT — JOBS + EXPLORERS */}
-        <div style={{ borderLeft: '1px solid ' + BORDER, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+        {/* RIGHT - JOBS + EXPLORERS */}
+        <div style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
 
-          {/* OPEN JOBS */
+          {/* OPEN JOBS */}
           <div style={{ flex: '0 0 auto', maxHeight: '48%', borderBottom: '1px solid ' + BORDER, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
             <div style={{ padding: '10px 18px', display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
               <div style={{ width: 6, height: 6, borderRadius: '50%', background: BLUE, flexShrink: 0 }} />
@@ -332,7 +332,7 @@ export default function DashboardPage() {
                           <span style={{ fontSize: 12.5, fontWeight: 400, color: DARK }}>{e.name}</span>
                           <span style={{ fontSize: 10, color: isAct ? TEAL : MUTED, fontWeight: 300 }}>{e.mode || 'AUTO'}</span>
                         </div>
-                        <div style={{ fontSize: 11, color: MUTED, fontWeight: 300 }}>{e.role}{e.company ? ' · ' + e.company : ''}</div>
+                        <div style={{ fontSize: 11, color: MUTED, fontWeight: 300 }}>{e.role}{e.company ? ' - ' + e.company : ''}</div>
                       </div>
                       <div style={{ textAlign: 'right', flexShrink: 0 }}>
                         <div style={{ fontSize: 16, fontWeight: 300, color: DARK, letterSpacing: '-0.01em' }}>{e.convos || 0}</div>
@@ -358,13 +358,13 @@ export default function DashboardPage() {
               <Avatar name={profileOpen.name || ''} size={48} />
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ fontSize: 22, fontWeight: 300, letterSpacing: '-0.02em', marginBottom: 4 }}>{profileOpen.name}</div>
-                <div style={{ fontSize: 13, color: MID, fontWeight: 300, marginBottom: 6 }}>{profileOpen.role} · {profileOpen.company}</div>
+                <div style={{ fontSize: 13, color: MID, fontWeight: 300, marginBottom: 6 }}>{profileOpen.role} - {profileOpen.company}</div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                   <div style={{ width: 5, height: 5, borderRadius: '50%', background: SD[profileOpen.stage] || MUTED }} />
                   <span style={{ fontSize: 12, color: SC[profileOpen.stage] || MUTED, fontWeight: 300 }}>{profileOpen.stage}</span>
                 </div>
               </div>
-              <button onClick={() => setProfileOpen(null)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: MUTED, fontSize: 20, lineHeight: 1, padding: 0, flexShrink: 0 }}>×</button>
+              <button onClick={() => setProfileOpen(null)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: MUTED, fontSize: 20, lineHeight: 1, padding: 0, flexShrink: 0 }}>-</button>
             </div>
 
             {profileOpen.score > 0 && (
@@ -372,7 +372,7 @@ export default function DashboardPage() {
                 <div style={{ display: 'flex', gap: 24, marginBottom: 16 }}>
                   <div><div style={{ fontSize: 9, color: MUTED, textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 4 }}>AI Match</div><div style={{ fontSize: 28, fontWeight: 300, color: BLUE, letterSpacing: '-0.02em' }}>{profileOpen.score}</div></div>
                   <div><div style={{ fontSize: 9, color: MUTED, textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 4 }}>Deep Match</div><div style={{ fontSize: 28, fontWeight: 300, color: TEAL, letterSpacing: '-0.02em' }}>{profileOpen.deepMatch}</div></div>
-                  <div><div style={{ fontSize: 9, color: MUTED, textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 4 }}>Sentiment</div><div style={{ fontSize: 28, fontWeight: 300, color: DARK, letterSpacing: '-0.02em' }}>{profileOpen.sentiment || '—'}</div></div>
+                  <div><div style={{ fontSize: 9, color: MUTED, textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 4 }}>Sentiment</div><div style={{ fontSize: 28, fontWeight: 300, color: DARK, letterSpacing: '-0.02em' }}>{profileOpen.sentiment || '-'}</div></div>
                 </div>
                 {[['Technical Depth',96],['System Thinking',91],['Communication',88],['Culture Alignment',90],['Compensation Fit',94],['Timeline',97]].map(([l,v]: any) => (
                   <div key={l} style={{ marginBottom: 8 }}>
@@ -389,9 +389,9 @@ export default function DashboardPage() {
             <div style={{ padding: '16px 24px', borderBottom: '1px solid ' + BORDER, flexShrink: 0 }}>
               <div style={{ fontSize: 9, color: MUTED, letterSpacing: '.1em', textTransform: 'uppercase', marginBottom: 10 }}>Compensation</div>
               <div style={{ display: 'flex', gap: 24 }}>
-                <div><div style={{ fontSize: 9, color: MUTED, textTransform: 'uppercase', letterSpacing: '.07em', marginBottom: 2 }}>Expecting</div><div style={{ fontSize: 20, fontWeight: 300, color: DARK }}>{profileOpen.salaryExpectation || '—'}</div></div>
-                <div><div style={{ fontSize: 9, color: MUTED, textTransform: 'uppercase', letterSpacing: '.07em', marginBottom: 2 }}>Band</div><div style={{ fontSize: 20, fontWeight: 300, color: TEAL }}>{profileOpen.salaryBand || '—'}</div></div>
-                <div><div style={{ fontSize: 9, color: MUTED, textTransform: 'uppercase', letterSpacing: '.07em', marginBottom: 2 }}>Start</div><div style={{ fontSize: 20, fontWeight: 300, color: DARK }}>{profileOpen.startDate || '—'}</div></div>
+                <div><div style={{ fontSize: 9, color: MUTED, textTransform: 'uppercase', letterSpacing: '.07em', marginBottom: 2 }}>Expecting</div><div style={{ fontSize: 20, fontWeight: 300, color: DARK }}>{profileOpen.salaryExpectation || '-'}</div></div>
+                <div><div style={{ fontSize: 9, color: MUTED, textTransform: 'uppercase', letterSpacing: '.07em', marginBottom: 2 }}>Band</div><div style={{ fontSize: 20, fontWeight: 300, color: TEAL }}>{profileOpen.salaryBand || '-'}</div></div>
+                <div><div style={{ fontSize: 9, color: MUTED, textTransform: 'uppercase', letterSpacing: '.07em', marginBottom: 2 }}>Start</div><div style={{ fontSize: 20, fontWeight: 300, color: DARK }}>{profileOpen.startDate || '-'}</div></div>
               </div>
             </div>
 
@@ -403,7 +403,7 @@ export default function DashboardPage() {
               </div>
               <button onClick={() => { setProfileOpen(null); router.push('/candidates/' + (profileOpen.id || '')); }}
                 style={{ width: '100%', background: 'none', border: 'none', color: BLUE, fontFamily: F, fontSize: 12, padding: '8px', cursor: 'pointer', textAlign: 'left' }}>
-                Open full profile →
+                Open full profile -
               </button>
             </div>
           </div>
@@ -420,7 +420,7 @@ export default function DashboardPage() {
             <span style={{ fontSize: 11, color: intg.ok ? DARK : MUTED, fontWeight: intg.ok ? 400 : 300, fontFamily: F }}>{intg.name}</span>
           </div>
         ))}
-        <span style={{ marginLeft: 'auto', fontSize: 9.5, color: MUTED, fontFamily: F }}>Last updated · API live</span>
+        <span style={{ marginLeft: 'auto', fontSize: 9.5, color: MUTED, fontFamily: F }}>Last updated - API live</span>
       </div>
     </div>
   );

@@ -9,7 +9,7 @@ function DashboardShell({ children }) {
     <div className='app-shell' style={{background:'#FFFFFF'}}>
       <Sidebar />
       <div className='main-content'>
-        <main style={{ flex: 1, minWidth: 0, overflowY: 'auto', display: 'flex', flexDirection: 'column', padding: '32px 40px' }}>
+        <main style={{ flex: 1, minWidth: 0, overflowY: 'auto', display: 'flex', flexDirection: 'column', padding: '0' }}>
           {children}
         </main>
       </div>
