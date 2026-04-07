@@ -90,9 +90,7 @@ export function Sidebar() {
                   {item.group}
                 </div>
               )}
-              {item.group === 'Settings' && (
-                <div style={{ height: 1, background: BORDER, margin: '8px 0' }} />
-              )}
+
               <button onClick={() => router.push(item.href)}
                 style={{ width: '100%', display: 'flex', alignItems: 'center', gap: 10, padding: '8px 20px', background: isActive ? '#EFF4FF' : 'none', border: 'none', cursor: 'pointer', fontFamily: F, fontSize: 13, fontWeight: isActive ? 400 : 300, color: isActive ? BLUE : MID, textAlign: 'left', transition: 'background .1s', position: 'relative' }}>
                 <span style={{ color: isActive ? BLUE : MUTED, flexShrink: 0 }}>{item.icon}</span>
