@@ -87,6 +87,11 @@ export function Sidebar() {
             <div key={item.href}>
 
 
+              {showGroup && (
+                <div style={{ fontSize: 9, color: MUTED, letterSpacing: '.12em', textTransform: 'uppercase', padding: '14px 20px 4px', fontWeight: 400, opacity: 0.6, fontFamily: F }}>
+                  {item.group}
+                </div>
+              )}
               <button onClick={() => router.push(item.href)}
                 style={{ width: '100%', display: 'flex', alignItems: 'center', gap: 10, padding: '8px 20px', background: isActive ? '#EFF4FF' : 'none', border: 'none', cursor: 'pointer', fontFamily: F, fontSize: 13, fontWeight: isActive ? 400 : 300, color: isActive ? BLUE : MID, textAlign: 'left', transition: 'background .1s', position: 'relative' }}>
                 <span style={{ color: isActive ? BLUE : MUTED, flexShrink: 0 }}>{item.icon}</span>
