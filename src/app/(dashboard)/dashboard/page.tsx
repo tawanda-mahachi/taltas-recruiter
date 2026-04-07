@@ -168,7 +168,7 @@ export default function DashboardPage() {
       <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '1fr 420px', overflow: 'hidden' }}>
 
         {/* LEFT — PIPELINE + TABLE */}
-        <div style={{ borderRight: '1px solid ' + BORDER, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
 
           {/* Section label */}
           <div style={{ padding: '10px 24px', display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
@@ -266,9 +266,9 @@ export default function DashboardPage() {
         </div>
 
         {/* RIGHT — JOBS + EXPLORERS */}
-        <div style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+        <div style={{ borderLeft: '1px solid ' + BORDER, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
 
-          {/* OPEN JOBS */}
+          {/* OPEN JOBS */
           <div style={{ flex: '0 0 auto', maxHeight: '48%', borderBottom: '1px solid ' + BORDER, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
             <div style={{ padding: '10px 18px', display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
               <div style={{ width: 6, height: 6, borderRadius: '50%', background: BLUE, flexShrink: 0 }} />
