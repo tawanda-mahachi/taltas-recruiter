@@ -143,7 +143,7 @@ export default function PipelinePage() {
   const fromApi = !!pipelineQuery.data?.fromApi;
 
   const stages = pipeData?.stages?.length
-    ? pipeData.stages.map((s: any) => ({ stage: s.stage || s.name, n: s.count || s.n, color: MOCK_STAGES[0]?.color || '#1e3a8a' }))
+    ? pipeData.stages.map((s: any, i: number) => ({ stage: s.stage || s.name, n: s.count || s.n, color: MOCK_STAGES[i]?.color || '#1e3a8a' }))
     : MOCK_STAGES;
   const bottlenecks  = pipeData?.bottlenecks?.length  ? pipeData.bottlenecks  : MOCK_BOTTLENECKS;
   const sourceData   = pipeData?.sourceData?.length   ? pipeData.sourceData   : MOCK_SOURCES;
