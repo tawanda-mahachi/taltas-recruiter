@@ -164,7 +164,7 @@ export function StageVelocityChart({ data }: { data: { stage: string; target: nu
           },
           {
             type: 'bar', data: data.map(d => d.actual), itemStyle: { color: '#E8E8E5' }, barMaxWidth: 7, z: 1, name: 'Actual',
-            label: { show: true, position: 'right', fontSize: 10, color: MID, fontFamily: F, formatter: (p: any) => p.value + ' days' }
+            label: { show: true, position: 'right', fontSize: 10, color: MID, fontFamily: F, formatter: (p: any) => (p.value > 0 ? p.value + 'd' : '-') }
           },
         ],
         barGap: '-100%'
@@ -282,7 +282,7 @@ export function RoleVelocityChart({ roles }: { roles: { role: string; avgDays: n
         type: 'bar',
         data: data.map(r => ({ value: r.avgDays, itemStyle: { color: r.status === 'fast' ? TEAL : r.status === 'slow' ? '#D97706' : BLUE } })),
         barMaxWidth: 10,
-        label: { show: true, position: 'right', fontSize: 10, color: MID, fontFamily: F, formatter: (p: any) => p.value + ' days' }
+        label: { show: true, position: 'right', fontSize: 10, color: MID, fontFamily: F, formatter: (p: any) => (p.value > 0 ? p.value + 'd' : '-') }
       }]
     });
   }
