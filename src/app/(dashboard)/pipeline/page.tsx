@@ -153,7 +153,7 @@ export default function PipelinePage() {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16, fontFamily: F, overflowY: 'auto', height: '100%', padding: '24px 32px', boxSizing: 'border-box' as 'border-box' }}>
 
       {/* PAGE HEADER */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: 16, borderBottom: '1px solid ' + BORDER, flexShrink: 0 }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0 }}>
         <div>
           <div style={{ fontSize: 15, fontWeight: 400, letterSpacing: '-0.01em', color: DARK }}>Pipeline</div>
           <div style={{ fontSize: 11, color: MUTED, fontWeight: 300, marginTop: 2 }}>Hiring Analytics · Feb 2026</div>
@@ -188,7 +188,7 @@ export default function PipelinePage() {
                 <div style={{ fontSize: 9, color: MUTED, letterSpacing: '.1em', textTransform: 'uppercase', marginBottom: 5, fontFamily: F }}>{s.label}</div>
                 <div style={{ fontSize: 24, fontWeight: 300, color: s.col, letterSpacing: '-0.02em', lineHeight: 1 }}>
                   {s.value}
-                  {s.unit && <span style={{ fontSize: 11, color: MUTED, marginLeft: 2 }}>{s.unit}</span>}
+                  
                 </div>
                 {s.sub && <div style={{ fontSize: 10, color: MUTED, marginTop: 3 }}>{s.sub}</div>}
               </div>
@@ -238,7 +238,7 @@ export default function PipelinePage() {
                 <div style={{ height: 3, width: `${b.pct}%`, background: b.color }} />
               </div>
               <span style={{ fontSize: 18, fontWeight: 300, color: DARK, letterSpacing: '-0.01em', flexShrink: 0 }}>
-                {b.days}<span style={{ fontSize: 9, color: MUTED, marginLeft: 2, fontWeight: 300 }}>days</span>
+                {b.days}<span style={{ fontSize: 9, color: MUTED, marginLeft: 3, fontWeight: 300 }}>days</span>
               </span>
               <span style={{ fontSize: 8, padding: '2px 7px', color: b.color, background: 'rgba(0,0,0,.04)', flexShrink: 0, fontFamily: F }}>{b.status}</span>
             </div>
