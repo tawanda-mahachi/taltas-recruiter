@@ -131,7 +131,7 @@ export default function DashboardPage() {
   });
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 28px)', fontFamily: F, color: DARK, background: '#FFFFFF', overflow: 'hidden', margin: '-32px -40px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 29px)', fontFamily: F, color: DARK, background: '#FFFFFF', overflow: 'hidden', margin: '-32px -40px' }}>
 
       {/* TOPBAR */}
       <div style={{ padding: '12px 28px', borderBottom: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
