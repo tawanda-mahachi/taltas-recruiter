@@ -186,7 +186,7 @@ export default function DashboardPage() {
               const numSz = Math.round(16 + pct * 14);
               return (
                 <div key={s.l} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '0 2px', position: 'relative', borderRight: 'none' }}>
-                  {drop !== null && drop > 0 && <div style={{ position: 'absolute', top: 4, fontSize: 7, color: '#CC3300', letterSpacing: '-.02em' }}>-{drop}%</div>}
+                  {drop !== null && drop > 0 && <div style={{ position: 'absolute', top: 3, fontSize: 11, color: '#CC3300', fontWeight: 400 }}>-{drop}%</div>}
                   <div style={{ fontSize: numSz, fontWeight: 300, color: DARK, lineHeight: 1, letterSpacing: '-0.01em' }}>{s.n}</div>
                   <div style={{ fontSize: 9.5, color: MUTED, textTransform: 'uppercase', letterSpacing: '.03em', textAlign: 'center', marginTop: 4, lineHeight: 1.2 }}>{s.l}</div>
                 </div>
