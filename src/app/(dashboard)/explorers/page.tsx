@@ -173,7 +173,7 @@ export default function ExplorersPage() {
       {/* TABLE */}
       <div style={{ flex: 1, overflowY: 'auto' }}>
         {/* Header */}
-        <div style={{ display: 'grid', gridTemplateColumns: '220px 180px 80px 120px 70px 80px 80px 90px 110px 1fr', alignItems: 'center', padding: '0 20px', height: 34, background: BLIGHT, borderBottom: '1px solid ' + BORDER, position: 'sticky', top: 0, zIndex: 5 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '220px 180px 80px 120px 70px 80px 80px 90px 110px 1fr', alignItems: 'center', padding: '0 20px', height: 34, background: BLIGHT, borderBottom: '1px solid ' + BORDER, position: 'sticky', top: 0, zIndex: 5, width: '100%' }}>
           {['Explorer','Target Role','Mode','Conversations','A-to-A','Interviews','Rejected','Offer Rate','Deep Match %','Status'].map(h => (
             <div key={h} style={{ fontSize: 9, color: MUTED, letterSpacing: '.09em', textTransform: 'uppercase', fontWeight: 400 }}>{h}</div>
           ))}
@@ -191,7 +191,7 @@ export default function ExplorersPage() {
           return (
             <div key={e.id || i}
               onClick={() => setDetailId(e.id)}
-              style={{ display: 'grid', gridTemplateColumns: '220px 180px 80px 120px 70px 80px 80px 90px 110px 1fr', alignItems: 'center', padding: '0 20px', height: 54, borderBottom: '1px solid ' + BLIGHT, cursor: 'pointer', transition: 'background .1s', opacity: isDraft ? .7 : 1 }}
+              style={{ display: 'grid', gridTemplateColumns: '220px 180px 80px 120px 70px 80px 80px 90px 110px 1fr', alignItems: 'center', padding: '0 20px', height: 54, borderBottom: '1px solid ' + BLIGHT, cursor: 'pointer', transition: 'background .1s', opacity: isDraft ? .7 : 1, width: '100%' }}
               onMouseEnter={el => (el.currentTarget.style.background = 'rgba(37,99,235,.016)')}
               onMouseLeave={el => (el.currentTarget.style.background = 'transparent')}>
 
