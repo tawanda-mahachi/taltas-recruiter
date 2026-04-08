@@ -7,9 +7,19 @@ import { useIntegrations } from '@/lib/data-provider';
 import { DataSourceBadge } from '@/components/shared/api-status';
 import { resolveIcon } from '@/components/icon-resolver';
 import { useToast } from '@/components/ui/toast';
-import { IconSearch, IconPlus, IconRefreshCw, IconSettings, IconZap } from '@/components/icons';
 import { useAuthStore } from '@/lib/stores/auth-store';
 import { Modal } from '@/components/ui/modal';
+
+const F      = "'Helvetica Neue',Helvetica,Arial,sans-serif";
+const BLUE   = '#2563eb';
+const TEAL   = '#1D9E75';
+const DARK   = '#0A0A0A';
+const MID    = '#6B6B6B';
+const MUTED  = '#AAAAAA';
+const BORDER = '#E8E8E5';
+const BLIGHT = '#F4F4F2';
+const AMBER  = '#D97706';
+const RED    = '#CC3300';
 
 const CATEGORIES = ['All', 'ATS', 'HRIS', 'Job Site'];
 
@@ -36,6 +46,15 @@ const FIELD_MAP: Record<string, string[]> = {
   'BambooHR': ['API Key', 'Subdomain'], 'Workday': ['Tenant URL', 'Client ID', 'Client Secret'],
   'Indeed': ['Publisher ID', 'API Token'], 'Glassdoor': ['Partner ID', 'API Key'], 'ZipRecruiter': ['API Key'],
 };
+
+function Toggle({ on, onToggle, warn = false }: any) {
+  const bg = on ? (warn ? AMBER : TEAL) : BORDER;
+  return (
+    <div onClick={onToggle} style={{ width: 36, height: 20, background: bg, borderRadius: 10, position: 'relative', cursor: 'pointer', transition: 'background .2s', flexShrink: 0 }}>
+      <div style={{ position: 'absolute', width: 14, height: 14, background: '#fff', borderRadius: '50%', top: 3, left: on ? 19 : 3, transition: 'left .2s' }} />
+    </div>
+  );
+}
 
 export default function IntegrationsPage() {
   const toast = useToast();
@@ -70,6 +89,7 @@ export default function IntegrationsPage() {
   }, [token]);
 
   useEffect(() => { fetchFeed(); }, [fetchFeed]);
+
   const [configs, setConfigs] = useState<Record<string, IntegConfig>>(
     Object.fromEntries(apiIntegrations.filter(i => i.connected).map(i => [i.name || i.id || '', {
       webhookUrl: `https://api.taltas.ai/webhooks/${(i.name || 'integration').toLowerCase().replace(/\s/g, '-')}`,
@@ -89,8 +109,9 @@ export default function IntegrationsPage() {
     return ints;
   }, [search, catFilter, statusFilter, sortBy, toggles, apiIntegrations]);
 
-  const connectedCount = Object.values(toggles).filter(Boolean).length;
-  const attentionCount = apiIntegrations.filter(i => i.needsAttention).length;
+  const connectedCount  = Object.values(toggles).filter(Boolean).length;
+  const attentionCount  = apiIntegrations.filter(i => i.needsAttention).length;
+  const totalRecords    = apiIntegrations.reduce((s, i) => s + (i.records || 0), 0);
 
   const handleConnect = (ai: AvailInteg) => { setConnectModal(ai); setConnectForm({}); };
   const submitConnect = () => {
@@ -100,184 +121,382 @@ export default function IntegrationsPage() {
     setConnecting(true);
     setTimeout(() => {
       setConnecting(false);
-      setConfigs(prev => ({ ...prev, [(connectModal as any).name || 'unknown']: { ...connectForm, webhookUrl: `https://api.taltas.ai/webhooks/${((connectModal as any).name || 'integration').toLowerCase().replace(/\s/g, '-')}`, syncInterval: '15', syncCandidates: true, syncJobs: true, syncInterviews: true } }));
-      setToggles(prev => ({ ...prev, [(connectModal as any).name || 'unknown']: true }));
-      toast.show(`${(connectModal as any).name || 'Integration'} connected successfully!`);
+      setConfigs(prev => ({ ...prev, [connectModal.name]: { ...connectForm, webhookUrl: `https://api.taltas.ai/webhooks/${connectModal.name.toLowerCase().replace(/\s/g, '-')}`, syncInterval: '15', syncCandidates: true, syncJobs: true, syncInterviews: true } }));
+      setToggles(prev => ({ ...prev, [connectModal.name]: true }));
+      toast.show(`${connectModal.name} connected successfully!`);
       setConnectModal(null); setAddModalOpen(false);
     }, 1500);
   };
-  const openEdit = (int: typeof MOCK_INTEGRATIONS[0]) => {
+  const openEdit = (int: any) => {
     setEditModal(int);
     setEditForm(configs[int.name || ''] || { syncInterval: '15', syncCandidates: true, syncJobs: true, syncInterviews: true });
   };
   const saveEdit = () => {
     if (!editModal) return; setSaving(true);
-    setTimeout(() => { setSaving(false); setConfigs(prev => ({ ...prev, [editModal.name || '']: editForm })); toast.show(`${editModal.name || 'Integration'} configuration saved`); setEditModal(null); }, 800);
+    setTimeout(() => { setSaving(false); setConfigs(prev => ({ ...prev, [editModal.name || '']: editForm })); toast.show(`${editModal.name} configuration saved`); setEditModal(null); }, 800);
   };
   const handleToggle = (name: string) => {
     const wasOn = toggles[name];
     setToggles(prev => ({ ...prev, [name]: !prev[name] }));
     toast.show(wasOn ? `${name} disconnected` : `${name} reconnected`);
   };
-  const handleTestConnection = (name: string) => { toast.show(`Testing ${name}…`); setTimeout(() => toast.show(`${name} — connection healthy ✓`), 1200); };
-  const existingFields = (name: string) => FIELD_MAP[name] || ['API Key'];
+  const handleTestConnection = (name: string) => { toast.show(`Testing ${name}…`); setTimeout(() => toast.show(`${name} — connection healthy`), 1200); };
+  const existingFields   = (name: string) => FIELD_MAP[name] || ['API Key'];
   const existingAuthType = (name: string) => AUTH_TYPE_MAP[name] || 'apikey';
 
+  const inputStyle  = { width: '100%', padding: '7px 10px', border: '1px solid ' + BORDER, fontFamily: F, fontSize: 13, color: DARK, outline: 'none' } as any;
+  const selectStyle = { width: '100%', padding: '7px 10px', border: '1px solid ' + BORDER, fontFamily: F, fontSize: 13, color: MID, background: '#fff', outline: 'none', cursor: 'pointer', appearance: 'none' as any };
+  const btnPrimary  = { padding: '7px 18px', background: BLUE, border: 'none', color: '#fff', fontFamily: F, fontSize: 12, cursor: 'pointer' } as any;
+  const btnSecondary= { padding: '7px 18px', background: 'none', border: '1px solid ' + BORDER, color: MID, fontFamily: F, fontSize: 12, cursor: 'pointer' } as any;
+  const btnDanger   = { padding: '7px 18px', background: 'none', border: '1px solid #FFDDD8', color: RED, fontFamily: F, fontSize: 12, cursor: 'pointer' } as any;
+
   return (
-    <div className="flex flex-col gap-[13px]">
-      <div className="grid gap-[10px]" style={{ gridTemplateColumns: 'repeat(4, 1fr)' }}>
-        <div className="kpi"><div className="kpi-label">Connected</div><div className="kpi-num" style={{ color: 'var(--green)' }}>{connectedCount}</div><div className="font-mono text-[9px]" style={{ color: 'var(--muted)' }}>of {apiIntegrations.length} platforms</div></div>
-        <div className="kpi" style={{ animationDelay: '.05s' }}><div className="kpi-label">Needs Attention</div><div className="kpi-num" style={{ color: 'var(--orange)' }}>{attentionCount}</div><div className="font-mono text-[9px]" style={{ color: 'var(--orange)' }}>Re-auth or webhook errors</div></div>
-        <div className="kpi" style={{ animationDelay: '.1s' }}><div className="kpi-label">Total Records Synced</div><div className="kpi-num">8,247</div><div className="font-mono text-[9px]" style={{ color: 'var(--muted)' }}>Across all platforms</div></div>
-        <div className="kpi" style={{ animationDelay: '.15s' }}><div className="kpi-label">Last Sync</div><div className="kpi-num" style={{ fontSize: 22 }}>2m ago</div><div className="kpi-delta up"><IconRefreshCw size={9} /> All healthy</div></div>
+    <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, fontFamily: F, overflow: 'hidden' }}>
+
+      {/* PAGE HEADER */}
+      <div style={{ padding: '12px 24px', borderBottom: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
+        <div>
+          <div style={{ fontSize: 15, fontWeight: 400, letterSpacing: '-0.01em', color: DARK }}>Integrations</div>
+          <div style={{ fontSize: 11, color: MUTED, fontWeight: 300, marginTop: 1 }}>HR Platforms & Job Site Connections <DataSourceBadge fromApi={fromApi} /></div>
+        </div>
+        <div style={{ marginLeft: 'auto' }}>
+          <button onClick={() => setAddModalOpen(true)}
+            style={{ fontSize: 11, color: '#fff', background: BLUE, border: 'none', padding: '5px 14px', cursor: 'pointer', fontFamily: F }}>
+            + Add Integration
+          </button>
+        </div>
       </div>
-      <div className="card">
-        <div className="flex items-center justify-between mb-[14px] flex-wrap gap-[6px]">
-          <span className="mono-label flex items-center gap-[6px]"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 4v16M15 4v16M4 9h16M4 15h16"/></svg> HR Platforms & Job Site Integrations<DataSourceBadge fromApi={fromApi} /></span>
-          <div className="flex gap-[6px] items-center"><span className="fit-badge fit-good">{connectedCount} Connected</span><span className="fit-badge" style={{ color: 'var(--orange)', background: 'var(--orange-bg)', borderColor: 'var(--orange-border)' }}>{attentionCount} Attention</span></div>
+
+      {/* METRICS STRIP */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', background: BLUE, flexShrink: 0 }}>
+        {[
+          { v: connectedCount,              l: 'Connected',          sub: `of ${apiIntegrations.length} platforms` },
+          { v: attentionCount,              l: 'Needs Attention',    sub: 'Re-auth or webhook errors' },
+          { v: totalRecords.toLocaleString(),l: 'Records Synced',    sub: 'Across all platforms' },
+          { v: '2m ago',                    l: 'Last Sync',          sub: 'All systems healthy' },
+        ].map((m, i) => (
+          <div key={i} style={{ padding: '18px 24px', borderRight: i < 3 ? '1px solid rgba(255,255,255,.1)' : 'none' }}>
+            <div style={{ fontSize: 36, fontWeight: 300, color: '#fff', letterSpacing: '-0.03em', lineHeight: 1, marginBottom: 4 }}>{m.v}</div>
+            <div style={{ fontSize: 11, color: 'rgba(255,255,255,.7)', fontWeight: 300, marginBottom: 2 }}>{m.l}</div>
+            <div style={{ fontSize: 10, color: 'rgba(255,255,255,.4)', fontWeight: 300 }}>{m.sub}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* FILTERS */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 20px', borderBottom: '1px solid ' + BORDER, flexShrink: 0, background: '#fff' }}>
+        <div style={{ position: 'relative', display: 'flex', alignItems: 'center', flex: 1, maxWidth: 280 }}>
+          <svg style={{ position: 'absolute', left: 9, pointerEvents: 'none' }} width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={MUTED} strokeWidth="1.5" strokeLinecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search integrations…"
+            style={{ width: '100%', padding: '6px 10px 6px 28px', border: '1px solid ' + BORDER, fontSize: 12, fontFamily: F, color: DARK, outline: 'none' }} />
         </div>
-        <div className="flex gap-[7px] mb-[12px] flex-wrap">
-          <div className="relative flex-1" style={{ minWidth: 160 }}><IconSearch size={12} className="absolute left-[10px] top-1/2 -translate-y-1/2 opacity-40" style={{ pointerEvents: 'none' }} /><input className="form-input" style={{ paddingLeft: 28, fontSize: 11 }} placeholder="Search integrations…" value={search} onChange={e => setSearch(e.target.value)} /></div>
-          <select className="filter-select" value={catFilter} onChange={e => setCatFilter(e.target.value)}>{CATEGORIES.map(c => <option key={c}>{c}</option>)}</select>
-          <select className="filter-select" value={statusFilter} onChange={e => setStatusFilter(e.target.value)}><option value="">All Status</option><option value="connected">Connected</option><option value="disconnected">Disconnected</option><option value="attention">Needs Attention</option></select>
-          <select className="filter-select" value={sortBy} onChange={e => setSortBy(e.target.value as any)}><option value="name">Sort: Name</option><option value="records">Sort: Records</option></select>
-          <button className="ctrl-btn blue flex items-center gap-[4px]" onClick={() => setAddModalOpen(true)}><IconPlus size={10} /> Add Integration</button>
-        </div>
-        <div className="int-grid">
-          {filtered.map((int) => {
-            const intName = int.name || int.provider || 'Integration';
-            const intKey = intName;
-            return (
-            <div key={intKey} className="int-tile">
-              <div className="w-[32px] h-[32px] rounded-[7px] flex items-center justify-center flex-shrink-0" style={{ background: int.iconBg, border: '1px solid var(--border)' }}>{resolveIcon(int.icon, { size: 16 })}</div>
-              <div className="flex-1 cursor-pointer" onClick={() => { if (toggles[intKey]) openEdit(int); }}>
-                <div className="text-[11.5px] font-medium" style={{ color: 'var(--text-bright)' }}>{intName}</div>
-                <div className="font-mono text-[8.5px]" style={{ color: 'var(--muted)' }}>{int.category || ''}</div>
-                <div className="flex items-center gap-[5px] mt-[5px]"><div className="w-[5px] h-[5px] rounded-full" style={{ background: toggles[intKey] ? (int.needsAttention ? 'var(--orange)' : 'var(--green)') : 'var(--border2)' }} /><span className="font-mono text-[9px]" style={{ color: toggles[intKey] ? (int.needsAttention ? 'var(--orange)' : 'var(--green)') : 'var(--muted)' }}>{toggles[intKey] ? (int.needsAttention ? 'Needs Attention' : 'Connected') : 'Disconnected'}</span></div>
-                {toggles[intKey] && <div className="font-mono text-[8px] mt-[2px]" style={{ color: 'var(--muted)' }}>{(int.records || 0).toLocaleString()} records · {int.lastSync || 'Never'}</div>}
-              </div>
-              <div className="flex flex-col gap-[4px] items-end flex-shrink-0">
-                <button className={`int-toggle ${toggles[intKey] ? (int.needsAttention ? 'warn' : 'on') : 'off'}`} onClick={() => handleToggle(intKey)} />
-                {toggles[intKey] && <button className="ctrl-btn" style={{ fontSize: 8, padding: '2px 6px' }} onClick={() => openEdit(int)}><IconSettings size={8} className="inline mr-[2px]" />Configure</button>}
-              </div>
+        <select value={catFilter} onChange={e => setCatFilter(e.target.value)}
+          style={{ padding: '6px 10px', border: '1px solid ' + BORDER, fontSize: 12, fontFamily: F, color: MID, background: '#fff', outline: 'none', cursor: 'pointer', appearance: 'none' }}>
+          {CATEGORIES.map(c => <option key={c}>{c}</option>)}
+        </select>
+        <select value={statusFilter} onChange={e => setStatusFilter(e.target.value)}
+          style={{ padding: '6px 10px', border: '1px solid ' + BORDER, fontSize: 12, fontFamily: F, color: MID, background: '#fff', outline: 'none', cursor: 'pointer', appearance: 'none' }}>
+          <option value="">All Status</option>
+          <option value="connected">Connected</option>
+          <option value="disconnected">Disconnected</option>
+          <option value="attention">Needs Attention</option>
+        </select>
+        <select value={sortBy} onChange={e => setSortBy(e.target.value as any)}
+          style={{ padding: '6px 10px', border: '1px solid ' + BORDER, fontSize: 12, fontFamily: F, color: MID, background: '#fff', outline: 'none', cursor: 'pointer', appearance: 'none' }}>
+          <option value="name">Sort: Name</option>
+          <option value="records">Sort: Records</option>
+        </select>
+        <span style={{ marginLeft: 'auto', fontSize: 11, color: MUTED, fontWeight: 300 }}>{filtered.length} of {apiIntegrations.length}</span>
+      </div>
+
+      {/* CONTENT */}
+      <div style={{ flex: 1, overflowY: 'auto' }}>
+
+        {/* INTEGRATION TABLE */}
+        <table style={{ width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed' }}>
+          <colgroup>
+            <col style={{ width: '24%' }} />
+            <col style={{ width: '12%' }} />
+            <col style={{ width: '12%' }} />
+            <col style={{ width: '12%' }} />
+            <col style={{ width: '12%' }} />
+            <col style={{ width: '14%' }} />
+            <col style={{ width: '14%' }} />
+          </colgroup>
+          <thead style={{ position: 'sticky', top: 0, zIndex: 5 }}>
+            <tr style={{ background: BLIGHT, borderBottom: '1px solid ' + BORDER }}>
+              {['Integration','Category','Status','Records','Last Sync','Auth Type','Actions'].map(h => (
+                <th key={h} style={{ fontSize: 9, color: MUTED, textTransform: 'uppercase', letterSpacing: '.08em', fontWeight: 400, padding: '0 16px', height: 34, textAlign: 'left', whiteSpace: 'nowrap' }}>{h}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {filtered.map((int) => {
+              const intKey  = int.name || int.id || '';
+              const isOn    = !!toggles[intKey];
+              const isWarn  = int.needsAttention;
+              const dotCol  = isOn ? (isWarn ? AMBER : TEAL) : BORDER;
+              const statusTxt = isOn ? (isWarn ? 'Needs Attention' : 'Connected') : 'Disconnected';
+              const statusCol = isOn ? (isWarn ? AMBER : TEAL) : MUTED;
+              return (
+                <tr key={intKey}
+                  style={{ borderBottom: '1px solid ' + BLIGHT, height: 54, transition: 'background .1s', cursor: isOn ? 'pointer' : 'default' }}
+                  onMouseEnter={e => (e.currentTarget.style.background = 'rgba(37,99,235,.016)')}
+                  onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+                  onClick={() => { if (isOn) openEdit(int); }}>
+                  {/* Integration name */}
+                  <td style={{ padding: '0 16px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                      <div style={{ width: 28, height: 28, background: int.iconBg || BLIGHT, border: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        {resolveIcon(int.icon, { size: 14 })}
+                      </div>
+                      <div style={{ fontSize: 13, fontWeight: 400, color: DARK, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{intKey}</div>
+                    </div>
+                  </td>
+                  {/* Category */}
+                  <td style={{ padding: '0 16px', fontSize: 11, color: MUTED, fontWeight: 300 }}>{int.category || '—'}</td>
+                  {/* Status */}
+                  <td style={{ padding: '0 16px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                      <div style={{ width: 6, height: 6, borderRadius: '50%', background: dotCol, flexShrink: 0, animation: isOn && !isWarn ? 'none' : 'none' }} />
+                      <span style={{ fontSize: 11, color: statusCol, fontWeight: 300 }}>{statusTxt}</span>
+                    </div>
+                  </td>
+                  {/* Records */}
+                  <td style={{ padding: '0 16px', fontSize: 13, fontWeight: 300, color: isOn ? DARK : MUTED }}>{isOn ? (int.records || 0).toLocaleString() : '—'}</td>
+                  {/* Last Sync */}
+                  <td style={{ padding: '0 16px', fontSize: 11, color: MUTED, fontWeight: 300 }}>{isOn ? (int.lastSync || 'Never') : '—'}</td>
+                  {/* Auth Type */}
+                  <td style={{ padding: '0 16px' }}>
+                    <span style={{ fontSize: 10, padding: '2px 8px', background: existingAuthType(intKey) === 'oauth' ? '#F3EEFF' : BLIGHT, color: existingAuthType(intKey) === 'oauth' ? '#7C3AED' : MID, fontWeight: 400 }}>
+                      {existingAuthType(intKey) === 'oauth' ? 'OAuth 2.0' : 'API Key'}
+                    </span>
+                  </td>
+                  {/* Actions */}
+                  <td style={{ padding: '0 16px' }} onClick={e => e.stopPropagation()}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <Toggle on={isOn} warn={isWarn} onToggle={() => handleToggle(intKey)} />
+                      {isOn && (
+                        <button onClick={() => openEdit(int)}
+                          style={{ fontSize: 10, color: MID, background: 'none', border: '1px solid ' + BORDER, padding: '3px 10px', cursor: 'pointer', fontFamily: F }}>
+                          Configure
+                        </button>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
+            {filtered.length === 0 && (
+              <tr><td colSpan={7} style={{ padding: '60px 20px', textAlign: 'center', color: MUTED, fontSize: 13, fontWeight: 300 }}>No integrations match your filters</td></tr>
+            )}
+          </tbody>
+        </table>
+
+        {/* ACTIVITY FEED */}
+        <div style={{ padding: '24px 24px 32px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+              <div style={{ width: 6, height: 6, borderRadius: '50%', background: MUTED }} />
+              <span style={{ fontSize: 9, color: MUTED, letterSpacing: '.1em', textTransform: 'uppercase', fontWeight: 400 }}>ATS Activity Feed</span>
             </div>
-          );})}
-          {filtered.length === 0 && <div className="text-center py-[20px] col-span-2" style={{ color: 'var(--muted)' }}>No integrations match your filters</div>}
-        </div>
-      </div>
-
-      {/* Browse new integrations */}
-      <Modal open={addModalOpen && !connectModal} onClose={() => setAddModalOpen(false)} maxWidth="520px">
-        <div className="text-[19px] font-semibold mb-[4px]" style={{ fontFamily: "'Roboto Slab', serif", color: 'var(--text-bright)' }}>Add Integration</div>
-        <div className="text-[11.5px] mb-[16px]" style={{ color: 'var(--text-dim)' }}>Connect a new HR platform or job site.</div>
-        <div className="flex flex-col gap-[8px]">{AVAILABLE_INTEGRATIONS.map(ai => (
-          <div key={ai.name} className="flex items-center gap-[10px] p-[10px_12px] rounded-[8px] cursor-pointer transition-all hover:bg-[var(--surface2)]" style={{ border: '1px solid var(--border)' }} onClick={() => handleConnect(ai)}>
-            <div className="w-[28px] h-[28px] rounded-[7px] flex items-center justify-center flex-shrink-0" style={{ background: ai.iconBg, border: '1px solid var(--border)' }}>{resolveIcon(ai.icon, { size: 14 })}</div>
-            <div className="flex-1"><div className="text-[12px] font-medium" style={{ color: 'var(--text-bright)' }}>{ai.name}</div><div className="font-mono text-[8.5px]" style={{ color: 'var(--muted)' }}>{ai.category} · {ai.authType === 'oauth' ? 'OAuth 2.0' : 'API Key'}</div></div>
-            <button className="ctrl-btn run" style={{ fontSize: '9px' }}>Connect</button>
+            <button onClick={fetchFeed}
+              style={{ fontSize: 11, color: MUTED, background: 'none', border: 'none', cursor: 'pointer', fontFamily: F, display: 'flex', alignItems: 'center', gap: 5 }}>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke={MUTED} strokeWidth="1.5" strokeLinecap="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+              Refresh
+            </button>
           </div>
-        ))}</div>
-        <div className="flex justify-end mt-[14px]"><button className="ctrl-btn" onClick={() => setAddModalOpen(false)}>Close</button></div>
-      </Modal>
-
-      {/* Credential entry for new connection */}
-      <Modal open={!!connectModal} onClose={() => setConnectModal(null)} maxWidth="480px">
-        {connectModal && (<>
-          <div className="flex items-center gap-[10px] mb-[16px]">
-            <div className="w-[36px] h-[36px] rounded-[9px] flex items-center justify-center" style={{ background: connectModal.iconBg, border: '1px solid var(--border)' }}>{resolveIcon(connectModal.icon, { size: 18 })}</div>
-            <div><div className="text-[17px] font-semibold" style={{ fontFamily: "'Roboto Slab', serif", color: 'var(--text-bright)' }}>Connect {connectModal.name}</div><div className="font-mono text-[9px]" style={{ color: 'var(--muted)' }}>{connectModal.authType === 'oauth' ? 'OAuth 2.0' : 'API Key'} Authentication</div></div>
-          </div>
-          <div className="p-[12px] rounded-[8px] mb-[14px]" style={{ background: 'var(--blue-bg)', border: '1px solid var(--blue-border)' }}><div className="font-mono text-[9px]" style={{ color: 'var(--blue)' }}>{connectModal.authType === 'oauth' ? `Enter OAuth credentials from the ${connectModal.name} developer console. Taltas manages token refresh.` : `Enter credentials from the ${connectModal.name} admin panel. Keys encrypted with AES-256.`}</div></div>
-          {connectModal.fields.map(field => (<div key={field} style={{ marginBottom: 12 }}><label className="form-label">{field}</label><input className="form-input" type={field.toLowerCase().includes('secret') || field.toLowerCase().includes('key') || field.toLowerCase().includes('token') ? 'password' : 'text'} placeholder={field.toLowerCase().includes('url') ? 'https://...' : `Enter ${field}`} value={connectForm[field] || ''} onChange={e => setConnectForm(prev => ({ ...prev, [field]: e.target.value }))} style={{ fontFamily: "'Roboto Mono', monospace", fontSize: 11 }} /></div>))}
-          <div style={{ marginBottom: 12 }}><label className="form-label">Webhook Endpoint (auto-generated)</label><input className="form-input" readOnly value={`https://api.taltas.ai/webhooks/${connectModal.name.toLowerCase().replace(/\s/g, '-')}`} style={{ fontFamily: "'Roboto Mono', monospace", fontSize: 10, color: 'var(--muted)', background: 'var(--surface2)' }} /></div>
-          <div className="flex gap-[8px] mt-[16px]">
-            <button className="ctrl-btn run" style={{ flex: 1, textAlign: 'center', fontSize: 11, padding: '9px 16px' }} onClick={submitConnect} disabled={connecting}>{connecting ? '↻ Connecting…' : 'Connect & Authorize'}</button>
-            <button className="ctrl-btn" style={{ fontSize: 11, padding: '9px 16px' }} onClick={() => setConnectModal(null)}>Cancel</button>
-          </div>
-          <div className="font-mono text-[8px] text-center mt-[8px]" style={{ color: 'var(--muted)' }}>🔒 TLS 1.3 · AES-256 · SOC 2 Type II</div>
-        </>)}
-      </Modal>
-
-      {/* -- Activity Feed -- */}
-      <div style={{ marginTop: 24 }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-          <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-bright)', letterSpacing: '-0.2px' }}>ATS Activity Feed</div>
-          <button onClick={fetchFeed} style={{ fontSize: 11, color: 'var(--muted)', background: 'none', border: 'none', cursor: 'pointer' }}>? Refresh</button>
-        </div>
-        <div style={{ background: 'var(--surface)', border: '1px solid var(--border2)', borderRadius: 10, overflow: 'hidden' }}>
-          {feedLoading ? (
-            <div style={{ padding: 24, textAlign: 'center', color: 'var(--muted)', fontSize: 12 }}>Loading activity...</div>
-          ) : activityFeed.length === 0 ? (
-            <div style={{ padding: 24, textAlign: 'center', color: 'var(--muted)', fontSize: 12 }}>No ATS activity yet. Connect an ATS to get started.</div>
-          ) : activityFeed.map((item: any, i: number) => {
-            const isPush = item.direction === 'push';
-            const isSuccess = item.status === 'success';
-            return (
-              <div key={item.id} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 16px', borderBottom: i < activityFeed.length - 1 ? '1px solid var(--border)' : 'none' }}>
-                <div style={{ width: 28, height: 28, borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, background: isPush ? '#2563eb18' : '#16a34a18', flexShrink: 0 }}>
-                  {isPush ? '?' : '?'}
-                </div>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-bright)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                    {item.payloadSummary || (isPush ? 'Candidate pushed' : 'Jobs synced')}
+          <div style={{ border: '1px solid ' + BORDER, overflow: 'hidden' }}>
+            {feedLoading ? (
+              <div style={{ padding: '24px 20px', textAlign: 'center', color: MUTED, fontSize: 12, fontWeight: 300 }}>Loading activity…</div>
+            ) : activityFeed.length === 0 ? (
+              <div style={{ padding: '24px 20px', textAlign: 'center', color: MUTED, fontSize: 12, fontWeight: 300 }}>No ATS activity yet. Connect an ATS to get started.</div>
+            ) : activityFeed.map((item: any, i: number) => {
+              const isPush    = item.direction === 'push';
+              const isSuccess = item.status === 'success';
+              return (
+                <div key={item.id} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 16px', borderBottom: i < activityFeed.length - 1 ? '1px solid ' + BLIGHT : 'none' }}>
+                  <div style={{ width: 28, height: 28, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, background: isPush ? '#E8F0FF' : '#E6F5EE' }}>
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={isPush ? BLUE : TEAL} strokeWidth="1.5" strokeLinecap="round">
+                      {isPush ? <><path d="M5 12h14M12 5l7 7-7 7"/></> : <><path d="M19 12H5M12 19l-7-7 7-7"/></>}
+                    </svg>
                   </div>
-                  <div style={{ fontSize: 10, color: 'var(--muted)', marginTop: 2 }}>
-                    {item.provider} � {item.eventType.replace(/_/g, ' ')} {item.roleTitle ? '� ' + item.roleTitle : ''}
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontSize: 12, fontWeight: 400, color: DARK, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      {item.payloadSummary || (isPush ? 'Candidate pushed' : 'Jobs synced')}
+                    </div>
+                    <div style={{ fontSize: 10, color: MUTED, fontWeight: 300, marginTop: 2 }}>
+                      {item.provider} · {item.eventType.replace(/_/g, ' ')}{item.roleTitle ? ' · ' + item.roleTitle : ''}
+                    </div>
                   </div>
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 3, flexShrink: 0 }}>
-                  <span style={{ fontSize: 10, padding: '2px 7px', borderRadius: 4, fontWeight: 600, background: isSuccess ? '#16a34a15' : '#dc262615', color: isSuccess ? '#16a34a' : '#dc2626', border: '1px solid ' + (isSuccess ? '#16a34a30' : '#dc262630') }}>
-                    {isSuccess ? (isPush ? '? Pushed' : '? Pulled') : '? Failed'}
-                  </span>
-                  {!item.jobLinked && isPush && (
-                    <span style={{ fontSize: 9, color: '#d97706', fontWeight: 500 }}>? No job linked</span>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 3, flexShrink: 0 }}>
+                    <span style={{ fontSize: 10, padding: '2px 8px', fontWeight: 400, background: isSuccess ? '#E6F5EE' : '#FFEAEA', color: isSuccess ? '#15703A' : RED }}>
+                      {isSuccess ? (isPush ? 'Pushed' : 'Pulled') : 'Failed'}
+                    </span>
+                    {!item.jobLinked && isPush && (
+                      <span style={{ fontSize: 9, color: AMBER, fontWeight: 400 }}>No job linked</span>
+                    )}
+                    <span style={{ fontSize: 9, color: MUTED, fontWeight: 300 }}>
+                      {new Date(item.createdAt).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                    </span>
+                  </div>
+                  {item.status === 'failed' && (
+                    <button onClick={async () => { await fetch(API + '/integrations/push-log/' + item.id + '/retry', { method: 'POST', headers: { Authorization: 'Bearer ' + token } }); fetchFeed(); }}
+                      style={{ padding: '4px 10px', border: '1px solid ' + BORDER, background: '#fff', fontSize: 10, cursor: 'pointer', color: MID, fontFamily: F, flexShrink: 0 }}>
+                      Retry
+                    </button>
                   )}
-                  <span style={{ fontSize: 9, color: 'var(--muted)' }}>{new Date(item.createdAt).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
                 </div>
-                {item.status === 'failed' && (
-                  <button onClick={async () => { await fetch(API + '/integrations/push-log/' + item.id + '/retry', { method: 'POST', headers: { Authorization: 'Bearer ' + token } }); fetchFeed(); }} style={{ padding: '4px 9px', borderRadius: 5, border: '1px solid var(--border2)', background: 'var(--surface)', fontSize: 10, cursor: 'pointer', color: 'var(--text-mid)', flexShrink: 0 }}>Retry</button>
-                )}
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </div>
 
-      {/* Edit/configure existing integration */}
-      <Modal open={!!editModal} onClose={() => setEditModal(null)} maxWidth="540px">
-        {editModal && (<>
-          <div className="flex items-center justify-between mb-[16px]">
-            <div className="flex items-center gap-[10px]"><div className="w-[36px] h-[36px] rounded-[9px] flex items-center justify-center" style={{ background: editModal.iconBg, border: '1px solid var(--border)' }}>{resolveIcon(editModal.icon, { size: 18 })}</div><div><div className="text-[17px] font-semibold" style={{ fontFamily: "'Roboto Slab', serif", color: 'var(--text-bright)' }}>{editModal.name || 'Integration'}</div><div className="flex items-center gap-[5px]"><div className="w-[5px] h-[5px] rounded-full" style={{ background: editModal.needsAttention ? 'var(--orange)' : 'var(--green)' }} /><span className="font-mono text-[9px]" style={{ color: editModal.needsAttention ? 'var(--orange)' : 'var(--green)' }}>{editModal.needsAttention ? 'Needs Attention' : 'Connected'}</span></div></div></div>
-            <button className="ctrl-btn" style={{ fontSize: 8, padding: '3px 8px' }} onClick={() => handleTestConnection(editModal.name || '')}>Test Connection</button>
-          </div>
-          <div className="grid grid-cols-3 gap-[8px] mb-[14px]">
-            <div className="text-center p-[8px] rounded-[7px]" style={{ background: 'var(--surface2)', border: '1px solid var(--border)' }}><div className="text-[16px] font-bold" style={{ fontFamily: "'Roboto Slab', serif", color: 'var(--text-bright)' }}>{(editModal.records || 0).toLocaleString()}</div><div className="font-mono text-[8px]" style={{ color: 'var(--muted)' }}>Records</div></div>
-            <div className="text-center p-[8px] rounded-[7px]" style={{ background: 'var(--surface2)', border: '1px solid var(--border)' }}><div className="text-[16px] font-bold" style={{ fontFamily: "'Roboto Slab', serif", color: 'var(--green)' }}>{editModal.lastSync}</div><div className="font-mono text-[8px]" style={{ color: 'var(--muted)' }}>Last Sync</div></div>
-            <div className="text-center p-[8px] rounded-[7px]" style={{ background: 'var(--surface2)', border: '1px solid var(--border)' }}><div className="text-[16px] font-bold" style={{ fontFamily: "'Roboto Slab', serif", color: 'var(--blue)' }}>{existingAuthType(editModal.name || '') === 'oauth' ? 'OAuth' : 'API Key'}</div><div className="font-mono text-[8px]" style={{ color: 'var(--muted)' }}>Auth</div></div>
-          </div>
-          <div className="p-[14px] rounded-[9px] mb-[12px]" style={{ background: 'var(--surface2)', border: '1px solid var(--border)' }}>
-            <div className="font-mono text-[8.5px] uppercase tracking-[.1em] mb-[10px]" style={{ color: 'var(--muted)' }}>Credentials</div>
-            {existingFields(editModal.name || '').map(field => (<div key={field} style={{ marginBottom: 8 }}><label className="form-label">{field}</label><div className="flex gap-[4px]"><input className="form-input flex-1" type={editForm[`_show_${field}`] ? 'text' : 'password'} placeholder="Enter credential value…" value={editForm[field] || configs[editModal.name || '']?.[field] || ''} onChange={e => setEditForm(prev => ({ ...prev, [field]: e.target.value }))} style={{ fontFamily: "'Roboto Mono', monospace", fontSize: 10 }} /><button className="ctrl-btn" style={{ fontSize: 8, flexShrink: 0 }} onClick={() => setEditForm(prev => ({ ...prev, [`_show_${field}`]: !prev[`_show_${field}`] }))}>{editForm[`_show_${field}`] ? 'Hide' : 'Show'}</button></div></div>))}
-            <button className="ctrl-btn" style={{ fontSize: 8 }} onClick={() => toast.show('Credentials rotated')}>Rotate Credentials</button>
-          </div>
-          <div className="p-[14px] rounded-[9px] mb-[12px]" style={{ background: 'var(--surface2)', border: '1px solid var(--border)' }}>
-            <div className="font-mono text-[8.5px] uppercase tracking-[.1em] mb-[10px]" style={{ color: 'var(--muted)' }}>Sync Configuration</div>
-            <div className="grid grid-cols-2 gap-[10px] mb-[10px]">
-              <div><label className="form-label">Sync Interval</label><select className="form-select" value={editForm.syncInterval || '15'} onChange={e => setEditForm(f => ({ ...f, syncInterval: e.target.value }))}><option value="5">Every 5 min</option><option value="15">Every 15 min</option><option value="30">Every 30 min</option><option value="60">Hourly</option></select></div>
-              <div><label className="form-label">Webhook URL</label><input className="form-input" value={editForm.webhookUrl || configs[editModal.name || '']?.webhookUrl || ''} onChange={e => setEditForm(f => ({ ...f, webhookUrl: e.target.value }))} style={{ fontFamily: "'Roboto Mono', monospace", fontSize: 9 }} /></div>
-            </div>
-            {[{ k: 'syncCandidates', l: 'Sync Candidates', d: 'Import profiles & applications' },{ k: 'syncJobs', l: 'Sync Job Postings', d: 'Bi-directional listing sync' },{ k: 'syncInterviews', l: 'Sync Interviews', d: 'Calendar & status updates' }].map(({ k, l, d }) => (
-              <div key={k} className="flex items-center justify-between py-[6px]" style={{ borderBottom: '1px solid var(--border)' }}><div><div className="text-[11px] font-medium" style={{ color: 'var(--text-bright)' }}>{l}</div><div className="text-[9px]" style={{ color: 'var(--muted)' }}>{d}</div></div><button onClick={() => setEditForm(f => ({ ...f, [k]: !(f[k] ?? true) }))} className={`settings-toggle ${(editForm[k] ?? true) ? 'on' : 'off'}`} /></div>
+      {/* ADD INTEGRATION MODAL */}
+      <Modal open={addModalOpen && !connectModal} onClose={() => setAddModalOpen(false)} title="Add Integration">
+        <div style={{ fontFamily: F }}>
+          <div style={{ fontSize: 11, color: MUTED, fontWeight: 300, marginBottom: 14 }}>Connect a new HR platform or job site.</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {AVAILABLE_INTEGRATIONS.map(ai => (
+              <div key={ai.name}
+                style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 14px', border: '1px solid ' + BORDER, cursor: 'pointer', transition: 'border-color .1s' }}
+                onMouseEnter={e => (e.currentTarget.style.borderColor = BLUE)}
+                onMouseLeave={e => (e.currentTarget.style.borderColor = BORDER)}
+                onClick={() => handleConnect(ai)}>
+                <div style={{ width: 28, height: 28, background: ai.iconBg || BLIGHT, border: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  {resolveIcon(ai.icon, { size: 13 })}
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: 13, fontWeight: 400, color: DARK }}>{ai.name}</div>
+                  <div style={{ fontSize: 10, color: MUTED, fontWeight: 300 }}>{ai.category} · {ai.authType === 'oauth' ? 'OAuth 2.0' : 'API Key'}</div>
+                </div>
+                <button style={btnPrimary}>Connect</button>
+              </div>
             ))}
           </div>
-          <div className="flex gap-[8px]">
-            <button className="ctrl-btn run" style={{ flex: 1, textAlign: 'center', fontSize: 11, padding: '8px 16px' }} onClick={saveEdit} disabled={saving}>{saving ? 'Saving…' : 'Save Configuration'}</button>
-            <button className="ctrl-btn" style={{ fontSize: 11, padding: '8px 16px', color: 'var(--red)' }} onClick={() => { handleToggle(editModal.name || ''); setEditModal(null); }}>Disconnect</button>
-            <button className="ctrl-btn" style={{ fontSize: 11, padding: '8px 16px' }} onClick={() => setEditModal(null)}>Cancel</button>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 14 }}>
+            <button style={btnSecondary} onClick={() => setAddModalOpen(false)}>Close</button>
           </div>
-        </>)}
+        </div>
+      </Modal>
+
+      {/* CONNECT CREDENTIAL MODAL */}
+      <Modal open={!!connectModal} onClose={() => setConnectModal(null)} title={connectModal ? `Connect ${connectModal.name}` : ''}>
+        {connectModal && (
+          <div style={{ fontFamily: F }}>
+            <div style={{ fontSize: 10, color: MUTED, fontWeight: 300, marginBottom: 14, padding: '8px 12px', background: BLIGHT, border: '1px solid ' + BORDER }}>
+              {connectModal.authType === 'oauth'
+                ? `Enter OAuth credentials from the ${connectModal.name} developer console.`
+                : `Enter credentials from the ${connectModal.name} admin panel. Keys encrypted with AES-256.`}
+            </div>
+            {connectModal.fields.map(field => (
+              <div key={field} style={{ marginBottom: 12 }}>
+                <div style={{ fontSize: 11, color: MID, fontWeight: 400, marginBottom: 5 }}>{field}</div>
+                <input style={{ ...inputStyle, fontFamily: 'monospace', fontSize: 11 }}
+                  type={field.toLowerCase().includes('secret') || field.toLowerCase().includes('key') || field.toLowerCase().includes('token') ? 'password' : 'text'}
+                  placeholder={field.toLowerCase().includes('url') ? 'https://…' : `Enter ${field}`}
+                  value={connectForm[field] || ''}
+                  onChange={e => setConnectForm(prev => ({ ...prev, [field]: e.target.value }))} />
+              </div>
+            ))}
+            <div style={{ marginBottom: 14 }}>
+              <div style={{ fontSize: 11, color: MID, fontWeight: 400, marginBottom: 5 }}>Webhook Endpoint (auto-generated)</div>
+              <input style={{ ...inputStyle, fontFamily: 'monospace', fontSize: 10, color: MUTED, background: BLIGHT }} readOnly
+                value={`https://api.taltas.ai/webhooks/${connectModal.name.toLowerCase().replace(/\s/g, '-')}`} />
+            </div>
+            <div style={{ display: 'flex', gap: 8 }}>
+              <button style={{ ...btnPrimary, flex: 1 }} onClick={submitConnect} disabled={connecting}>
+                {connecting ? 'Connecting…' : 'Connect & Authorize'}
+              </button>
+              <button style={btnSecondary} onClick={() => setConnectModal(null)}>Cancel</button>
+            </div>
+            <div style={{ fontSize: 9, color: MUTED, textAlign: 'center', marginTop: 10 }}>TLS 1.3 · AES-256 · SOC 2 Type II</div>
+          </div>
+        )}
+      </Modal>
+
+      {/* EDIT / CONFIGURE MODAL */}
+      <Modal open={!!editModal} onClose={() => setEditModal(null)} title={editModal?.name || 'Configure Integration'}>
+        {editModal && (
+          <div style={{ fontFamily: F }}>
+            {/* Stats */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 10, marginBottom: 16 }}>
+              {[
+                { l: 'Records', v: (editModal.records || 0).toLocaleString(), col: DARK },
+                { l: 'Last Sync', v: editModal.lastSync || '—', col: TEAL },
+                { l: 'Auth', v: existingAuthType(editModal.name || '') === 'oauth' ? 'OAuth' : 'API Key', col: BLUE },
+              ].map((s, i) => (
+                <div key={i} style={{ padding: '10px 12px', border: '1px solid ' + BORDER, textAlign: 'center' }}>
+                  <div style={{ fontSize: 9, color: MUTED, letterSpacing: '.08em', textTransform: 'uppercase', marginBottom: 4, fontWeight: 400 }}>{s.l}</div>
+                  <div style={{ fontSize: 16, fontWeight: 300, color: s.col, letterSpacing: '-0.01em' }}>{s.v}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* Credentials */}
+            <div style={{ padding: '12px 14px', border: '1px solid ' + BORDER, marginBottom: 12 }}>
+              <div style={{ fontSize: 9, color: MUTED, letterSpacing: '.1em', textTransform: 'uppercase', marginBottom: 10, fontWeight: 400 }}>Credentials</div>
+              {existingFields(editModal.name || '').map(field => (
+                <div key={field} style={{ marginBottom: 8 }}>
+                  <div style={{ fontSize: 11, color: MID, fontWeight: 400, marginBottom: 4 }}>{field}</div>
+                  <div style={{ display: 'flex', gap: 6 }}>
+                    <input style={{ ...inputStyle, flex: 1, fontFamily: 'monospace', fontSize: 10 }}
+                      type={editForm[`_show_${field}`] ? 'text' : 'password'}
+                      placeholder="Enter credential value…"
+                      value={editForm[field] || configs[editModal.name || '']?.[field] || ''}
+                      onChange={e => setEditForm(prev => ({ ...prev, [field]: e.target.value }))} />
+                    <button style={btnSecondary} onClick={() => setEditForm(prev => ({ ...prev, [`_show_${field}`]: !prev[`_show_${field}`] }))}>
+                      {editForm[`_show_${field}`] ? 'Hide' : 'Show'}
+                    </button>
+                  </div>
+                </div>
+              ))}
+              <button style={btnSecondary} onClick={() => toast.show('Credentials rotated')}>Rotate Credentials</button>
+            </div>
+
+            {/* Sync config */}
+            <div style={{ padding: '12px 14px', border: '1px solid ' + BORDER, marginBottom: 14 }}>
+              <div style={{ fontSize: 9, color: MUTED, letterSpacing: '.1em', textTransform: 'uppercase', marginBottom: 10, fontWeight: 400 }}>Sync Configuration</div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 10 }}>
+                <div>
+                  <div style={{ fontSize: 11, color: MID, fontWeight: 400, marginBottom: 4 }}>Sync Interval</div>
+                  <select style={selectStyle} value={editForm.syncInterval || '15'} onChange={e => setEditForm(f => ({ ...f, syncInterval: e.target.value }))}>
+                    <option value="5">Every 5 min</option><option value="15">Every 15 min</option>
+                    <option value="30">Every 30 min</option><option value="60">Hourly</option>
+                  </select>
+                </div>
+                <div>
+                  <div style={{ fontSize: 11, color: MID, fontWeight: 400, marginBottom: 4 }}>Webhook URL</div>
+                  <input style={{ ...inputStyle, fontFamily: 'monospace', fontSize: 9 }}
+                    value={editForm.webhookUrl || configs[editModal.name || '']?.webhookUrl || ''}
+                    onChange={e => setEditForm(f => ({ ...f, webhookUrl: e.target.value }))} />
+                </div>
+              </div>
+              {[
+                { k: 'syncCandidates', l: 'Sync Candidates',   d: 'Import profiles & applications' },
+                { k: 'syncJobs',       l: 'Sync Job Postings', d: 'Bi-directional listing sync' },
+                { k: 'syncInterviews', l: 'Sync Interviews',   d: 'Calendar & status updates' },
+              ].map(({ k, l, d }) => (
+                <div key={k} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid ' + BLIGHT }}>
+                  <div>
+                    <div style={{ fontSize: 12, color: DARK, fontWeight: 300 }}>{l}</div>
+                    <div style={{ fontSize: 10, color: MUTED, fontWeight: 300 }}>{d}</div>
+                  </div>
+                  <Toggle on={editForm[k] ?? true} onToggle={() => setEditForm(f => ({ ...f, [k]: !(f[k] ?? true) }))} />
+                </div>
+              ))}
+            </div>
+
+            <div style={{ display: 'flex', gap: 8 }}>
+              <button style={{ ...btnPrimary, flex: 1 }} onClick={saveEdit} disabled={saving}>{saving ? 'Saving…' : 'Save Configuration'}</button>
+              <button style={btnSecondary} onClick={() => handleTestConnection(editModal.name || '')}>Test</button>
+              <button style={btnDanger} onClick={() => { handleToggle(editModal.name || ''); setEditModal(null); }}>Disconnect</button>
+              <button style={btnSecondary} onClick={() => setEditModal(null)}>Cancel</button>
+            </div>
+          </div>
+        )}
       </Modal>
     </div>
   );
 }
-
