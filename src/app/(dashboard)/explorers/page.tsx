@@ -106,7 +106,7 @@ export default function ExplorersPage() {
   const activeCount = allExplorers.filter(e => e.status !== 'draft' && e.status !== 'inactive').length;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', fontFamily: F, overflow: 'hidden' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, fontFamily: F, overflow: 'hidden' }}>
       <style>{`@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.2)}}`}</style>
 
       {/* PAGE HEADER */}

@@ -94,7 +94,7 @@ export default function JobsPage() {
   const totalOffers = apiLive.reduce((a: number, j: any) => a + (j.offers || 0), 0);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', fontFamily: F, overflow: 'hidden' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, fontFamily: F, overflow: 'hidden' }}>
 
       {/* PAGE HEADER */}
       <div style={{ padding: '16px 28px', borderBottom: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0, background: '#fff' }}>
