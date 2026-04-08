@@ -79,7 +79,7 @@ export function ParetoChart({ data }: { data: { name: string; count: number; cum
     });
     return () => { chart?.dispose(); };
   }, []);
-  return <div ref={ref} style={{ width: '100%', height: 300 }} />;
+  return <div ref={ref} style={{ width: '100%', height: 320 }} />;
 }
 
 // ── CONVERSION RATE GAUGE ──
