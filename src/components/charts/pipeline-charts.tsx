@@ -46,7 +46,7 @@ export function RadarChart({ dims }: { dims: { name: string; value: number; targ
     });
     return () => { chart?.dispose(); };
   }, []);
-  return <div ref={ref} style={{ width: '100%', height: 260 }} />;
+  return <div ref={ref} style={{ width: '100%', height: 300 }} />;
 }
 
 // ── PARETO CHART ──
@@ -79,7 +79,7 @@ export function ParetoChart({ data }: { data: { name: string; count: number; cum
     });
     return () => { chart?.dispose(); };
   }, []);
-  return <div ref={ref} style={{ width: '100%', height: 260 }} />;
+  return <div ref={ref} style={{ width: '100%', height: 300 }} />;
 }
 
 // ── CONVERSION RATE GAUGE ──
