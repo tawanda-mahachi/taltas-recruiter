@@ -212,7 +212,7 @@ export default function PipelinePage() {
             <span style={{ fontSize: 9, color: MUTED }}>Avg days</span>
           </SL>
           <StageVelocityChart data={MOCK_STAGE_VEL} />
-          <div style={{ marginTop: 16 }}>
+          <div style={{ marginTop: 24 }}>
             <PipelineTrend />
           </div>
         </Panel>
