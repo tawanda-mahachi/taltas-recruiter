@@ -192,7 +192,7 @@ export default function ReportsPage() {
               <div style={{ padding:'10px 14px', borderRight:'1px solid '+BORDER }}><div style={{ fontSize:9, color:MUTED, letterSpacing:'.08em', textTransform:'uppercase', marginBottom:4, fontWeight:400 }}>Avg / Month</div><div style={{ fontSize:24, fontWeight:300, color:DARK, letterSpacing:'-0.02em', lineHeight:1, marginBottom:3 }}>131</div><div style={{ fontSize:10, color:MUTED, fontWeight:300 }}>6-month average</div></div>
               <div style={{ padding:'10px 14px' }}><div style={{ fontSize:9, color:MUTED, letterSpacing:'.08em', textTransform:'uppercase', marginBottom:4, fontWeight:400 }}>Screened</div><div style={{ fontSize:24, fontWeight:300, color:BLUE, letterSpacing:'-0.02em', lineHeight:1, marginBottom:3 }}>87</div><div style={{ fontSize:10, color:MUTED, fontWeight:300 }}>54% screen rate</div></div>
             </div>
-            <div style={{ height:180, padding:'8px 8px 4px', flexShrink:0 }}><PipelineVolumeChart /></div>
+            <div style={{ height:220, padding:'8px 8px 4px', flexShrink:0 }}><PipelineVolumeChart /></div>
           </Cell>
 
           {/* Time-to-Fill & Offer Rate */}
@@ -210,13 +210,13 @@ export default function ReportsPage() {
                 <div style={{ fontSize:10, color:MUTED, fontWeight:300 }}>11pp higher than Sep</div>
               </div>
             </div>
-            <div style={{ height:180, padding:'8px 8px 4px', flexShrink:0 }}><MonthlyTrendChart /></div>
+            <div style={{ height:220, padding:'8px 8px 4px', flexShrink:0 }}><MonthlyTrendChart /></div>
           </Cell>
 
           {/* Source Effectiveness */}
           <Cell>
             <SL label="Source Effectiveness" color={PURPLE} />
-            <div style={{ height:180, padding:'8px', flexShrink:0 }}><SourceChart /></div>
+            <div style={{ height:220, padding:'8px', flexShrink:0 }}><SourceChart /></div>
             <div style={{ padding:'8px 14px 10px', borderTop:'1px solid '+BORDER, fontSize:10, color:MUTED, fontWeight:300, lineHeight:1.5 }}>Quality: 40% offer rate · 35% deep match avg</div>
           </Cell>
 
@@ -427,7 +427,7 @@ export default function ReportsPage() {
           {/* Quality Radar */}
           <Cell>
             <SL label="Quality Dimensions Radar" color={BLUE} />
-            <div style={{ height:320, padding:4, flexShrink:0 }}><ReportsRadarChart /></div>
+            <div style={{ height:260, padding:4, flexShrink:0 }}><ReportsRadarChart /></div>
             <div style={{ padding:'8px 16px 12px', borderTop:'1px solid '+BORDER, fontSize:10.5, color:MID, fontWeight:300, lineHeight:1.5, flexShrink:0 }}>
               Explorer candidates score <strong style={{ color:BLUE }}>27%</strong> higher across all dimensions on average.
             </div>
@@ -440,7 +440,7 @@ export default function ReportsPage() {
               <span style={{ fontSize:9, color:MUTED, letterSpacing:'.1em', textTransform:'uppercase', fontWeight:400, flex:1 }}>Rejection Pareto Analysis</span>
               <span style={{ fontSize:11, color:MUTED, fontWeight:300 }}>Top 3 = 70%</span>
             </div>
-            <div style={{ height:320, padding:'4px 8px', flexShrink:0 }}><ReportsParetoChart /></div>
+            <div style={{ height:240, padding:'4px 8px', flexShrink:0 }}><ReportsParetoChart /></div>
             <div style={{ padding:'8px 16px 12px', borderTop:'1px solid '+BORDER, fontSize:10.5, color:MID, fontWeight:300, flexShrink:0 }}>
               Top 3 rejection reasons account for <strong style={{ color:RED }}>70%</strong> of all rejections.
             </div>

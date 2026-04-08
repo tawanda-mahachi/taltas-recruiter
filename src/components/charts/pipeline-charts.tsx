@@ -46,7 +46,7 @@ export function RadarChart({ dims }: { dims: { name: string; value: number; targ
     });
     return () => { chart?.dispose(); };
   }, []);
-  return <div ref={ref} style={{ width: '100%', height: 300 }} />;
+  return <div ref={ref} style={{ width: '100%', height: 260 }} />;
 }
 
 // ── PARETO CHART ──
@@ -79,7 +79,7 @@ export function ParetoChart({ data }: { data: { name: string; count: number; cum
     });
     return () => { chart?.dispose(); };
   }, []);
-  return <div ref={ref} style={{ width: '100%', height: 320 }} />;
+  return <div ref={ref} style={{ width: '100%', height: 240 }} />;
 }
 
 // ── CONVERSION RATE GAUGE ──
@@ -107,7 +107,7 @@ export function ConversionGauge({ value }: { value: number }) {
     });
     return () => { chart?.dispose(); };
   }, [value]);
-  return <div ref={ref} style={{ width: '100%', height: 180 }} />;
+  return <div ref={ref} style={{ width: '100%', height: 200 }} />;
 }
 
 // ── MATCH DISTRIBUTION ──
@@ -138,7 +138,7 @@ export function MatchDistribution({ data }: { data: number[] }) {
     });
     return () => { chart?.dispose(); };
   }, []);
-  return <div ref={ref} style={{ width: '100%', height: 130 }} />;
+  return <div ref={ref} style={{ width: '100%', height: 220 }} />;
 }
 
 // ── STAGE VELOCITY ──
@@ -172,7 +172,7 @@ export function StageVelocityChart({ data }: { data: { stage: string; target: nu
     });
     return () => { chart?.dispose(); };
   }, []);
-  return <div ref={ref} style={{ width: '100%', height: 160 }} />;
+  return <div ref={ref} style={{ width: '100%', height: 220 }} />;
 }
 
 // ── PIPELINE TREND ──
@@ -239,7 +239,7 @@ export function PipelineTrend() {
           ))}
         </div>
       </div>
-      <div ref={ref} style={{ width: '100%', height: 160 }} />
+      <div ref={ref} style={{ width: '100%', height: 220 }} />
     </div>
   );
 }
@@ -251,7 +251,7 @@ export function RoleVelocityChart({ roles }: { roles: { role: string; avgDays: n
   const [search, setSearch] = useState('');
 
   const filtered = roles.filter(r => r.role.toLowerCase().includes(search.toLowerCase()));
-  const h = Math.max(280, filtered.length * 32);
+  const h = Math.max(220, filtered.length * 32);
 
   useEffect(() => {
     if (!ref.current) return;
