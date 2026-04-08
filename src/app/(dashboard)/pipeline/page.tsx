@@ -181,7 +181,7 @@ export default function PipelinePage() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', borderTop: '1px solid ' + BORDER, marginTop: 14 }}>
             {[
               { label: 'Conversion', value: '14.3%', sub: 'Applied to Offer', col: BLUE },
-              { label: 'Avg Velocity', value: '4.2', unit: 'days', col: DARK },
+              { label: 'Avg Velocity', value: '4.2', sub: 'days per stage', col: DARK },
               { label: 'Uplift', value: '+34%', sub: 'vs ATS-only', col: TEAL },
             ].map((s, i) => (
               <div key={s.label} style={{ padding: '12px 14px', borderRight: i < 2 ? '1px solid ' + BORDER : 'none', textAlign: 'center' }}>
