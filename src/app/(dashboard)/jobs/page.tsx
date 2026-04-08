@@ -179,14 +179,14 @@ export default function JobsPage() {
               </div>
             )}
             {/* Live header */}
-            <div style={{ display: 'grid', gridTemplateColumns: '240px 130px 110px 80px 80px 80px 60px 60px 60px 80px 100px', alignItems: 'center', padding: '0 20px', height: 34, background: BLIGHT, borderBottom: '1px solid ' + BORDER, position: 'sticky', top: 0, zIndex: 5 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '240px 130px 110px 80px 80px 80px 60px 60px 60px 80px 1fr', alignItems: 'center', padding: '0 20px', height: 34, background: BLIGHT, borderBottom: '1px solid ' + BORDER, position: 'sticky', top: 0, zIndex: 5 }}>
               {['Job Title','Compensation','Department','Location','Status','Priority','Cands','Screen','Offers','Explorer','Posted'].map(h => (
                 <div key={h} style={{ fontSize: 9, color: MUTED, textTransform: 'uppercase', letterSpacing: '.08em', fontWeight: 400 }}>{h}</div>
               ))}
             </div>
             {filterLive.map((j: any, i: number) => (
               <div key={i}
-                style={{ display: 'grid', gridTemplateColumns: '240px 130px 110px 80px 80px 80px 60px 60px 60px 80px 100px', alignItems: 'center', padding: '0 20px', height: 54, borderBottom: '1px solid ' + BLIGHT, cursor: 'pointer', transition: 'background .1s' }}
+                style={{ display: 'grid', gridTemplateColumns: '240px 130px 110px 80px 80px 80px 60px 60px 60px 80px 1fr', alignItems: 'center', padding: '0 20px', height: 54, borderBottom: '1px solid ' + BLIGHT, cursor: 'pointer', transition: 'background .1s' }}
                 onMouseEnter={e => (e.currentTarget.style.background = 'rgba(37,99,235,.018)')}
                 onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
                 <div>
