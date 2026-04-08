@@ -233,7 +233,7 @@ export default function PipelinePage() {
           {bottlenecks.map((b: any, i: number) => (
             <div key={b.stage} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '9px 0', borderBottom: i < bottlenecks.length - 1 ? '1px solid ' + BLIGHT : 'none' }}>
               <span style={{ fontSize: 12, color: MID, flexShrink: 0, width: 140, fontWeight: 300 }}>{b.stage}</span>
-              <span style={{ fontSize: 11, color: MUTED, flex: 1, fontWeight: 300 }}>{b.desc}</span>
+              <span style={{ fontSize: 11, color: MUTED, flex: 1, fontWeight: 300 }}>{String(b.desc).replace(/(\d)d\b/g, '')}</span>
               <div style={{ width: 80, height: 3, background: BLIGHT, flexShrink: 0 }}>
                 <div style={{ height: 3, width: `${b.pct}%`, background: b.color }} />
               </div>
