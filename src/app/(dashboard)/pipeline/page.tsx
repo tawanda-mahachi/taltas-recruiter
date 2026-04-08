@@ -1,4 +1,5 @@
 // @ts-nocheck
+// cache-bust: chart-heights-v2
 'use client';
 import { useState, useRef, useEffect } from 'react';
 import dynamic from 'next/dynamic';
