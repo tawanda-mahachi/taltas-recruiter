@@ -313,13 +313,6 @@ export default function MessagesPage() {
           <div style={{ fontSize:15, fontWeight:400, letterSpacing:'-0.01em', color:DARK }}>Messages</div>
           <div style={{ fontSize:11, color:MUTED, fontWeight:300, marginTop:1 }}>Conversations & Agent Activity<DataSourceBadge fromApi={fromApi} /></div>
         </div>
-        <div style={{ display:'flex', gap:1, marginLeft:16 }}>
-          {([['all','All'],['agent','Agents'],['a2a','A2A Sessions'],['team','Team']] as const).map(([k,l])=>(
-            <button key={k} onClick={()=>setFilter(k)}
-              style={{ background:'none', border:'none', borderBottom:filter===k?`2px solid ${BLUE}`:'2px solid transparent', padding:'0 14px', height:36, fontSize:12, color:filter===k?DARK:MUTED, fontFamily:F, fontWeight:filter===k?400:300, cursor:'pointer' }}>{l}
-            </button>
-          ))}
-        </div>
       </div>
 
       {/* BODY */}
@@ -327,6 +320,14 @@ export default function MessagesPage() {
 
         {/* THREAD LIST */}
         <div style={{ width:300, flexShrink:0, borderRight:'1px solid '+BORDER, display:'flex', flexDirection:'column', overflow:'hidden' }}>
+          {/* Filter tabs */}
+          <div style={{ display:'flex', borderBottom:'1px solid '+BORDER, flexShrink:0, background:'#fff' }}>
+            {([['all','All'],['agent','Agents'],['a2a','A2A'],['team','Team']] as any[]).map(([k,l]:any)=>(
+              <button key={k} onClick={()=>setFilter(k)}
+                style={{ flex:1, background:'none', border:'none', borderBottom:filter===k?`2px solid ${BLUE}`:'2px solid transparent', padding:'0 4px', height:36, fontSize:11, color:filter===k?DARK:MUTED, fontFamily:F, fontWeight:filter===k?400:300, cursor:'pointer', whiteSpace:'nowrap' }}>{l}
+              </button>
+            ))}
+          </div>
           {/* Search */}
           <div style={{ padding:'10px 14px', borderBottom:'1px solid '+BORDER, flexShrink:0 }}>
             <div style={{ position:'relative', display:'flex', alignItems:'center' }}>

@@ -172,101 +172,91 @@ export default function ExplorersPage() {
 
       {/* TABLE */}
       <div style={{ flex: 1, overflowY: 'auto' }}>
-        {/* Header */}
-        <div style={{ display: 'grid', gridTemplateColumns: '220px 180px 80px 120px 70px 80px 80px 90px 110px 1fr', alignItems: 'center', padding: '0 20px', height: 34, background: BLIGHT, borderBottom: '1px solid ' + BORDER, position: 'sticky', top: 0, zIndex: 5, width: '100%' }}>
-          {['Explorer','Target Role','Mode','Conversations','A-to-A','Interviews','Rejected','Offer Rate','Deep Match %','Status'].map(h => (
-            <div key={h} style={{ fontSize: 9, color: MUTED, letterSpacing: '.09em', textTransform: 'uppercase', fontWeight: 400 }}>{h}</div>
-          ))}
-        </div>
-
-        {/* Rows */}
-        {filtered.map((e, i) => {
-          const s = STATUS_CFG[e.status] || STATUS_CFG.inactive;
-          const mc = MODE_C[e.mode] || MODE_C.AUTO;
-          const isDraft = e.status === 'draft';
-          const botCol = e.status === 'failed' ? RED : MUTED;
-          const convW = Math.round((e.convs / maxConvs) * 80);
-          const dmW = Math.round((e.dm / 100) * 100);
-
-          return (
-            <div key={e.id || i}
-              onClick={() => setDetailId(e.id)}
-              style={{ display: 'grid', gridTemplateColumns: '220px 180px 80px 120px 70px 80px 80px 90px 110px 1fr', alignItems: 'center', padding: '0 20px', height: 54, borderBottom: '1px solid ' + BLIGHT, cursor: 'pointer', transition: 'background .1s', opacity: isDraft ? .7 : 1, width: '100%' }}
-              onMouseEnter={el => (el.currentTarget.style.background = 'rgba(37,99,235,.016)')}
-              onMouseLeave={el => (el.currentTarget.style.background = 'transparent')}>
-
-              {/* Explorer name */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 9, minWidth: 0 }}>
-                <div style={{ width: 28, height: 28, background: BLIGHT, border: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                  <BotIcon col={botCol} />
-                </div>
-                <div style={{ minWidth: 0 }}>
-                  <div style={{ fontSize: 13, fontWeight: 400, color: DARK, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{e.name}</div>
-                </div>
-              </div>
-
-              {/* Role */}
-              <div style={{ fontSize: 11.5, color: MUTED, fontWeight: 300, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', paddingRight: 8 }}>{e.role || '—'}</div>
-
-              {/* Mode */}
-              <div><span style={{ fontSize: 10, padding: '2px 8px', background: mc.bg, color: mc.c, fontWeight: 500 }}>{e.mode}</span></div>
-
-              {/* Conversations */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-                {e.convs > 0 ? (
-                  <>
-                    <div style={{ width: convW, height: 4, background: BLUE, opacity: .75, maxWidth: 80 }} />
-                    <span style={{ fontSize: 11, color: MID }}>{e.convs}</span>
-                  </>
-                ) : <span style={{ fontSize: 11, color: MUTED }}>—</span>}
-              </div>
-
-              {/* A2A */}
-              <div style={{ fontSize: 13, fontWeight: 300, color: e.a2a > 0 ? BLUE : MUTED }}>{e.a2a > 0 ? e.a2a : '—'}</div>
-
-              {/* Interviews */}
-              <div style={{ fontSize: 13, fontWeight: 300, color: e.iv > 0 ? TEAL : MUTED }}>{e.iv > 0 ? e.iv : '—'}</div>
-
-              {/* Rejected */}
-              <div>
-                {e.rej > 0 ? (
-                  <>
-                    <div style={{ fontSize: 12, color: RED }}>{e.rej}</div>
-                    <div style={{ fontSize: 9.5, color: MUTED }}>{e.rejPct.toFixed(1)}%</div>
-                  </>
-                ) : <span style={{ fontSize: 11, color: MUTED }}>—</span>}
-              </div>
-
-              {/* Offer Rate */}
-              <div style={{ fontSize: 12, fontWeight: e.offerRate > 0 ? 500 : 300, color: e.offerRate > 0 ? TEAL : MUTED }}>
-                {e.offerRate > 0 ? e.offerRate.toFixed(1) + '%' : '—'}
-              </div>
-
-              {/* Deep Match */}
-              <div>
-                {e.dm > 0 ? (
-                  <>
-                    <div style={{ height: 3, width: dmW, background: TEAL, maxWidth: 100, marginBottom: 3 }} />
-                    <span style={{ fontSize: 11, color: TEAL, fontWeight: 500 }}>{e.dm}</span>
-                  </>
-                ) : <span style={{ fontSize: 11, color: MUTED }}>—</span>}
-              </div>
-
-              {/* Status */}
-              <div onClick={ev => ev.stopPropagation()}>
-                {isDraft ? (
-                  <button onClick={() => toast.show(`Activating ${e.name}...`, 'info')}
-                    style={{ fontSize: 11, padding: '4px 12px', background: BLUE, border: 'none', color: '#fff', cursor: 'pointer', fontFamily: F }}>
-                    Activate
-                  </button>
-                ) : (
-                  <StatusDot status={e.status} />
-                )}
-              </div>
-            </div>
-          );
-        })}
-
+        <table style={{ width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed' }}>
+          <colgroup>
+            <col style={{ width: '18%' }} /><col style={{ width: '15%' }} /><col style={{ width: '7%' }} />
+            <col style={{ width: '10%' }} /><col style={{ width: '6%' }} /><col style={{ width: '7%' }} />
+            <col style={{ width: '7%' }} /><col style={{ width: '8%' }} /><col style={{ width: '10%' }} />
+            <col style={{ width: '12%' }} />
+          </colgroup>
+          <thead style={{ position: 'sticky', top: 0, zIndex: 5 }}>
+            <tr style={{ background: BLIGHT, borderBottom: '1px solid ' + BORDER }}>
+              {['Explorer','Target Role','Mode','Conversations','A-to-A','Interviews','Rejected','Offer Rate','Deep Match %','Status'].map(h => (
+                <th key={h} style={{ fontSize: 9, color: MUTED, letterSpacing: '.09em', textTransform: 'uppercase', fontWeight: 400, padding: '0 12px', height: 34, textAlign: 'left', whiteSpace: 'nowrap' }}>{h}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {filtered.map((e, i) => {
+              const s = STATUS_CFG[e.status] || STATUS_CFG.inactive;
+              const mc = MODE_C[e.mode] || MODE_C.AUTO;
+              const isDraft = e.status === 'draft';
+              const botCol = e.status === 'failed' ? RED : MUTED;
+              const convW = Math.round((e.convs / maxConvs) * 80);
+              const dmW = Math.round((e.dm / 100) * 100);
+              return (
+                <tr key={e.id || i}
+                  onClick={() => setDetailId(e.id)}
+                  style={{ borderBottom: '1px solid ' + BLIGHT, cursor: 'pointer', transition: 'background .1s', opacity: isDraft ? .7 : 1, height: 54 }}
+                  onMouseEnter={el => (el.currentTarget.style.background = 'rgba(37,99,235,.016)')}
+                  onMouseLeave={el => (el.currentTarget.style.background = 'transparent')}>
+                  <td style={{ padding: '0 12px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 9, minWidth: 0 }}>
+                      <div style={{ width: 28, height: 28, background: BLIGHT, border: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <BotIcon col={botCol} />
+                      </div>
+                      <div style={{ fontSize: 13, fontWeight: 400, color: DARK, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{e.name}</div>
+                    </div>
+                  </td>
+                  <td style={{ padding: '0 12px', fontSize: 11.5, color: MUTED, fontWeight: 300, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{e.role || '—'}</td>
+                  <td style={{ padding: '0 12px' }}><span style={{ fontSize: 10, padding: '2px 8px', background: mc.bg, color: mc.c, fontWeight: 500 }}>{e.mode}</span></td>
+                  <td style={{ padding: '0 12px' }}>
+                    {e.convs > 0 ? (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                        <div style={{ width: convW, height: 4, background: BLUE, opacity: .75, maxWidth: 80 }} />
+                        <span style={{ fontSize: 11, color: MID }}>{e.convs}</span>
+                      </div>
+                    ) : <span style={{ fontSize: 11, color: MUTED }}>—</span>}
+                  </td>
+                  <td style={{ padding: '0 12px', fontSize: 13, fontWeight: 300, color: e.a2a > 0 ? BLUE : MUTED }}>{e.a2a > 0 ? e.a2a : '—'}</td>
+                  <td style={{ padding: '0 12px', fontSize: 13, fontWeight: 300, color: e.iv > 0 ? TEAL : MUTED }}>{e.iv > 0 ? e.iv : '—'}</td>
+                  <td style={{ padding: '0 12px' }}>
+                    {e.rej > 0 ? (
+                      <>
+                        <div style={{ fontSize: 12, color: RED }}>{e.rej}</div>
+                        <div style={{ fontSize: 9.5, color: MUTED }}>{e.rejPct.toFixed(1)}%</div>
+                      </>
+                    ) : <span style={{ fontSize: 11, color: MUTED }}>—</span>}
+                  </td>
+                  <td style={{ padding: '0 12px', fontSize: 12, fontWeight: e.offerRate > 0 ? 500 : 300, color: e.offerRate > 0 ? TEAL : MUTED }}>
+                    {e.offerRate > 0 ? e.offerRate.toFixed(1) + '%' : '—'}
+                  </td>
+                  <td style={{ padding: '0 12px' }}>
+                    {e.dm > 0 ? (
+                      <>
+                        <div style={{ height: 3, width: dmW, background: TEAL, maxWidth: 100, marginBottom: 3 }} />
+                        <span style={{ fontSize: 11, color: TEAL, fontWeight: 500 }}>{e.dm}</span>
+                      </>
+                    ) : <span style={{ fontSize: 11, color: MUTED }}>—</span>}
+                  </td>
+                  <td style={{ padding: '0 12px' }} onClick={ev => ev.stopPropagation()}>
+                    {isDraft ? (
+                      <button onClick={() => toast.show(`Activating ${e.name}...`, 'info')}
+                        style={{ fontSize: 11, padding: '4px 12px', background: BLUE, border: 'none', color: '#fff', cursor: 'pointer', fontFamily: F }}>
+                        Activate
+                      </button>
+                    ) : (
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                        <div style={{ width: 7, height: 7, borderRadius: '50%', background: s.dot, flexShrink: 0, animation: s.pulse ? 'pulse 1.8s ease-in-out infinite' : 'none' }} />
+                        <span style={{ fontSize: 11, color: DARK, fontWeight: 300 }}>{s.label}</span>
+                      </div>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
         {filtered.length === 0 && (
           <div style={{ padding: '60px 20px', textAlign: 'center', color: MUTED, fontSize: 13, fontWeight: 300 }}>
             No explorers match your search

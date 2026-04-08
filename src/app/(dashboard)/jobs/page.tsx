@@ -178,40 +178,48 @@ export default function JobsPage() {
                 <span style={{ fontSize: 10, color: BLUE, fontWeight: 300 }}>{filterLive.length} active</span>
               </div>
             )}
-            {/* Live header */}
-            <div style={{ display: 'grid', gridTemplateColumns: '240px 130px 110px 80px 80px 80px 60px 60px 60px 80px 1fr', alignItems: 'center', padding: '0 20px', height: 34, background: BLIGHT, borderBottom: '1px solid ' + BORDER, position: 'sticky', top: 0, zIndex: 5, width: '100%' }}>
-              {['Job Title','Compensation','Department','Location','Status','Priority','Cands','Screen','Offers','Explorer','Posted'].map(h => (
-                <div key={h} style={{ fontSize: 9, color: MUTED, textTransform: 'uppercase', letterSpacing: '.08em', fontWeight: 400 }}>{h}</div>
-              ))}
-            </div>
-            {filterLive.map((j: any, i: number) => (
-              <div key={i}
-                style={{ display: 'grid', gridTemplateColumns: '240px 130px 110px 80px 80px 80px 60px 60px 60px 80px 1fr', alignItems: 'center', padding: '0 20px', height: 54, borderBottom: '1px solid ' + BLIGHT, cursor: 'pointer', transition: 'background .1s', width: '100%' }}
-                onMouseEnter={e => (e.currentTarget.style.background = 'rgba(37,99,235,.018)')}
-                onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
-                <div>
-                  <div style={{ fontSize: 12.5, fontWeight: 400, color: DARK, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{j.title}</div>
-                  <div style={{ fontSize: 10, color: MUTED, fontWeight: 300 }}>{j.loc}</div>
-                </div>
-                <div style={{ fontSize: 11, color: MID, fontWeight: 300, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{j.comp}</div>
-                <div style={{ fontSize: 11, color: MID, fontWeight: 300 }}>{j.dept}</div>
-                <div style={{ fontSize: 11, color: MID, fontWeight: 300 }}>{j.loc?.split('/')[0]?.trim()}</div>
-                <div>
-                  <span style={{ fontSize: 10, color: j.status === 'Active' ? TEAL : MID, fontWeight: j.status === 'Active' ? 400 : 300 }}>{j.status}</span>
-                </div>
-                <div>
-                  <span style={{ fontSize: 10, color: urgColor(j.urg), fontWeight: j.urg !== 'NORMAL' ? 500 : 300, letterSpacing: '.04em' }}>{j.urg}</span>
-                </div>
-                <div style={{ fontSize: 13, fontWeight: 300, color: j.cands > 0 ? DARK : MUTED }}>{j.cands || '-'}</div>
-                <div style={{ fontSize: 13, fontWeight: 300, color: j.screen > 0 ? BLUE : MUTED }}>{j.screen || '-'}</div>
-                <div style={{ fontSize: 13, fontWeight: 300, color: j.offers > 0 ? TEAL : MUTED }}>{j.offers || '-'}</div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-                  <div style={{ width: 5, height: 5, borderRadius: '50%', background: j.expl > 0 ? TEAL : BORDER }} />
-                  <span style={{ fontSize: 11, color: j.expl > 0 ? MID : MUTED, fontWeight: 300 }}>{j.expl || 0}</span>
-                </div>
-                <div style={{ fontSize: 11, color: MUTED, fontWeight: 300 }}>{j.posted}</div>
-              </div>
-            ))}
+            <table style={{ width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed' }}>
+              <colgroup>
+                <col style={{ width: '22%' }} /><col style={{ width: '11%' }} /><col style={{ width: '10%' }} />
+                <col style={{ width: '8%' }} /><col style={{ width: '7%' }} /><col style={{ width: '8%' }} />
+                <col style={{ width: '6%' }} /><col style={{ width: '6%' }} /><col style={{ width: '6%' }} />
+                <col style={{ width: '8%' }} /><col style={{ width: '8%' }} />
+              </colgroup>
+              <thead style={{ position: 'sticky', top: 0, zIndex: 5 }}>
+                <tr style={{ background: BLIGHT, borderBottom: '1px solid ' + BORDER }}>
+                  {['Job Title','Compensation','Department','Location','Status','Priority','Cands','Screen','Offers','Explorer','Posted'].map(h => (
+                    <th key={h} style={{ fontSize: 9, color: MUTED, textTransform: 'uppercase', letterSpacing: '.08em', fontWeight: 400, padding: '0 12px', height: 34, textAlign: 'left', whiteSpace: 'nowrap' }}>{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {filterLive.map((j: any, i: number) => (
+                  <tr key={i} style={{ borderBottom: '1px solid ' + BLIGHT, cursor: 'pointer', transition: 'background .1s', height: 54 }}
+                    onMouseEnter={e => (e.currentTarget.style.background = 'rgba(37,99,235,.018)')}
+                    onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
+                    <td style={{ padding: '0 12px' }}>
+                      <div style={{ fontSize: 12.5, fontWeight: 400, color: DARK, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{j.title}</div>
+                      <div style={{ fontSize: 10, color: MUTED, fontWeight: 300 }}>{j.loc}</div>
+                    </td>
+                    <td style={{ padding: '0 12px', fontSize: 11, color: MID, fontWeight: 300, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{j.comp}</td>
+                    <td style={{ padding: '0 12px', fontSize: 11, color: MID, fontWeight: 300 }}>{j.dept}</td>
+                    <td style={{ padding: '0 12px', fontSize: 11, color: MID, fontWeight: 300 }}>{j.loc?.split('/')[0]?.trim()}</td>
+                    <td style={{ padding: '0 12px' }}><span style={{ fontSize: 10, color: j.status === 'Active' ? TEAL : MID, fontWeight: j.status === 'Active' ? 400 : 300 }}>{j.status}</span></td>
+                    <td style={{ padding: '0 12px' }}><span style={{ fontSize: 10, color: urgColor(j.urg), fontWeight: j.urg !== 'NORMAL' ? 500 : 300 }}>{j.urg}</span></td>
+                    <td style={{ padding: '0 12px', fontSize: 13, fontWeight: 300, color: j.cands > 0 ? DARK : MUTED }}>{j.cands || '-'}</td>
+                    <td style={{ padding: '0 12px', fontSize: 13, fontWeight: 300, color: j.screen > 0 ? BLUE : MUTED }}>{j.screen || '-'}</td>
+                    <td style={{ padding: '0 12px', fontSize: 13, fontWeight: 300, color: j.offers > 0 ? TEAL : MUTED }}>{j.offers || '-'}</td>
+                    <td style={{ padding: '0 12px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                        <div style={{ width: 5, height: 5, borderRadius: '50%', background: j.expl > 0 ? TEAL : BORDER }} />
+                        <span style={{ fontSize: 11, color: j.expl > 0 ? MID : MUTED, fontWeight: 300 }}>{j.expl || 0}</span>
+                      </div>
+                    </td>
+                    <td style={{ padding: '0 12px', fontSize: 11, color: MUTED, fontWeight: 300 }}>{j.posted}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         )}
 
@@ -226,38 +234,48 @@ export default function JobsPage() {
                 <span style={{ marginLeft: 'auto', fontSize: 11, color: MUTED, fontWeight: 300 }}>Import from ATS to activate</span>
               </div>
             )}
-            {/* Bank header */}
-            <div style={{ display: 'grid', gridTemplateColumns: '260px 140px 120px 80px 130px 120px 1fr', alignItems: 'center', padding: '0 20px', height: 34, background: BLIGHT, borderBottom: '1px solid ' + BORDER, position: 'sticky', top: 0, zIndex: 5, width: '100%' }}>
-              {['Job Title','Compensation','Department','Location','ATS Source','Last Synced','Status'].map(h => (
-                <div key={h} style={{ fontSize: 9, color: MUTED, textTransform: 'uppercase', letterSpacing: '.08em', fontWeight: 400 }}>{h}</div>
-              ))}
-            </div>
-            {filterBank.map((j, i) => (
-              <div key={i}
-                style={{ display: 'grid', gridTemplateColumns: '260px 140px 120px 80px 130px 120px 1fr', alignItems: 'center', padding: '0 20px', height: 52, borderBottom: '1px solid ' + BLIGHT, cursor: 'pointer', transition: 'background .1s', width: '100%' }}
-                onMouseEnter={e => (e.currentTarget.style.background = 'rgba(29,158,117,.012)')}
-                onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
-                <div>
-                  <div style={{ fontSize: 12.5, fontWeight: 400, color: DARK, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{j.title}</div>
-                  <div style={{ fontSize: 10, color: MUTED, fontWeight: 300 }}>{j.loc}</div>
-                </div>
-                <div style={{ fontSize: 11, color: MID, fontWeight: 300 }}>{j.comp}</div>
-                <div style={{ fontSize: 11, color: MID, fontWeight: 300 }}>{j.dept}</div>
-                <div style={{ fontSize: 11, color: MID, fontWeight: 300 }}>{j.loc?.split('/')[0]?.trim()}</div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-                  <div style={{ width: 5, height: 5, borderRadius: '50%', background: atsColor(j.ats) }} />
-                  <span style={{ fontSize: 11, color: MID, fontWeight: 300 }}>{j.ats}</span>
-                </div>
-                <div style={{ fontSize: 11, color: MUTED, fontWeight: 300 }}>{j.synced}</div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <span style={{ fontSize: 10, color: j.status === 'Available' ? TEAL : BLUE, fontWeight: 400 }}>{j.status}</span>
-                  <button
-                    style={{ fontSize: 10, color: '#fff', background: BLUE, border: 'none', padding: '3px 10px', cursor: 'pointer', fontFamily: F, marginLeft: 8 }}>
-                    Activate
-                  </button>
-                </div>
-              </div>
-            ))}
+            <table style={{ width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed' }}>
+              <colgroup>
+                <col style={{ width: '28%' }} /><col style={{ width: '13%' }} /><col style={{ width: '13%' }} />
+                <col style={{ width: '10%' }} /><col style={{ width: '13%' }} /><col style={{ width: '11%' }} />
+                <col style={{ width: '12%' }} />
+              </colgroup>
+              <thead style={{ position: 'sticky', top: 0, zIndex: 5 }}>
+                <tr style={{ background: BLIGHT, borderBottom: '1px solid ' + BORDER }}>
+                  {['Job Title','Compensation','Department','Location','ATS Source','Last Synced','Status'].map(h => (
+                    <th key={h} style={{ fontSize: 9, color: MUTED, textTransform: 'uppercase', letterSpacing: '.08em', fontWeight: 400, padding: '0 12px', height: 34, textAlign: 'left', whiteSpace: 'nowrap' }}>{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {filterBank.map((j, i) => (
+                  <tr key={i} style={{ borderBottom: '1px solid ' + BLIGHT, cursor: 'pointer', transition: 'background .1s', height: 52 }}
+                    onMouseEnter={e => (e.currentTarget.style.background = 'rgba(29,158,117,.012)')}
+                    onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
+                    <td style={{ padding: '0 12px' }}>
+                      <div style={{ fontSize: 12.5, fontWeight: 400, color: DARK, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{j.title}</div>
+                      <div style={{ fontSize: 10, color: MUTED, fontWeight: 300 }}>{j.loc}</div>
+                    </td>
+                    <td style={{ padding: '0 12px', fontSize: 11, color: MID, fontWeight: 300 }}>{j.comp}</td>
+                    <td style={{ padding: '0 12px', fontSize: 11, color: MID, fontWeight: 300 }}>{j.dept}</td>
+                    <td style={{ padding: '0 12px', fontSize: 11, color: MID, fontWeight: 300 }}>{j.loc?.split('/')[0]?.trim()}</td>
+                    <td style={{ padding: '0 12px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                        <div style={{ width: 5, height: 5, borderRadius: '50%', background: atsColor(j.ats) }} />
+                        <span style={{ fontSize: 11, color: MID, fontWeight: 300 }}>{j.ats}</span>
+                      </div>
+                    </td>
+                    <td style={{ padding: '0 12px', fontSize: 11, color: MUTED, fontWeight: 300 }}>{j.synced}</td>
+                    <td style={{ padding: '0 12px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                        <span style={{ fontSize: 10, color: j.status === 'Available' ? TEAL : BLUE, fontWeight: 400 }}>{j.status}</span>
+                        <button style={{ fontSize: 10, color: '#fff', background: BLUE, border: 'none', padding: '3px 10px', cursor: 'pointer', fontFamily: F }}>Activate</button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         )}
 
