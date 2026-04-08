@@ -169,7 +169,7 @@ export default function PipelinePage() {
       </div>
 
       {/* ROW 1: Funnel + Gauge/Match + Velocity/Trend */}
-      <div style={{ display: 'grid', gridTemplateColumns: '360px 1fr 1fr', gap: 16 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '420px 1fr 1fr', gap: 16 }}>
 
         {/* SVG Funnel */}
         <Panel>
