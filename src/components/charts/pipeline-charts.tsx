@@ -38,12 +38,10 @@ export function FunnelChart({ stages }: { stages: { stage: string; n: number; co
                 style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', display: 'block' }}>
                 <polygon points={`${tl},0 ${tr},0 ${br},${H} ${bl},${H}`} fill={s.color} opacity="0.92" />
               </svg>
-              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
-                display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
-                <span style={{ fontSize: 10, color: '#fff', fontWeight: 300, fontFamily: F,
-                  lineHeight: '1', whiteSpace: 'nowrap' }}>{s.stage}</span>
-                <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.9)', fontWeight: 300,
-                  fontFamily: F, lineHeight: '1' }}>{s.n}</span>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 2,
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
+                <span style={{ fontSize: 11, color: '#fff', fontWeight: 300, fontFamily: F, whiteSpace: 'nowrap' }}>{s.stage}</span>
+                <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.85)', fontWeight: 300, fontFamily: F }}>{s.n}</span>
               </div>
             </div>
           </div>
