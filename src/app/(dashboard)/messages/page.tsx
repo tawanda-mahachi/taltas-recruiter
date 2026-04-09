@@ -308,11 +308,28 @@ export default function MessagesPage() {
     <div style={{ display:'flex', flexDirection:'column', flex:1, minHeight:0, fontFamily:F, overflow:'hidden' }}>
 
       {/* PAGE HEADER */}
-      <div style={{ padding:'12px 24px', borderBottom:'1px solid '+BORDER, display:'flex', alignItems:'center', gap:12, flexShrink:0 }}>
+      <div style={{ padding:'20px 24px 21px', borderBottom:'1px solid '+BORDER, display:'flex', alignItems:'center', gap:12, flexShrink:0 }}>
         <div>
           <div style={{ fontSize:15, fontWeight:400, letterSpacing:'-0.01em', color:DARK }}>Messages</div>
           <div style={{ fontSize:11, color:MUTED, fontWeight:300, marginTop:1 }}>Conversations & Agent Activity<DataSourceBadge fromApi={fromApi} /></div>
         </div>
+      </div>
+
+      
+      {/* METRICS STRIP */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', background: BLUE, flexShrink: 0 }}>
+        {[
+          { v: '24', l: 'Conversations', sub: '8 active today' },
+          { v: '3', l: 'Active Agents', sub: 'Explorer threads' },
+          { v: '12', l: 'A2A Sessions', sub: 'Agent-to-agent' },
+          { v: '4.2m', l: 'Avg Response', sub: 'Agent reply time' },
+        ].map((m, i) => (
+          <div key={i} style={{ padding: '18px 24px', borderRight: i < 3 ? '1px solid rgba(255,255,255,.1)' : 'none' }}>
+            <div style={{ fontSize: 36, fontWeight: 300, color: '#fff', letterSpacing: '-0.03em', lineHeight: 1, marginBottom: 4 }}>{m.v}</div>
+            <div style={{ fontSize: 11, color: 'rgba(255,255,255,.7)', fontWeight: 300, marginBottom: 2 }}>{m.l}</div>
+            <div style={{ fontSize: 10, color: 'rgba(255,255,255,.4)', fontWeight: 300 }}>{m.sub}</div>
+          </div>
+        ))}
       </div>
 
       {/* BODY */}
@@ -401,7 +418,7 @@ export default function MessagesPage() {
 
             {/* Candidate bar */}
             {thread.meta?.candidate && (
-              <div style={{ padding:'12px 24px', borderBottom:'1px solid '+BORDER, background:BLIGHT, display:'flex', alignItems:'center', gap:16, flexShrink:0 }}>
+              <div style={{ padding:'20px 24px 21px', borderBottom:'1px solid '+BORDER, background:BLIGHT, display:'flex', alignItems:'center', gap:16, flexShrink:0 }}>
                 <HumanAvatar name={thread.meta.candidate} seed={thread.meta.seed||thread.id.charCodeAt(1)} size={44} />
                 <div style={{ flex:1, minWidth:0 }}>
                   <div style={{ fontSize:15, fontWeight:400, letterSpacing:'-0.01em', marginBottom:2, color:DARK }}>{thread.meta.candidate}</div>

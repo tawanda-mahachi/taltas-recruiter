@@ -198,7 +198,7 @@ export default function SettingsPage() {
     <div style={{ display:'flex', flexDirection:'column', height:'100%', fontFamily:F, overflow:'hidden' }}>
 
       {/* PAGE HEADER */}
-      <div style={{ padding:'12px 28px', borderBottom:'1px solid '+BORDER, display:'flex', alignItems:'center', gap:12, flexShrink:0 }}>
+      <div style={{ padding:'20px 24px 21px', borderBottom:'1px solid '+BORDER, display:'flex', alignItems:'center', gap:12, flexShrink:0 }}>
         <div>
           <div style={{ fontSize:15, fontWeight:400, letterSpacing:'-0.01em', color:DARK }}>Settings</div>
           <div style={{ fontSize:11, color:MUTED, fontWeight:300, marginTop:1 }}>Account, workspace and platform configuration</div>
@@ -207,6 +207,23 @@ export default function SettingsPage() {
           <button style={btnSecondary} onClick={()=>toast.show('Changes discarded')}>Discard</button>
           <button style={btnPrimary} onClick={()=>toast.show('Settings saved!')}>Save Changes</button>
         </div>
+      </div>
+
+      
+      {/* METRICS STRIP */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', background: BLUE, flexShrink: 0 }}>
+        {[
+          { v: '4', l: 'Team Members', sub: '2 admin · 2 recruiter' },
+          { v: '2', l: 'API Keys', sub: '1 active · 1 test' },
+          { v: '5', l: 'Integrations', sub: '3 connected' },
+          { v: 'Pro', l: 'Current Plan', sub: '$299/month' },
+        ].map((m, i) => (
+          <div key={i} style={{ padding: '18px 24px', borderRight: i < 3 ? '1px solid rgba(255,255,255,.1)' : 'none' }}>
+            <div style={{ fontSize: 36, fontWeight: 300, color: '#fff', letterSpacing: '-0.03em', lineHeight: 1, marginBottom: 4 }}>{m.v}</div>
+            <div style={{ fontSize: 11, color: 'rgba(255,255,255,.7)', fontWeight: 300, marginBottom: 2 }}>{m.l}</div>
+            <div style={{ fontSize: 10, color: 'rgba(255,255,255,.4)', fontWeight: 300 }}>{m.sub}</div>
+          </div>
+        ))}
       </div>
 
       {/* TWO-PANEL BODY */}

@@ -97,7 +97,7 @@ export default function JobsPage() {
     <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, fontFamily: F, overflow: 'hidden' }}>
 
       {/* PAGE HEADER */}
-      <div style={{ padding: '16px 28px', borderBottom: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0, background: '#fff' }}>
+      <div style={{ padding: '20px 24px 21px', borderBottom: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0, background: '#fff' }}>
         <div>
           <div style={{ fontSize: 15, fontWeight: 400, letterSpacing: '-0.01em', color: DARK }}>Jobs</div>
           <div style={{ fontSize: 11, color: MUTED, fontWeight: 300, marginTop: 1 }}>Live Roles and Job Bank</div>
