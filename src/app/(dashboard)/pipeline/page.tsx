@@ -201,7 +201,7 @@ export default function PipelinePage() {
         <Panel>
           <SL label="Conversion Rate" color="#F5A623" />
           <ConversionGauge value={14.3} />
-          <div style={{ marginTop: 22 }}>
+          <div style={{ marginTop: 22, paddingTop: 22, borderTop: '1px solid ' + BORDER }}>
             <SL label="Match Distribution" color={BLUE} />
             <MatchDistribution data={MOCK_MATCH_DIST} />
           </div>
