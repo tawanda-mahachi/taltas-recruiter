@@ -29,7 +29,7 @@ export function RadarChart({ dims }: { dims: { name: string; value: number; targ
         },
         radar: {
           indicator: dims.map(d => ({ name: d.name, max: 100 })),
-          shape: 'polygon', splitNumber: 4,
+          shape: 'polygon', splitNumber: 4, radius: '72%',
           axisName: { fontSize: 10, color: MUTED, fontFamily: F },
           splitLine: { lineStyle: { color: BORDER } },
           splitArea: { show: false },
