@@ -166,7 +166,7 @@ export default function PipelinePage() {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16, fontFamily: F, overflowY: 'auto', height: '100%', padding: '24px 32px', boxSizing: 'border-box' as 'border-box' }}>
 
             {/* PAGE HEADER */}
-      <div style={{ paddingBottom: 12, display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
+      <div style={{ padding: '20px 24px 21px', display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
         <div>
           <div style={{ fontSize: 15, fontWeight: 400, letterSpacing: '-0.01em', color: DARK }}>Pipeline</div>
           <div style={{ fontSize: 11, color: MUTED, fontWeight: 300, marginTop: 1 }}>Hiring Analytics · Feb 2026 <DataSourceBadge fromApi={fromApi} /></div>
