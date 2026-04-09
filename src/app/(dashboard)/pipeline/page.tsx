@@ -103,7 +103,7 @@ function SL({ label, color = TEAL, children }: { label: string; color?: string; 
 }
 
 function Panel({ children, style = {} }: { children: any; style?: any }) {
-  return <div style={{ background: '#FFFFFF', border: '1px solid ' + BORDER, padding: '18px 22px', ...style }}>{children}</div>;
+  return <div style={{ background: '#FFFFFF', border: '1px solid ' + BORDER, ...style }}><div style={{ padding: '18px 22px' }}>{children}</div></div>;
 }
 
 // SVG Trapezoid Funnel
@@ -201,7 +201,7 @@ export default function PipelinePage() {
         <Panel>
           <SL label="Conversion Rate" color="#F5A623" />
           <ConversionGauge value={14.3} />
-          <div style={{ marginTop: 22, paddingTop: 22, borderTop: '1px solid ' + BORDER, marginLeft: -22, marginRight: -22, paddingLeft: 22, paddingRight: 22 }}>
+          <div style={{ marginTop: 22, paddingTop: 22, borderTop: '1px solid ' + BORDER }}>
             <SL label="Match Distribution" color={BLUE} />
             <MatchDistribution data={MOCK_MATCH_DIST} />
           </div>
@@ -213,7 +213,7 @@ export default function PipelinePage() {
             <span style={{ fontSize: 9, color: MUTED }}>Avg days</span>
           </SL>
           <StageVelocityChart data={MOCK_STAGE_VEL} />
-          <div style={{ marginTop: 24, paddingTop: 24, borderTop: '1px solid ' + BORDER, marginLeft: -22, marginRight: -22, paddingLeft: 22, paddingRight: 22 }}>
+          <div style={{ marginTop: 24, paddingTop: 24, borderTop: '1px solid ' + BORDER }}>
             <PipelineTrend />
           </div>
         </Panel>
