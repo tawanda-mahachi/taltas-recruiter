@@ -127,21 +127,22 @@ const SVGFunnel = memo(function SVGFunnel({ stages }: { stages: typeof MOCK_STAG
                 <span style={{ fontSize: 9, color: '#CC3300', fontWeight: 400, fontFamily: F }}>{drop}%</span>
               )}
             </div>
-            {/* Trapezoid bar */}
+            {/* Trapezoid bar - clip-path on outer, both bg and text clipped to trapezoid shape */}
             <div style={{ flex: 1, height: 42, position: 'relative' }}>
-              {/* Color layer - clip-path makes trapezoid */}
               <div style={{
                 position: 'absolute', inset: 0,
-                background: s.color, opacity: 0.92,
                 clipPath: `polygon(${tl}% 0%, ${tr}% 0%, ${br}% 100%, ${bl}% 100%)`
-              }} />
-              {/* Text layer - full width, centered, NOT clipped */}
-              <div style={{
-                position: 'absolute', inset: 0,
-                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8
               }}>
-                <span style={{ fontSize: 11, color: '#fff', fontWeight: 300, fontFamily: F }}>{s.stage}</span>
-                <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.85)', fontWeight: 300, fontFamily: F }}>{s.n}</span>
+                {/* Background */}
+                <div style={{ position: 'absolute', inset: 0, background: s.color, opacity: 0.92 }} />
+                {/* Text - centered within clipped area */}
+                <div style={{
+                  position: 'absolute', inset: 0,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8
+                }}>
+                  <span style={{ fontSize: 11, color: '#fff', fontWeight: 300, fontFamily: F }}>{s.stage}</span>
+                  <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.9)', fontWeight: 300, fontFamily: F }}>{s.n}</span>
+                </div>
               </div>
             </div>
           </div>
