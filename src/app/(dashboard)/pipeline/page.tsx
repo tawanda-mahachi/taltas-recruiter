@@ -129,9 +129,7 @@ const SVGFunnel = memo(function SVGFunnel({ stages }: { stages: typeof MOCK_STAG
             <polygon points={`${topX},${y} ${topX + topW},${y} ${botX + botW},${y + H} ${botX},${y + H}`} fill={s.color} opacity="0.92" />
             <text x={W / 2} y={y + H / 2 - 4} textAnchor="middle" fontFamily={F} fontSize="10" fill="white" fontWeight="300" stroke="rgba(0,0,0,0.55)" strokeWidth="3" paintOrder="stroke">{s.stage}</text>
             <text x={W / 2} y={y + H / 2 + 12} textAnchor="middle" fontFamily={F} fontSize="13" fill="rgba(255,255,255,0.9)" fontWeight="300" stroke="rgba(0,0,0,0.55)" strokeWidth="3" paintOrder="stroke">{s.n}</text>
-            {drop !== null && drop > 0 && (
-              <text x={8} y={y + H / 2 + 4} textAnchor="start" fontFamily={F} fontSize="10" fill="#CC3300" fontWeight="400">-{drop}%</text>
-            )}
+
           </g>
         );
       })}
