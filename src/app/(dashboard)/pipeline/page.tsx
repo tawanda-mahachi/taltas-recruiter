@@ -106,51 +106,39 @@ function Panel({ children, style = {} }: { children: any; style?: any }) {
   return <div style={{ background: '#FFFFFF', border: '1px solid ' + BORDER, padding: '18px 22px', ...style }}>{children}</div>;
 }
 
-// SVG Trapezoid Funnel
+// HTML Funnel - per-row SVG, no scaling issues
 const SVGFunnel = memo(function SVGFunnel({ stages }: { stages: typeof MOCK_STAGES }) {
   const maxN = Math.max(...stages.map(s => s.n));
+  const W = 400, H = 42;
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
       {stages.map((s, i) => {
         const pct = s.n / maxN;
         const nextPct = i < stages.length - 1 ? stages[i + 1].n / maxN : pct * 0.82;
-        const tl = ((1 - pct) / 2 * 100).toFixed(1);
-        const tr = ((1 + pct) / 2 * 100).toFixed(1);
-        const bl = ((1 - nextPct) / 2 * 100).toFixed(1);
-        const br = ((1 + nextPct) / 2 * 100).toFixed(1);
+        const tl = ((1 - pct) / 2) * W;
+        const tr = W - tl;
+        const bl = ((1 - nextPct) / 2) * W;
+        const br = W - bl;
         const drop = i > 0 ? Math.round((1 - s.n / stages[i - 1].n) * 100) : null;
         return (
           <div key={s.stage} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-            {/* Drop % column - fixed width */}
             <div style={{ width: 30, flexShrink: 0, textAlign: 'right' }}>
               {drop !== null && drop > 0 && (
                 <span style={{ fontSize: 9, color: '#CC3300', fontWeight: 400, fontFamily: F }}>{drop}%</span>
               )}
             </div>
-            {/* Trapezoid bar - clip-path on outer, both bg and text clipped to trapezoid shape */}
-            <div style={{ flex: 1, height: 42, position: 'relative' }}>
-              <div style={{
-                position: 'absolute', inset: 0,
-                clipPath: `polygon(${tl}% 0%, ${tr}% 0%, ${br}% 100%, ${bl}% 100%)`
-              }}>
-                {/* Background */}
-                <div style={{ position: 'absolute', inset: 0, background: s.color, opacity: 0.92 }} />
-                {/* Text - centered within clipped area */}
-                <div style={{
-                  position: 'absolute', inset: 0,
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8
-                }}>
-                  <span style={{ fontSize: 11, color: '#fff', fontWeight: 300, fontFamily: F }}>{s.stage}</span>
-                  <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.9)', fontWeight: 300, fontFamily: F }}>{s.n}</span>
-                </div>
-              </div>
-            </div>
+            <svg width="100%" height={H} viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" style={{ display: 'block', flex: 1 }}>
+              <polygon points={`${tl},0 ${tr},0 ${br},${H} ${bl},${H}`} fill={s.color} opacity="0.92" />
+              <text x={W / 2} y={H / 2 - 3} textAnchor="middle" dominantBaseline="middle" fontFamily={F} fontSize="13" fill="white" fontWeight="300">{s.stage}</text>
+              <text x={W / 2} y={H / 2 + 13} textAnchor="middle" dominantBaseline="middle" fontFamily={F} fontSize="14" fill="rgba(255,255,255,0.9)" fontWeight="300">{s.n}</text>
+            </svg>
           </div>
         );
       })}
     </div>
   );
 });
+
 
 export default function PipelinePage() {
   const pipelineQuery = usePipeline();
