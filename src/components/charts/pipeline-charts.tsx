@@ -11,6 +11,40 @@ const BORDER = '#E8E8E5';
 const BLIGHT = '#F4F4F2';
 const F = "'Helvetica Neue',Helvetica,Arial,sans-serif";
 
+
+// ── FUNNEL ──
+const MOCK_STAGES_COLORS = ['#1e3a8a','#1e40af','#2563eb','#1D9E75','#16a34a','#15803d','#166534'];
+export function FunnelChart({ stages }: { stages: { stage: string; n: number; color: string }[] }) {
+  const maxN = Math.max(...stages.map(s => s.n));
+  const W = 400, H = 42;
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+      {stages.map((s, i) => {
+        const pct = s.n / maxN;
+        const nextPct = i < stages.length - 1 ? stages[i + 1].n / maxN : pct * 0.82;
+        const tl = ((1 - pct) / 2) * W;
+        const tr = W - tl;
+        const bl = ((1 - nextPct) / 2) * W;
+        const br = W - bl;
+        const drop = i > 0 ? Math.round((1 - s.n / stages[i - 1].n) * 100) : null;
+        return (
+          <div key={s.stage} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+            <div style={{ width: 30, flexShrink: 0, textAlign: 'right' }}>
+              {drop !== null && drop > 0 && (
+                <span style={{ fontSize: 9, color: '#CC3300', fontWeight: 400, fontFamily: F }}>{drop}%</span>
+              )}
+            </div>
+            <svg width="100%" height={H} viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" style={{ display: 'block', flex: 1 }}>
+              <polygon points={`${tl},0 ${tr},0 ${br},${H} ${bl},${H}`} fill={s.color} opacity="0.92" />
+              <text x={W/2} y={H/2} textAnchor="middle" dominantBaseline="middle" fontFamily={F} fontSize="11" fill="white" fontWeight="300">{s.stage}  {s.n}</text>
+            </svg>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 // ── RADAR CHART ──
 export function RadarChart({ dims }: { dims: { name: string; value: number; target: number }[] }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -24,8 +58,8 @@ export function RadarChart({ dims }: { dims: { name: string; value: number; targ
         animation: true,
         legend: {
           data: ['Explorer Candidates', 'ATS-Only'],
-          top: 4, right: 4, orient: 'vertical',
-          itemWidth: 16, itemHeight: 8,
+          top: 0, right: 0, orient: 'vertical',
+          itemWidth: 10, itemHeight: 2,
           textStyle: { fontSize: 9, color: MUTED, fontFamily: F }
         },
         radar: {
