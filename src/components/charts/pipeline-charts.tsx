@@ -13,10 +13,9 @@ const F = "'Helvetica Neue',Helvetica,Arial,sans-serif";
 
 
 // ── FUNNEL ──
-const MOCK_STAGES_COLORS = ['#1e3a8a','#1e40af','#2563eb','#1D9E75','#16a34a','#15803d','#166534'];
 export function FunnelChart({ stages }: { stages: { stage: string; n: number; color: string }[] }) {
   const maxN = Math.max(...stages.map(s => s.n));
-  const W = 400, H = 42;
+  const W = 320, H = 48;
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
       {stages.map((s, i) => {
@@ -29,15 +28,24 @@ export function FunnelChart({ stages }: { stages: { stage: string; n: number; co
         const drop = i > 0 ? Math.round((1 - s.n / stages[i - 1].n) * 100) : null;
         return (
           <div key={s.stage} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-            <div style={{ width: 30, flexShrink: 0, textAlign: 'right' }}>
+            <div style={{ width: 36, flexShrink: 0, textAlign: 'right' }}>
               {drop !== null && drop > 0 && (
-                <span style={{ fontSize: 9, color: '#CC3300', fontWeight: 400, fontFamily: F }}>{drop}%</span>
+                <span style={{ fontSize: 9, color: '#CC3300', fontWeight: 400, fontFamily: F }}>-{drop}%</span>
               )}
             </div>
-            <svg width="100%" height={H} viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" style={{ display: 'block', flex: 1 }}>
-              <polygon points={`${tl},0 ${tr},0 ${br},${H} ${bl},${H}`} fill={s.color} opacity="0.92" />
-              <text x={W/2} y={H/2} textAnchor="middle" dominantBaseline="middle" fontFamily={F} fontSize="11" fill="white" fontWeight="300">{s.stage}  {s.n}</text>
-            </svg>
+            <div style={{ flex: 1, height: H, position: 'relative' }}>
+              <svg width="100%" height={H} viewBox={`0 0 ${W} ${H}`}
+                style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', display: 'block' }}>
+                <polygon points={`${tl},0 ${tr},0 ${br},${H} ${bl},${H}`} fill={s.color} opacity="0.92" />
+              </svg>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+                display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
+                <span style={{ fontSize: 10, color: '#fff', fontWeight: 300, fontFamily: F,
+                  lineHeight: '1', whiteSpace: 'nowrap' }}>{s.stage}</span>
+                <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.9)', fontWeight: 300,
+                  fontFamily: F, lineHeight: '1' }}>{s.n}</span>
+              </div>
+            </div>
           </div>
         );
       })}
