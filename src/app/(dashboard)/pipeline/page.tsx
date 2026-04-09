@@ -146,7 +146,7 @@ export default function PipelinePage() {
 
   const stagesRef = useRef(MOCK_STAGES);
   if (pipeData?.stages?.length && stagesRef.current === MOCK_STAGES) {
-    stagesRef.current = pipeData.stages.map((s: any, i: number) => ({ stage: s.stage || s.name, n: s.count || s.n, color: MOCK_STAGES[i]?.color || '#1e3a8a' }));
+    stagesRef.current = pipeData.stages.map((s: any, i: number) => ({ stage: s.stage || s.name || s.label || s.stageName || MOCK_STAGES[i]?.stage || ('Stage ' + (i+1)), n: s.count || s.n || s.candidateCount || 0, color: MOCK_STAGES[i]?.color || '#1e3a8a' }));
   }
   const stages = stagesRef.current;
   const bottlenecks  = pipeData?.bottlenecks?.length  ? pipeData.bottlenecks  : MOCK_BOTTLENECKS;
