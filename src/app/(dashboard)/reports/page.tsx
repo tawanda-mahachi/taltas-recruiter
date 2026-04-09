@@ -133,12 +133,13 @@ export default function ReportsPage() {
     <div style={{ display:'flex', flexDirection:'column', height:'100%', fontFamily:F, overflowY:'auto' }}>
 
       {/* PAGE HEADER */}
-      <div style={{ height: 68, paddingLeft: 24, paddingRight: 24, borderBottom: '1px solid ' + BORDER, background: '#fff', display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>  
+      <div style={{ height: 68, paddingLeft: 24, paddingRight: 24, borderBottom:'1px solid '+BORDER, display:'flex', alignItems:'center', gap:12, flexShrink:0, background:'#fff' }}>
         <div>
           <div style={{ fontSize:15, fontWeight:400, letterSpacing:'-0.01em', color:DARK }}>Reports</div>
           <div style={{ fontSize:11, color:MUTED, fontWeight:300, marginTop:1 }}>{startDate.slice(0,7).replace('-','/')} - {endDate.slice(0,7).replace('-','/')}</div>
         </div>
-        <div style={{ 
+      </div>
+
       {/* METRICS STRIP */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', background: BLUE, flexShrink: 0 }}>
         {[
@@ -155,7 +156,7 @@ export default function ReportsPage() {
         ))}
       </div>
 
-      display:'flex', gap:1, marginLeft:16 }}>
+      <div style={{ display:'flex', gap:1, marginLeft:16 }}>
           {[{k:'1m',l:'1M'},{k:'3m',l:'3M'},{k:'6m',l:'6M'},{k:'12m',l:'12M'}].map(({k,l})=>(
             <button key={k} onClick={()=>setDateRange(k)}
               style={{ background:'none', border:'none', borderBottom: dateRange===k ? `2px solid ${BLUE}` : '2px solid transparent', padding:'0 14px', height:36, fontSize:12, color:dateRange===k?DARK:MUTED, fontFamily:F, fontWeight:dateRange===k?400:300, cursor:'pointer' }}>{l}</button>
