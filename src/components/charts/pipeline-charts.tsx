@@ -24,12 +24,14 @@ export function RadarChart({ dims }: { dims: { name: string; value: number; targ
         animation: true,
         legend: {
           data: ['Explorer Candidates', 'ATS-Only'],
-          bottom: 0,
-          textStyle: { fontSize: 10, color: MUTED, fontFamily: F }
+          top: 0, right: 0, orient: 'vertical',
+          itemWidth: 10, itemHeight: 2,
+          textStyle: { fontSize: 9, color: MUTED, fontFamily: F }
         },
         radar: {
           indicator: dims.map(d => ({ name: d.name, max: 100 })),
-          shape: 'polygon', splitNumber: 4, radius: '72%',
+          center: ['46%', '54%'],
+          shape: 'polygon', splitNumber: 4, radius: '65%',
           axisName: { fontSize: 10, color: MUTED, fontFamily: F },
           splitLine: { lineStyle: { color: BORDER } },
           splitArea: { show: false },

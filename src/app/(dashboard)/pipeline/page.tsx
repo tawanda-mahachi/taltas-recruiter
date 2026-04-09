@@ -109,32 +109,34 @@ function Panel({ children, style = {} }: { children: any; style?: any }) {
 // SVG Trapezoid Funnel
 const SVGFunnel = memo(function SVGFunnel({ stages }: { stages: typeof MOCK_STAGES }) {
   const maxN = Math.max(...stages.map(s => s.n));
-  const W = 300, H = 54, GAP = 4;
+  const W = 300, H = 40, GAP = 3;
   const svgH = stages.length * (H + GAP);
 
   return (
-    <svg width="100%" viewBox={`0 0 ${W} ${svgH}`} xmlns="http://www.w3.org/2000/svg" style={{ display: 'block' }} suppressHydrationWarning>
-      {stages.map((s, i) => {
-        const pct = s.n / maxN;
-        const nextPct = i < stages.length - 1 ? stages[i + 1].n / maxN : pct * 0.8;
-        const topW = Math.round(pct * W);
-        const botW = Math.round(nextPct * W);
-        const topX = (W - topW) / 2;
-        const botX = (W - botW) / 2;
-        const y = i * (H + GAP);
-        const drop = i > 0 ? Math.round((1 - s.n / stages[i - 1].n) * 100) : null;
-        return (
-          <g key={s.stage}>
-            <polygon points={`${topX},${y} ${topX + topW},${y} ${botX + botW},${y + H} ${botX},${y + H}`} fill={s.color} opacity="0.92" />
-            <text x={W / 2} y={y + H / 2 - 4} textAnchor="middle" fontFamily={F} fontSize="10" fill="white" fontWeight="300">{s.stage}</text>
-            <text x={W / 2} y={y + H / 2 + 12} textAnchor="middle" fontFamily={F} fontSize="13" fill="rgba(255,255,255,0.9)" fontWeight="300">{s.n}</text>
-            {drop !== null && drop > 0 && (
-              <text x={8} y={y + H / 2 + 4} textAnchor="start" fontFamily={F} fontSize="10" fill="#CC3300" fontWeight="400">-{drop}%</text>
-            )}
-          </g>
-        );
-      })}
-    </svg>
+    <div style={{ width: '100%', overflow: 'hidden' }}>
+      <svg width="100%" height={svgH} viewBox={`0 0 ${W} ${svgH}`} xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" style={{ display: 'block' }}>
+        {stages.map((s, i) => {
+          const pct = s.n / maxN;
+          const nextPct = i < stages.length - 1 ? stages[i + 1].n / maxN : pct * 0.8;
+          const topW = Math.round(pct * W);
+          const botW = Math.round(nextPct * W);
+          const topX = (W - topW) / 2;
+          const botX = (W - botW) / 2;
+          const y = i * (H + GAP);
+          const drop = i > 0 ? Math.round((1 - s.n / stages[i - 1].n) * 100) : null;
+          return (
+            <g key={s.stage}>
+              <polygon points={`${topX},${y} ${topX + topW},${y} ${botX + botW},${y + H} ${botX},${y + H}`} fill={s.color} opacity="0.92" />
+              <text x={W / 2} y={y + H / 2 - 3} textAnchor="middle" fontFamily={F} fontSize="9" fill="white" fontWeight="300">{s.stage}</text>
+              <text x={W / 2} y={y + H / 2 + 10} textAnchor="middle" fontFamily={F} fontSize="11" fill="rgba(255,255,255,0.9)" fontWeight="300">{s.n}</text>
+              {drop !== null && drop > 0 && (
+                <text x={6} y={y + H / 2 + 4} textAnchor="start" fontFamily={F} fontSize="9" fill="#CC3300" fontWeight="400">-{drop}%</text>
+              )}
+            </g>
+          );
+        })}
+      </svg>
+    </div>
   );
 });
 
