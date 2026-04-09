@@ -139,10 +139,8 @@ const SVGFunnel = memo(function SVGFunnel({ stages }: { stages: typeof MOCK_STAG
                 position: 'absolute', inset: 0,
                 display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6
               }}>
-                <span style={{ fontSize: 11, color: s.color, fontWeight: 600, fontFamily: F, whiteSpace: 'nowrap',
-                  textShadow: '0 0 8px #fff, 0 0 4px #fff, 1px 1px 0 #fff, -1px -1px 0 #fff' }}>{s.stage}</span>
-                <span style={{ fontSize: 13, color: s.color, fontWeight: 600, fontFamily: F,
-                  textShadow: '0 0 8px #fff, 0 0 4px #fff, 1px 1px 0 #fff, -1px -1px 0 #fff' }}>{s.n}</span>
+                <span style={{ fontSize: 11, color: '#fff', fontWeight: 300, fontFamily: F, whiteSpace: 'nowrap' }}>{s.stage}</span>
+                <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.9)', fontWeight: 300, fontFamily: F }}>{s.n}</span>
               </div>
             </div>
           </div>
