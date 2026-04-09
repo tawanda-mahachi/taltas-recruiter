@@ -110,30 +110,45 @@ function Panel({ children, style = {} }: { children: any; style?: any }) {
 
 const SVGFunnel = memo(function SVGFunnel({ stages }: { stages: typeof MOCK_STAGES }) {
   const maxN = Math.max(...stages.map(s => s.n));
-  const W = 300, H = 54, GAP = 4;
-  const svgH = stages.length * (H + GAP);
+  const H = 48, GAP = 3;
 
   return (
-    <svg width="100%" viewBox={`0 0 ${W} ${svgH}`} xmlns="http://www.w3.org/2000/svg" style={{ display: 'block' }} suppressHydrationWarning>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: GAP }}>
       {stages.map((s, i) => {
         const pct = s.n / maxN;
-        const nextPct = i < stages.length - 1 ? stages[i + 1].n / maxN : pct * 0.8;
-        const topW = Math.round(pct * W);
-        const botW = Math.round(nextPct * W);
-        const topX = (W - topW) / 2;
-        const botX = (W - botW) / 2;
-        const y = i * (H + GAP);
+        const nextPct = i < stages.length - 1 ? stages[i + 1].n / maxN : pct * 0.82;
+        const tl = ((1 - pct) / 2 * 100).toFixed(1);
+        const tr = (100 - (1 - pct) / 2 * 100).toFixed(1);
+        const bl = ((1 - nextPct) / 2 * 100).toFixed(1);
+        const br = (100 - (1 - nextPct) / 2 * 100).toFixed(1);
         const drop = i > 0 ? Math.round((1 - s.n / stages[i - 1].n) * 100) : null;
         return (
-          <g key={s.stage}>
-            <polygon points={`${topX},${y} ${topX + topW},${y} ${botX + botW},${y + H} ${botX},${y + H}`} fill={s.color} opacity="0.92" />
-            <text x={W / 2} y={y + H / 2 - 4} textAnchor="middle" fontFamily={F} fontSize="10" fill="white" fontWeight="300" stroke="rgba(0,0,0,0.55)" strokeWidth="3" paintOrder="stroke">{s.stage}</text>
-            <text x={W / 2} y={y + H / 2 + 12} textAnchor="middle" fontFamily={F} fontSize="13" fill="rgba(255,255,255,0.9)" fontWeight="300" stroke="rgba(0,0,0,0.55)" strokeWidth="3" paintOrder="stroke">{s.n}</text>
-
-          </g>
+          <div key={s.stage} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+            <div style={{ width: 38, flexShrink: 0, textAlign: 'right' }}>
+              {drop !== null && drop > 0 && (
+                <span style={{ fontSize: 9, color: '#CC3300', fontWeight: 400, fontFamily: F }}>-{drop}%</span>
+              )}
+            </div>
+            <div style={{ flex: 1, height: H, position: 'relative' }}>
+              <div style={{
+                position: 'absolute', inset: 0,
+                clipPath: `polygon(${tl}% 0%, ${tr}% 0%, ${br}% 100%, ${bl}% 100%)`,
+                background: s.color, opacity: 0.92
+              }} />
+              <div style={{
+                position: 'absolute', inset: 0,
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6
+              }}>
+                <span style={{ fontSize: 11, color: s.color, fontWeight: 600, fontFamily: F, whiteSpace: 'nowrap',
+                  textShadow: '0 0 8px #fff, 0 0 4px #fff, 1px 1px 0 #fff, -1px -1px 0 #fff' }}>{s.stage}</span>
+                <span style={{ fontSize: 13, color: s.color, fontWeight: 600, fontFamily: F,
+                  textShadow: '0 0 8px #fff, 0 0 4px #fff, 1px 1px 0 #fff, -1px -1px 0 #fff' }}>{s.n}</span>
+              </div>
+            </div>
+          </div>
         );
       })}
-    </svg>
+    </div>
   );
 });
 
@@ -143,7 +158,7 @@ export default function PipelinePage() {
   const fromApi = !!pipelineQuery.data?.fromApi;
 
   const stages = useMemo(() => pipeData?.stages?.length
-    ? pipeData.stages.map((s: any, i: number) => ({ stage: s.stage || s.name, n: s.count || s.n, color: MOCK_STAGES[i]?.color || '#1e3a8a' }))
+    ? pipeData.stages.map((s: any, i: number) => ({ stage: s.stage || s.name || s.key || MOCK_STAGES[i]?.stage || ('Stage ' + (i+1)), n: s.count || s.n || s.candidateCount || 0, color: MOCK_STAGES[i]?.color || '#1e3a8a' }))
     : MOCK_STAGES, [pipeData?.stages]);
   const bottlenecks  = pipeData?.bottlenecks?.length  ? pipeData.bottlenecks  : MOCK_BOTTLENECKS;
   const sourceData   = pipeData?.sourceData?.length   ? pipeData.sourceData   : MOCK_SOURCES;
@@ -153,7 +168,7 @@ export default function PipelinePage() {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16, fontFamily: F, overflowY: 'auto', height: '100%', padding: '24px 32px', boxSizing: 'border-box' as 'border-box' }}>
 
             {/* PAGE HEADER */}
-      <div style={{ paddingBottom: 12, borderBottom: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
+      <div style={{ paddingBottom: 12, display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
         <div>
           <div style={{ fontSize: 15, fontWeight: 400, letterSpacing: '-0.01em', color: DARK }}>Pipeline</div>
           <div style={{ fontSize: 11, color: MUTED, fontWeight: 300, marginTop: 1 }}>Hiring Analytics · Feb 2026 <DataSourceBadge fromApi={fromApi} /></div>
