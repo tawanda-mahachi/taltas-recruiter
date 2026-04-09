@@ -287,7 +287,7 @@ export default function CandidatesPage() {
                     <button onClick={e => { e.stopPropagation(); setCandModal(c.id); }}
                       style={{ fontSize: 10, color: '#fff', background: PURPLE, border: 'none', padding: '4px 10px', cursor: 'pointer', fontFamily: F, display: 'flex', alignItems: 'center', gap: 4 }}>
                       <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zM2 12h20"/></svg>
-                      Map
+                      Sentiment Map
                     </button>
                     <button onClick={e => { e.stopPropagation(); router.push('/candidates/' + c.id); }}
                       style={{ fontSize: 10, color: '#fff', background: BLUE, border: 'none', padding: '4px 10px', cursor: 'pointer', fontFamily: F, display: 'flex', alignItems: 'center', gap: 4 }}>
