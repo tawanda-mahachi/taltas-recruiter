@@ -1,12 +1,11 @@
 // @ts-nocheck
 // cache-bust: chart-heights-v2
 'use client';
-import { useState, useRef, useEffect, useMemo } from 'react';
+import { useState, useRef, useEffect, memo, useMemo } from 'react';
 import dynamic from 'next/dynamic';
 import { usePipeline } from '@/lib/data-provider';
 import { DataSourceBadge } from '@/components/shared/api-status';
 
-const FunnelChart       = dynamic(() => import('@/components/charts/pipeline-charts').then(m => m.FunnelChart),       { ssr: false, loading: () => <div style={{ height: 300 }} /> });
 const RadarChart        = dynamic(() => import('@/components/charts/pipeline-charts').then(m => m.RadarChart),          { ssr: false });
 const ParetoChart       = dynamic(() => import('@/components/charts/pipeline-charts').then(m => m.ParetoChart),         { ssr: false });
 const ConversionGauge   = dynamic(() => import('@/components/charts/pipeline-charts').then(m => m.ConversionGauge),     { ssr: false, loading: () => <div style={{ height: 200 }} /> });
@@ -109,6 +108,37 @@ function Panel({ children, style = {} }: { children: any; style?: any }) {
 
 
 
+const SVGFunnel = memo(function SVGFunnel({ stages }: { stages: typeof MOCK_STAGES }) {
+  const maxN = Math.max(...stages.map(s => s.n));
+  const W = 300, H = 54, GAP = 4;
+  const svgH = stages.length * (H + GAP);
+
+  return (
+    <svg width="100%" viewBox={`0 0 ${W} ${svgH}`} xmlns="http://www.w3.org/2000/svg" style={{ display: 'block' }} suppressHydrationWarning>
+      {stages.map((s, i) => {
+        const pct = s.n / maxN;
+        const nextPct = i < stages.length - 1 ? stages[i + 1].n / maxN : pct * 0.8;
+        const topW = Math.round(pct * W);
+        const botW = Math.round(nextPct * W);
+        const topX = (W - topW) / 2;
+        const botX = (W - botW) / 2;
+        const y = i * (H + GAP);
+        const drop = i > 0 ? Math.round((1 - s.n / stages[i - 1].n) * 100) : null;
+        return (
+          <g key={s.stage}>
+            <polygon points={`${topX},${y} ${topX + topW},${y} ${botX + botW},${y + H} ${botX},${y + H}`} fill={s.color} opacity="0.92" />
+            <text x={W / 2} y={y + H / 2 - 4} textAnchor="middle" fontFamily={F} fontSize="10" fill="white" fontWeight="300">{s.stage}</text>
+            <text x={W / 2} y={y + H / 2 + 12} textAnchor="middle" fontFamily={F} fontSize="13" fill="rgba(255,255,255,0.9)" fontWeight="300">{s.n}</text>
+            {drop !== null && drop > 0 && (
+              <text x={8} y={y + H / 2 + 4} textAnchor="start" fontFamily={F} fontSize="10" fill="#CC3300" fontWeight="400">-{drop}%</text>
+            )}
+          </g>
+        );
+      })}
+    </svg>
+  );
+});
+
 export default function PipelinePage() {
   const pipelineQuery = usePipeline();
   const pipeData = pipelineQuery.data?.data;
@@ -148,7 +178,7 @@ export default function PipelinePage() {
           <SL label="Pipeline Funnel" color={TEAL}>
             <DataSourceBadge fromApi={fromApi} />
           </SL>
-          <FunnelChart stages={stages} />
+          <SVGFunnel stages={stages} />
           {/* Stats */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', borderTop: '1px solid ' + BORDER, marginTop: 14, }}>
             {[

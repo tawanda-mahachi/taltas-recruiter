@@ -11,50 +11,7 @@ const BORDER = '#E8E8E5';
 const BLIGHT = '#F4F4F2';
 const F = "'Helvetica Neue',Helvetica,Arial,sans-serif";
 
-
-// ── FUNNEL ──
-export function FunnelChart({ stages }: { stages: { stage: string; n: number; color: string }[] }) {
-  const maxN = Math.max(...stages.map(s => s.n));
-  const W = 320, H = 48;
-  const shadow = '0 1px 3px rgba(0,0,0,0.9), 0 0 6px rgba(0,0,0,0.7)';
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-      {stages.map((s, i) => {
-        const pct = s.n / maxN;
-        const nextPct = i < stages.length - 1 ? stages[i + 1].n / maxN : pct * 0.82;
-        const tl = ((1 - pct) / 2) * W;
-        const tr = W - tl;
-        const bl = ((1 - nextPct) / 2) * W;
-        const br = W - bl;
-        const drop = i > 0 ? Math.round((1 - s.n / stages[i - 1].n) * 100) : null;
-        return (
-          <div key={s.stage} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-            <div style={{ width: 36, flexShrink: 0, textAlign: 'right' }}>
-              {drop !== null && drop > 0 && (
-                <span style={{ fontSize: 9, color: '#CC3300', fontWeight: 400, fontFamily: F }}>-{drop}%</span>
-              )}
-            </div>
-            <div style={{ flex: 1, height: H, position: 'relative' }}>
-              <svg width="100%" height={H} viewBox={`0 0 ${W} ${H}`}
-                style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', display: 'block' }}>
-                <polygon points={`${tl},0 ${tr},0 ${br},${H} ${bl},${H}`} fill={s.color} opacity="0.92" />
-              </svg>
-              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 2,
-                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
-                <span style={{ fontSize: 11, color: '#fff', fontWeight: 300, fontFamily: F,
-                  whiteSpace: 'nowrap', textShadow: shadow }}>{s.stage}</span>
-                <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.95)', fontWeight: 300,
-                  fontFamily: F, textShadow: shadow }}>{s.n}</span>
-              </div>
-            </div>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
-// ── RADAR CHART ──
+// ΓöÇΓöÇ RADAR CHART ΓöÇΓöÇ
 export function RadarChart({ dims }: { dims: { name: string; value: number; target: number }[] }) {
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -67,14 +24,13 @@ export function RadarChart({ dims }: { dims: { name: string; value: number; targ
         animation: true,
         legend: {
           data: ['Explorer Candidates', 'ATS-Only'],
-          top: 0, right: 0, orient: 'vertical',
-          itemWidth: 10, itemHeight: 2,
+          top: 4, right: 4, orient: 'vertical',
+          itemWidth: 16, itemHeight: 8,
           textStyle: { fontSize: 9, color: MUTED, fontFamily: F }
         },
         radar: {
           indicator: dims.map(d => ({ name: d.name, max: 100 })),
-          center: ['46%', '54%'],
-          shape: 'polygon', splitNumber: 4, radius: '65%',
+          center: ['46%', '54%'], shape: 'polygon', splitNumber: 4, radius: '65%', radius: '72%',
           axisName: { fontSize: 10, color: MUTED, fontFamily: F },
           splitLine: { lineStyle: { color: BORDER } },
           splitArea: { show: false },
@@ -94,7 +50,7 @@ export function RadarChart({ dims }: { dims: { name: string; value: number; targ
   return <div ref={ref} style={{ width: '100%', height: 260 }} />;
 }
 
-// ── PARETO CHART ──
+// ΓöÇΓöÇ PARETO CHART ΓöÇΓöÇ
 export function ParetoChart({ data }: { data: { name: string; count: number; cumPct: number }[] }) {
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -127,7 +83,7 @@ export function ParetoChart({ data }: { data: { name: string; count: number; cum
   return <div ref={ref} style={{ width: '100%', height: 240 }} />;
 }
 
-// ── CONVERSION RATE GAUGE ──
+// ΓöÇΓöÇ CONVERSION RATE GAUGE ΓöÇΓöÇ
 export function ConversionGauge({ value }: { value: number }) {
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -155,7 +111,7 @@ export function ConversionGauge({ value }: { value: number }) {
   return <div ref={ref} style={{ width: '100%', height: 200 }} />;
 }
 
-// ── MATCH DISTRIBUTION ──
+// ΓöÇΓöÇ MATCH DISTRIBUTION ΓöÇΓöÇ
 export function MatchDistribution({ data }: { data: number[] }) {
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -186,7 +142,7 @@ export function MatchDistribution({ data }: { data: number[] }) {
   return <div ref={ref} style={{ width: '100%', height: 220 }} />;
 }
 
-// ── STAGE VELOCITY ──
+// ΓöÇΓöÇ STAGE VELOCITY ΓöÇΓöÇ
 export function StageVelocityChart({ data }: { data: { stage: string; target: number; actual: number }[] }) {
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -220,7 +176,7 @@ export function StageVelocityChart({ data }: { data: { stage: string; target: nu
   return <div ref={ref} style={{ width: '100%', height: 220 }} />;
 }
 
-// ── PIPELINE TREND ──
+// ΓöÇΓöÇ PIPELINE TREND ΓöÇΓöÇ
 export function PipelineTrend() {
   const ref = useRef<HTMLDivElement>(null);
   const [range, setRange] = useState<'W' | 'M' | 'Y'>('W');
@@ -289,7 +245,7 @@ export function PipelineTrend() {
   );
 }
 
-// ── ROLE VELOCITY CHART ──
+// ΓöÇΓöÇ ROLE VELOCITY CHART ΓöÇΓöÇ
 export function RoleVelocityChart({ roles }: { roles: { role: string; avgDays: number; status: string }[] }) {
   const ref = useRef<HTMLDivElement>(null);
   const chartRef = useRef<any>(null);
