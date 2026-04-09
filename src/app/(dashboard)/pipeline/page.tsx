@@ -144,9 +144,11 @@ export default function PipelinePage() {
   const pipeData = pipelineQuery.data?.data;
   const fromApi = !!pipelineQuery.data?.fromApi;
 
-  const stages = useMemo(() => pipeData?.stages?.length
-    ? pipeData.stages.map((s: any, i: number) => ({ stage: s.stage || s.name, n: s.count || s.n, color: MOCK_STAGES[i]?.color || '#1e3a8a' }))
-    : MOCK_STAGES, [pipeData?.stages]);
+  const stagesRef = useRef(MOCK_STAGES);
+  if (pipeData?.stages?.length && stagesRef.current === MOCK_STAGES) {
+    stagesRef.current = pipeData.stages.map((s: any, i: number) => ({ stage: s.stage || s.name, n: s.count || s.n, color: MOCK_STAGES[i]?.color || '#1e3a8a' }));
+  }
+  const stages = stagesRef.current;
   const bottlenecks  = pipeData?.bottlenecks?.length  ? pipeData.bottlenecks  : MOCK_BOTTLENECKS;
   const sourceData   = pipeData?.sourceData?.length   ? pipeData.sourceData   : MOCK_SOURCES;
   const roleVelocity = pipeData?.roleVelocity?.length ? pipeData.roleVelocity : MOCK_VELOCITY;
