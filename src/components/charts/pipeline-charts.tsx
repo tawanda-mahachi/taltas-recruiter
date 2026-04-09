@@ -40,8 +40,8 @@ export function FunnelChart({ stages }: { stages: { stage: string; n: number; co
               </svg>
               <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 2,
                 display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
-                <span style={{ fontSize: 11, color: '#fff', fontWeight: 300, fontFamily: F, whiteSpace: 'nowrap' }}>{s.stage}</span>
-                <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.85)', fontWeight: 300, fontFamily: F }}>{s.n}</span>
+                <span style={{ fontSize: 11, color: s.color, fontWeight: 400, fontFamily: F, whiteSpace: 'nowrap' }}>{s.stage}</span>
+                <span style={{ fontSize: 13, color: s.color, fontWeight: 400, fontFamily: F }}>{s.n}</span>
               </div>
             </div>
           </div>
