@@ -163,10 +163,10 @@ export default function PipelinePage() {
   const roleVelocity = pipeData?.roleVelocity?.length ? pipeData.roleVelocity : MOCK_VELOCITY;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 16, fontFamily: F, overflowY: 'auto', height: '100%', padding: '24px 32px', boxSizing: 'border-box' as 'border-box' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 16, fontFamily: F, overflowY: 'auto', height: '100%', boxSizing: 'border-box' as 'border-box' }}>
 
             {/* PAGE HEADER */}
-      <div style={{ padding: '20px 24px 21px', display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
+      <div style={{ height: 68, paddingLeft: 32, paddingRight: 32, borderBottom: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>  
         <div>
           <div style={{ fontSize: 15, fontWeight: 400, letterSpacing: '-0.01em', color: DARK }}>Pipeline</div>
           <div style={{ fontSize: 11, color: MUTED, fontWeight: 300, marginTop: 1 }}>Hiring Analytics · Feb 2026 <DataSourceBadge fromApi={fromApi} /></div>
@@ -177,7 +177,7 @@ export default function PipelinePage() {
       </div>
 
       {/* METRICS STRIP */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', background: BLUE, flexShrink: 0, marginLeft: -32, marginRight: -32 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', background: BLUE, flexShrink: 0 }}>
         {[
           { v: '89',      l: 'Total Candidates',   sub: 'Active in pipeline' },
           { v: '14.3%',   l: 'Conversion Rate',    sub: 'Applied to offer' },
@@ -193,7 +193,7 @@ export default function PipelinePage() {
       </div>
 
       {/* ROW 1: Funnel + Gauge/Match + Velocity/Trend */}
-      <div style={{ display: 'grid', gridTemplateColumns: '420px 1fr 1fr', gap: 16 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '420px 1fr 1fr', gap: 16, padding: '0 32px' }}>
 
         {/* SVG Funnel */}
         <Panel style={{ minHeight: 420 }}>

@@ -308,7 +308,7 @@ export default function MessagesPage() {
     <div style={{ display:'flex', flexDirection:'column', flex:1, minHeight:0, fontFamily:F, overflow:'hidden' }}>
 
       {/* PAGE HEADER */}
-      <div style={{ padding:'20px 24px 21px', borderBottom:'1px solid '+BORDER, display:'flex', alignItems:'center', gap:12, flexShrink:0 }}>
+      <div style={{ height: 68, paddingLeft: 24, paddingRight: 24, borderBottom: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>  
         <div>
           <div style={{ fontSize:15, fontWeight:400, letterSpacing:'-0.01em', color:DARK }}>Messages</div>
           <div style={{ fontSize:11, color:MUTED, fontWeight:300, marginTop:1 }}>Conversations & Agent Activity<DataSourceBadge fromApi={fromApi} /></div>
@@ -418,7 +418,7 @@ export default function MessagesPage() {
 
             {/* Candidate bar */}
             {thread.meta?.candidate && (
-              <div style={{ padding:'20px 24px 21px', borderBottom:'1px solid '+BORDER, background:BLIGHT, display:'flex', alignItems:'center', gap:16, flexShrink:0 }}>
+              <div style={{ borderBottom:'1px solid '+BORDER, background:BLIGHT, display:'flex', alignItems:'center', gap:16, flexShrink:0 }}>
                 <HumanAvatar name={thread.meta.candidate} seed={thread.meta.seed||thread.id.charCodeAt(1)} size={44} />
                 <div style={{ flex:1, minWidth:0 }}>
                   <div style={{ fontSize:15, fontWeight:400, letterSpacing:'-0.01em', marginBottom:2, color:DARK }}>{thread.meta.candidate}</div>
@@ -457,7 +457,7 @@ export default function MessagesPage() {
             </div>
 
             {/* Input */}
-            <div style={{ borderTop:'1px solid '+BORDER, padding:'12px 24px', flexShrink:0, display:'flex', alignItems:'center', gap:10 }}>
+            <div style={{ borderTop:'1px solid '+BORDER, flexShrink:0, display:'flex', alignItems:'center', gap:10 }}>
               {thread.type !== 'team' && !isPaused ? (
                 <>
                   <div style={{ flex:1, padding:'9px 14px', background:BLIGHT, border:'1px solid '+BORDER, fontSize:12, color:MUTED, fontWeight:300, fontStyle:'italic' }}>

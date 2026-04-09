@@ -147,7 +147,7 @@ export default function CandidatesPage() {
     <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, fontFamily: F, overflow: 'hidden' }}>
 
       {/* PAGE HEADER */}
-      <div style={{ padding: '20px 24px 21px', borderBottom: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
+      <div style={{ height: 68, paddingLeft: 24, paddingRight: 24, borderBottom: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>  
         <div>
           <div style={{ fontSize: 15, fontWeight: 400, letterSpacing: '-0.01em', color: DARK }}>Candidates</div>
           <div style={{ fontSize: 11, color: MUTED, fontWeight: 300, marginTop: 1 }}>

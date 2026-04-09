@@ -133,12 +133,29 @@ export default function ReportsPage() {
     <div style={{ display:'flex', flexDirection:'column', height:'100%', fontFamily:F, overflowY:'auto' }}>
 
       {/* PAGE HEADER */}
-      <div style={{ padding:'20px 24px 21px', borderBottom:'1px solid '+BORDER, display:'flex', alignItems:'center', gap:12, flexShrink:0, background:'#fff' }}>
+      <div style={{ height: 68, paddingLeft: 24, paddingRight: 24, borderBottom: '1px solid ' + BORDER, background: '#fff', display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>  
         <div>
           <div style={{ fontSize:15, fontWeight:400, letterSpacing:'-0.01em', color:DARK }}>Reports</div>
           <div style={{ fontSize:11, color:MUTED, fontWeight:300, marginTop:1 }}>{startDate.slice(0,7).replace('-','/')} - {endDate.slice(0,7).replace('-','/')}</div>
         </div>
-        <div style={{ display:'flex', gap:1, marginLeft:16 }}>
+        <div style={{ 
+      {/* METRICS STRIP */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', background: BLUE, flexShrink: 0 }}>
+        {[
+          { v: '6', l: 'Report Types', sub: 'Pipeline, source, velocity' },
+          { v: '2', l: 'Scheduled', sub: 'Weekly & monthly' },
+          { v: '14', l: 'Exports This Month', sub: 'CSV & PDF' },
+          { v: '90d', l: 'Date Range', sub: 'Rolling window' },
+        ].map((m, i) => (
+          <div key={i} style={{ padding: '18px 24px', borderRight: i < 3 ? '1px solid rgba(255,255,255,.1)' : 'none' }}>
+            <div style={{ fontSize: 36, fontWeight: 300, color: '#fff', letterSpacing: '-0.03em', lineHeight: 1, marginBottom: 4 }}>{m.v}</div>
+            <div style={{ fontSize: 11, color: 'rgba(255,255,255,.7)', fontWeight: 300, marginBottom: 2 }}>{m.l}</div>
+            <div style={{ fontSize: 10, color: 'rgba(255,255,255,.4)', fontWeight: 300 }}>{m.sub}</div>
+          </div>
+        ))}
+      </div>
+
+      display:'flex', gap:1, marginLeft:16 }}>
           {[{k:'1m',l:'1M'},{k:'3m',l:'3M'},{k:'6m',l:'6M'},{k:'12m',l:'12M'}].map(({k,l})=>(
             <button key={k} onClick={()=>setDateRange(k)}
               style={{ background:'none', border:'none', borderBottom: dateRange===k ? `2px solid ${BLUE}` : '2px solid transparent', padding:'0 14px', height:36, fontSize:12, color:dateRange===k?DARK:MUTED, fontFamily:F, fontWeight:dateRange===k?400:300, cursor:'pointer' }}>{l}</button>
@@ -174,23 +191,6 @@ export default function ReportsPage() {
           </button>
         </div>
       </div>
-      {/* METRICS STRIP */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', background: BLUE, flexShrink: 0 }}>
-        {[
-          { v: '6', l: 'Report Types', sub: 'Pipeline, source, velocity' },
-          { v: '2', l: 'Scheduled', sub: 'Weekly & monthly' },
-          { v: '14', l: 'Exports This Month', sub: 'CSV & PDF' },
-          { v: '90d', l: 'Date Range', sub: 'Rolling window' },
-        ].map((m, i) => (
-          <div key={i} style={{ padding: '18px 24px', borderRight: i < 3 ? '1px solid rgba(255,255,255,.1)' : 'none' }}>
-            <div style={{ fontSize: 36, fontWeight: 300, color: '#fff', letterSpacing: '-0.03em', lineHeight: 1, marginBottom: 4 }}>{m.v}</div>
-            <div style={{ fontSize: 11, color: 'rgba(255,255,255,.7)', fontWeight: 300, marginBottom: 2 }}>{m.l}</div>
-            <div style={{ fontSize: 10, color: 'rgba(255,255,255,.4)', fontWeight: 300 }}>{m.sub}</div>
-          </div>
-        ))}
-      </div>
-
-      
 
       {/* CONTENT */}
       <div style={{ flex:1, padding:'20px 24px', display:'flex', flexDirection:'column', gap:16, overflowY:'auto' }}>
