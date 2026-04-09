@@ -1,7 +1,7 @@
-﻿// @ts-nocheck
+// @ts-nocheck
 // cache-bust: chart-heights-v2
 'use client';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, memo } from 'react';
 import dynamic from 'next/dynamic';
 import { usePipeline } from '@/lib/data-provider';
 import { DataSourceBadge } from '@/components/shared/api-status';
@@ -107,7 +107,7 @@ function Panel({ children, style = {} }: { children: any; style?: any }) {
 }
 
 // SVG Trapezoid Funnel
-function SVGFunnel({ stages }: { stages: typeof MOCK_STAGES }) {
+const SVGFunnel = memo(function SVGFunnel({ stages }: { stages: typeof MOCK_STAGES }) {
   const maxN = Math.max(...stages.map(s => s.n));
   const W = 300, H = 54, GAP = 4;
   const svgH = stages.length * (H + GAP);
@@ -136,7 +136,7 @@ function SVGFunnel({ stages }: { stages: typeof MOCK_STAGES }) {
       })}
     </svg>
   );
-}
+});
 
 export default function PipelinePage() {
   const pipelineQuery = usePipeline();
@@ -157,7 +157,7 @@ export default function PipelinePage() {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0 }}>
         <div>
           <div style={{ fontSize: 15, fontWeight: 400, letterSpacing: '-0.01em', color: DARK }}>Pipeline</div>
-          <div style={{ fontSize: 11, color: MUTED, fontWeight: 300, marginTop: 2 }}>Hiring Analytics Â· Feb 2026</div>
+          <div style={{ fontSize: 11, color: MUTED, fontWeight: 300, marginTop: 2 }}>Hiring Analytics · Feb 2026</div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <DataSourceBadge fromApi={fromApi} />
