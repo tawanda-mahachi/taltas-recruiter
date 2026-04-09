@@ -109,7 +109,7 @@ function Panel({ children, style = {} }: { children: any; style?: any }) {
 // SVG Trapezoid Funnel
 function SVGFunnel({ stages }: { stages: typeof MOCK_STAGES }) {
   const maxN = Math.max(...stages.map(s => s.n));
-  const W = 340, H = 42, GAP = 5;
+  const W = 300, H = 54, GAP = 4;
   const svgH = stages.length * (H + GAP);
 
   return (
@@ -126,10 +126,10 @@ function SVGFunnel({ stages }: { stages: typeof MOCK_STAGES }) {
         return (
           <g key={s.stage}>
             <polygon points={`${topX},${y} ${topX + topW},${y} ${botX + botW},${y + H} ${botX},${y + H}`} fill={s.color} opacity="0.92" />
-            <text x={W / 2} y={y + H / 2 - 5} textAnchor="middle" fontFamily={F} fontSize="11" fill="white" fontWeight="300">{s.stage}</text>
-            <text x={W / 2} y={y + H / 2 + 10} textAnchor="middle" fontFamily={F} fontSize="12" fill="rgba(255,255,255,0.8)" fontWeight="300">{s.n}</text>
+            <text x={W / 2} y={y + H / 2 - 4} textAnchor="middle" fontFamily={F} fontSize="10" fill="white" fontWeight="300">{s.stage}</text>
+            <text x={W / 2} y={y + H / 2 + 12} textAnchor="middle" fontFamily={F} fontSize="13" fill="rgba(255,255,255,0.9)" fontWeight="300">{s.n}</text>
             {drop !== null && drop > 0 && (
-              <text x={topX - 6} y={y + H / 2 + 4} textAnchor="end" fontFamily={F} fontSize="10" fill="#CC3300" fontWeight="400">-{drop}%</text>
+              <text x={8} y={y + H / 2 + 4} textAnchor="start" fontFamily={F} fontSize="10" fill="#CC3300" fontWeight="400">-{drop}%</text>
             )}
           </g>
         );
