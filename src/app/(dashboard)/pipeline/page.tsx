@@ -238,8 +238,8 @@ export default function PipelinePage() {
               <div style={{ width: 80, height: 3, background: BLIGHT, flexShrink: 0 }}>
                 <div style={{ height: 3, width: `${b.pct}%`, background: b.color }} />
               </div>
-              <span style={{ fontSize: 18, fontWeight: 300, color: DARK, letterSpacing: '-0.01em', flexShrink: 0 }}>
-                {String(b.days).replace(/d$/,'')}<span style={{ fontSize: 9, color: MUTED, marginLeft: 3, fontWeight: 300 }}>days</span>
+              <span style={{ fontSize: 11, color: MID, fontWeight: 300, flexShrink: 0 }}>
+                {String(b.days).replace(/d$/,'')} avg days
               </span>
               <span style={{ fontSize: 8, padding: '2px 7px', color: b.color, background: 'rgba(0,0,0,.04)', flexShrink: 0, fontFamily: F }}>{b.status}</span>
             </div>
