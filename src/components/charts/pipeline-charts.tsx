@@ -16,6 +16,7 @@ const F = "'Helvetica Neue',Helvetica,Arial,sans-serif";
 export function FunnelChart({ stages }: { stages: { stage: string; n: number; color: string }[] }) {
   const maxN = Math.max(...stages.map(s => s.n));
   const W = 320, H = 48;
+  const shadow = '0 1px 3px rgba(0,0,0,0.9), 0 0 6px rgba(0,0,0,0.7)';
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
       {stages.map((s, i) => {
@@ -40,8 +41,10 @@ export function FunnelChart({ stages }: { stages: { stage: string; n: number; co
               </svg>
               <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 2,
                 display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
-                <span style={{ fontSize: 11, color: s.color, fontWeight: 400, fontFamily: F, whiteSpace: 'nowrap' }}>{s.stage}</span>
-                <span style={{ fontSize: 13, color: s.color, fontWeight: 400, fontFamily: F }}>{s.n}</span>
+                <span style={{ fontSize: 11, color: '#fff', fontWeight: 300, fontFamily: F,
+                  whiteSpace: 'nowrap', textShadow: shadow }}>{s.stage}</span>
+                <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.95)', fontWeight: 300,
+                  fontFamily: F, textShadow: shadow }}>{s.n}</span>
               </div>
             </div>
           </div>
