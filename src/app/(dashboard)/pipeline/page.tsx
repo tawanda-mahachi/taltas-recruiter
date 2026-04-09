@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 // cache-bust: chart-heights-v2
 'use client';
 import { useState, useRef, useEffect } from 'react';
@@ -103,7 +103,7 @@ function SL({ label, color = TEAL, children }: { label: string; color?: string; 
 }
 
 function Panel({ children, style = {} }: { children: any; style?: any }) {
-  return <div style={{ background: '#FFFFFF', border: '1px solid ' + BORDER, overflow: 'hidden', ...style }}>{children}</div>;
+  return <div style={{ background: '#FFFFFF', border: '1px solid ' + BORDER, padding: '18px 22px', ...style }}>{children}</div>;
 }
 
 // SVG Trapezoid Funnel
@@ -113,7 +113,7 @@ function SVGFunnel({ stages }: { stages: typeof MOCK_STAGES }) {
   const svgH = stages.length * (H + GAP);
 
   return (
-    <svg width="100%" viewBox={`0 0 ${W} ${svgH}`} xmlns="http://www.w3.org/2000/svg" style={{ display: 'block' }}>
+    <svg width="100%" viewBox={`0 0 ${W} ${svgH}`} xmlns="http://www.w3.org/2000/svg" style={{ display: 'block' }} suppressHydrationWarning>
       {stages.map((s, i) => {
         const pct = s.n / maxN;
         const nextPct = i < stages.length - 1 ? stages[i + 1].n / maxN : pct * 0.8;
@@ -157,7 +157,7 @@ export default function PipelinePage() {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0 }}>
         <div>
           <div style={{ fontSize: 15, fontWeight: 400, letterSpacing: '-0.01em', color: DARK }}>Pipeline</div>
-          <div style={{ fontSize: 11, color: MUTED, fontWeight: 300, marginTop: 2 }}>Hiring Analytics · Feb 2026</div>
+          <div style={{ fontSize: 11, color: MUTED, fontWeight: 300, marginTop: 2 }}>Hiring Analytics Â· Feb 2026</div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <DataSourceBadge fromApi={fromApi} />
@@ -179,13 +179,13 @@ export default function PipelinePage() {
           </SL>
           <SVGFunnel stages={stages} />
           {/* Stats */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', borderTop: '1px solid ' + BORDER, marginTop: 14 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', borderTop: '1px solid ' + BORDER, marginTop: 14, marginLeft: -22, marginRight: -22 }}>
             {[
               { label: 'Conversion', value: '14.3%', sub: 'Applied to Offer', col: BLUE },
               { label: 'Avg Velocity', value: '4.2', sub: 'Days per stage', col: DARK },
               { label: 'Uplift', value: '+34%', sub: 'vs ATS-only', col: TEAL },
             ].map((s, i) => (
-              <div key={s.label} style={{ padding: '12px 14px', borderRight: i < 2 ? '1px solid ' + BORDER : 'none', textAlign: 'center' }}>
+              <div key={s.label} style={{ padding: '12px 14px', borderRight: i < 2 ? '1px solid ' + BORDER : 'none', textAlign: 'center', padding: '12px 14px' }}>  
                 <div style={{ fontSize: 9, color: MUTED, letterSpacing: '.1em', textTransform: 'uppercase', marginBottom: 5, fontFamily: F }}>{s.label}</div>
                 <div style={{ fontSize: 24, fontWeight: 300, color: s.col, letterSpacing: '-0.02em', lineHeight: 1 }}>
                   {s.value}
@@ -198,26 +198,26 @@ export default function PipelinePage() {
         </Panel>
 
         {/* Gauge + Match Distribution */}
-        <Panel>
-          <div style={{ padding: '18px 22px 0' }}>
+        <Panel style={{ padding: 0 }}>
+          <div style={{ padding: '18px 22px' }}>
             <SL label="Conversion Rate" color="#F5A623" />
             <ConversionGauge value={14.3} />
           </div>
-          <div style={{ borderTop: '1px solid ' + BORDER, padding: '18px 22px 18px' }}>
+          <div style={{ borderTop: '1px solid ' + BORDER, padding: '18px 22px' }}>
             <SL label="Match Distribution" color={BLUE} />
             <MatchDistribution data={MOCK_MATCH_DIST} />
           </div>
         </Panel>
 
         {/* Stage Velocity + Pipeline Trend */}
-        <Panel>
-          <div style={{ padding: '18px 22px 0' }}>
+        <Panel style={{ padding: 0 }}>
+          <div style={{ padding: '18px 22px' }}>
             <SL label="Stage Velocity" color="#F5A623">
               <span style={{ fontSize: 9, color: MUTED }}>Avg days</span>
             </SL>
             <StageVelocityChart data={MOCK_STAGE_VEL} />
           </div>
-          <div style={{ borderTop: '1px solid ' + BORDER, padding: '18px 22px 18px' }}>
+          <div style={{ borderTop: '1px solid ' + BORDER, padding: '18px 22px' }}>
             <PipelineTrend />
           </div>
         </Panel>
@@ -228,7 +228,6 @@ export default function PipelinePage() {
 
         {/* Time in Stage */}
         <Panel>
-          <div style={{ padding: '18px 22px' }}>
           <div style={{ display: 'flex', alignItems: 'center', marginBottom: 14 }}>
             <div style={{ width: 7, height: 7, borderRadius: '50%', background: '#F5A623', flexShrink: 0, marginRight: 7 }} />
             <span style={{ fontSize: 9, color: MUTED, letterSpacing: '.1em', textTransform: 'uppercase', fontWeight: 400, flex: 1, fontFamily: F }}>Time-in-Stage Analysis</span>
@@ -249,12 +248,10 @@ export default function PipelinePage() {
               <span style={{ fontSize: 8, padding: '2px 7px', color: b.color, background: 'rgba(0,0,0,.04)', flexShrink: 0, fontFamily: F }}>{b.status}</span>
             </div>
           ))}
-          </div>
         </Panel>
 
         {/* Source Effectiveness */}
         <Panel>
-          <div style={{ padding: '18px 22px' }}>
           <SL label="Source Effectiveness" color={BLUE} />
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
@@ -278,7 +275,6 @@ export default function PipelinePage() {
               ))}
             </tbody>
           </table>
-          </div>
         </Panel>
       </div>
 
@@ -288,7 +284,7 @@ export default function PipelinePage() {
         {/* Role Velocity - scrollable full height */}
         <Panel style={{ display: 'flex', flexDirection: 'column' }}>
           <SL label="Role Velocity (Days to Hire)" color={TEAL} />
-          <div style={{ flex: 1, overflowY: 'auto', maxHeight: 520 }}>
+          <div style={{ flex: 1, overflowY: 'auto', maxHeight: 520, margin: '0 -22px -22px', padding: '0 22px 22px' }}>
             <RoleVelocityChart roles={roleVelocity} />
           </div>
         </Panel>
