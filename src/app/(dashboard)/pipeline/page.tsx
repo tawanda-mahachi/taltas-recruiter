@@ -127,8 +127,8 @@ const SVGFunnel = memo(function SVGFunnel({ stages }: { stages: typeof MOCK_STAG
         return (
           <g key={s.stage}>
             <polygon points={`${topX},${y} ${topX + topW},${y} ${botX + botW},${y + H} ${botX},${y + H}`} fill={s.color} opacity="0.92" />
-            <text x={W / 2} y={y + H / 2 - 4} textAnchor="middle" fontFamily={F} fontSize="10" fill="white" fontWeight="300">{s.stage}</text>
-            <text x={W / 2} y={y + H / 2 + 12} textAnchor="middle" fontFamily={F} fontSize="13" fill="rgba(255,255,255,0.9)" fontWeight="300">{s.n}</text>
+            <text x={W / 2} y={y + H / 2 - 4} textAnchor="middle" fontFamily={F} fontSize="10" fill="white" fontWeight="300" stroke="rgba(0,0,0,0.55)" strokeWidth="3" paintOrder="stroke">{s.stage}</text>
+            <text x={W / 2} y={y + H / 2 + 12} textAnchor="middle" fontFamily={F} fontSize="13" fill="rgba(255,255,255,0.9)" fontWeight="300" stroke="rgba(0,0,0,0.55)" strokeWidth="3" paintOrder="stroke">{s.n}</text>
             {drop !== null && drop > 0 && (
               <text x={8} y={y + H / 2 + 4} textAnchor="start" fontFamily={F} fontSize="10" fill="#CC3300" fontWeight="400">-{drop}%</text>
             )}
@@ -144,11 +144,9 @@ export default function PipelinePage() {
   const pipeData = pipelineQuery.data?.data;
   const fromApi = !!pipelineQuery.data?.fromApi;
 
-  const stagesRef = useRef(MOCK_STAGES);
-  if (pipeData?.stages?.length && stagesRef.current === MOCK_STAGES) {
-    stagesRef.current = pipeData.stages.map((s: any, i: number) => ({ stage: s.stage || s.name || s.key || s.label || s.stageName || MOCK_STAGES[i]?.stage || ('Stage ' + (i+1)), n: s.count || s.n || s.candidateCount || s.total || 0, color: MOCK_STAGES[i]?.color || '#1e3a8a' }));
-  }
-  const stages = stagesRef.current;
+  const stages = useMemo(() => pipeData?.stages?.length
+    ? pipeData.stages.map((s: any, i: number) => ({ stage: s.stage || s.name, n: s.count || s.n, color: MOCK_STAGES[i]?.color || '#1e3a8a' }))
+    : MOCK_STAGES, [pipeData?.stages]);
   const bottlenecks  = pipeData?.bottlenecks?.length  ? pipeData.bottlenecks  : MOCK_BOTTLENECKS;
   const sourceData   = pipeData?.sourceData?.length   ? pipeData.sourceData   : MOCK_SOURCES;
   const roleVelocity = pipeData?.roleVelocity?.length ? pipeData.roleVelocity : MOCK_VELOCITY;
@@ -156,20 +154,31 @@ export default function PipelinePage() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16, fontFamily: F, overflowY: 'auto', height: '100%', padding: '24px 32px', boxSizing: 'border-box' as 'border-box' }}>
 
-      {/* PAGE HEADER */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0 }}>
+            {/* PAGE HEADER */}
+      <div style={{ paddingBottom: 12, borderBottom: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
         <div>
           <div style={{ fontSize: 15, fontWeight: 400, letterSpacing: '-0.01em', color: DARK }}>Pipeline</div>
-          <div style={{ fontSize: 11, color: MUTED, fontWeight: 300, marginTop: 2 }}>Hiring Analytics · Feb 2026</div>
+          <div style={{ fontSize: 11, color: MUTED, fontWeight: 300, marginTop: 1 }}>Hiring Analytics · Feb 2026 <DataSourceBadge fromApi={fromApi} /></div>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <DataSourceBadge fromApi={fromApi} />
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#22C55E' }} />
-            <span style={{ fontSize: 11, color: MUTED, fontWeight: 300 }}>All Synced</span>
-          </div>
+        <div style={{ marginLeft: 'auto' }}>
           <button style={{ fontSize: 11, color: '#fff', background: BLUE, border: 'none', padding: '5px 14px', cursor: 'pointer', fontFamily: F }}>Export</button>
         </div>
+      </div>
+
+      {/* METRICS STRIP */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', background: BLUE, flexShrink: 0, marginLeft: -32, marginRight: -32 }}>
+        {[
+          { v: '89',      l: 'Total Candidates',   sub: 'Active in pipeline' },
+          { v: '14.3%',   l: 'Conversion Rate',    sub: 'Applied to offer' },
+          { v: '4.2d',    l: 'Avg Stage Velocity',  sub: 'Days per stage' },
+          { v: fromApi ? 'Live' : 'Mock', l: 'Data Status', sub: fromApi ? 'API connected' : 'Using mock data' },
+        ].map((m, i) => (
+          <div key={i} style={{ padding: '18px 24px', borderRight: i < 3 ? '1px solid rgba(255,255,255,.1)' : 'none' }}>
+            <div style={{ fontSize: 28, fontWeight: 300, color: '#fff', letterSpacing: '-0.03em', lineHeight: 1, marginBottom: 4 }}>{m.v}</div>
+            <div style={{ fontSize: 11, color: 'rgba(255,255,255,.7)', fontWeight: 300, marginBottom: 2 }}>{m.l}</div>
+            <div style={{ fontSize: 10, color: 'rgba(255,255,255,.4)', fontWeight: 300 }}>{m.sub}</div>
+          </div>
+        ))}
       </div>
 
       {/* ROW 1: Funnel + Gauge/Match + Velocity/Trend */}
