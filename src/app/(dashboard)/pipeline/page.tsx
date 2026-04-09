@@ -201,7 +201,7 @@ export default function PipelinePage() {
         <Panel>
           <SL label="Conversion Rate" color="#F5A623" />
           <ConversionGauge value={14.3} />
-          <div style={{ marginTop: 22, paddingTop: 22, borderTop: '1px solid ' + BORDER }}>
+          <div style={{ marginTop: 22, paddingTop: 22, borderTop: '1px solid ' + BORDER, marginLeft: -22, marginRight: -22, paddingLeft: 22, paddingRight: 22 }}>
             <SL label="Match Distribution" color={BLUE} />
             <MatchDistribution data={MOCK_MATCH_DIST} />
           </div>
@@ -213,7 +213,7 @@ export default function PipelinePage() {
             <span style={{ fontSize: 9, color: MUTED }}>Avg days</span>
           </SL>
           <StageVelocityChart data={MOCK_STAGE_VEL} />
-          <div style={{ marginTop: 24, paddingTop: 24, borderTop: '1px solid ' + BORDER }}>
+          <div style={{ marginTop: 24, paddingTop: 24, borderTop: '1px solid ' + BORDER, marginLeft: -22, marginRight: -22, paddingLeft: 22, paddingRight: 22 }}>
             <PipelineTrend />
           </div>
         </Panel>
@@ -274,28 +274,30 @@ export default function PipelinePage() {
         </Panel>
       </div>
 
-      {/* ROW 3: Role Velocity + Radar + Pareto */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
+      {/* ROW 3: Role Velocity (stretch) + Radar & Pareto stacked */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
 
-        {/* Role Velocity */}
-        <Panel>
+        {/* Role Velocity - scrollable full height */}
+        <Panel style={{ display: 'flex', flexDirection: 'column' }}>
           <SL label="Role Velocity (Days to Hire)" color={TEAL} />
-          <RoleVelocityChart roles={roleVelocity} />
+          <div style={{ flex: 1, overflowY: 'auto', maxHeight: 520 }}>
+            <RoleVelocityChart roles={roleVelocity} />
+          </div>
         </Panel>
 
-        {/* Quality Radar */}
-        <Panel>
-          <SL label="Quality Dimensions Radar" color={TEAL} />
-          <div style={{ fontSize: 11, color: MUTED, marginBottom: 10, fontWeight: 300 }}>Explorer candidates score 27% higher on average</div>
-          <RadarChart dims={MOCK_RADAR_DIMS} />
-        </Panel>
-
-        {/* Pareto */}
-        <Panel>
-          <SL label="Rejection Pareto Analysis" color="#E85B3A" />
-          <div style={{ fontSize: 11, color: MUTED, marginBottom: 10, fontWeight: 300 }}>Top 3 reasons account for 82% of rejections</div>
-          <ParetoChart data={MOCK_PARETO} />
-        </Panel>
+        {/* Radar + Pareto stacked */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <Panel>
+            <SL label="Quality Dimensions Radar" color={TEAL} />
+            <div style={{ fontSize: 11, color: MUTED, marginBottom: 10, fontWeight: 300 }}>Explorer candidates score 27% higher on average</div>
+            <RadarChart dims={MOCK_RADAR_DIMS} />
+          </Panel>
+          <Panel>
+            <SL label="Rejection Pareto Analysis" color="#E85B3A" />
+            <div style={{ fontSize: 11, color: MUTED, marginBottom: 10, fontWeight: 300 }}>Top 3 reasons account for 82% of rejections</div>
+            <ParetoChart data={MOCK_PARETO} />
+          </Panel>
+        </div>
       </div>
 
     </div>
