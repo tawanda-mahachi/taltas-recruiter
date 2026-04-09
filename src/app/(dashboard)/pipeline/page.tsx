@@ -173,7 +173,7 @@ export default function PipelinePage() {
       <div style={{ display: 'grid', gridTemplateColumns: '420px 1fr 1fr', gap: 16 }}>
 
         {/* SVG Funnel */}
-        <Panel>
+        <Panel style={{ minHeight: 420 }}>
           <SL label="Pipeline Funnel" color={TEAL}>
             <DataSourceBadge fromApi={fromApi} />
           </SL>
@@ -228,6 +228,7 @@ export default function PipelinePage() {
 
         {/* Time in Stage */}
         <Panel>
+          <div style={{ padding: '18px 22px' }}>
           <div style={{ display: 'flex', alignItems: 'center', marginBottom: 14 }}>
             <div style={{ width: 7, height: 7, borderRadius: '50%', background: '#F5A623', flexShrink: 0, marginRight: 7 }} />
             <span style={{ fontSize: 9, color: MUTED, letterSpacing: '.1em', textTransform: 'uppercase', fontWeight: 400, flex: 1, fontFamily: F }}>Time-in-Stage Analysis</span>
@@ -248,10 +249,12 @@ export default function PipelinePage() {
               <span style={{ fontSize: 8, padding: '2px 7px', color: b.color, background: 'rgba(0,0,0,.04)', flexShrink: 0, fontFamily: F }}>{b.status}</span>
             </div>
           ))}
+          </div>
         </Panel>
 
         {/* Source Effectiveness */}
         <Panel>
+          <div style={{ padding: '18px 22px' }}>
           <SL label="Source Effectiveness" color={BLUE} />
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
@@ -275,6 +278,7 @@ export default function PipelinePage() {
               ))}
             </tbody>
           </table>
+          </div>
         </Panel>
       </div>
 
