@@ -8,10 +8,10 @@ import { DataSourceBadge } from '@/components/shared/api-status';
 
 const RadarChart        = dynamic(() => import('@/components/charts/pipeline-charts').then(m => m.RadarChart),          { ssr: false });
 const ParetoChart       = dynamic(() => import('@/components/charts/pipeline-charts').then(m => m.ParetoChart),         { ssr: false });
-const ConversionGauge   = dynamic(() => import('@/components/charts/pipeline-charts').then(m => m.ConversionGauge),     { ssr: false });
-const MatchDistribution = dynamic(() => import('@/components/charts/pipeline-charts').then(m => m.MatchDistribution),   { ssr: false });
-const StageVelocityChart= dynamic(() => import('@/components/charts/pipeline-charts').then(m => m.StageVelocityChart),  { ssr: false });
-const PipelineTrend     = dynamic(() => import('@/components/charts/pipeline-charts').then(m => m.PipelineTrend),       { ssr: false });
+const ConversionGauge   = dynamic(() => import('@/components/charts/pipeline-charts').then(m => m.ConversionGauge),     { ssr: false, loading: () => <div style={{ height: 200 }} /> });
+const MatchDistribution = dynamic(() => import('@/components/charts/pipeline-charts').then(m => m.MatchDistribution),   { ssr: false, loading: () => <div style={{ height: 160 }} /> });
+const StageVelocityChart= dynamic(() => import('@/components/charts/pipeline-charts').then(m => m.StageVelocityChart),  { ssr: false, loading: () => <div style={{ height: 220 }} /> });
+const PipelineTrend     = dynamic(() => import('@/components/charts/pipeline-charts').then(m => m.PipelineTrend),       { ssr: false, loading: () => <div style={{ height: 220 }} /> });
 const RoleVelocityChart = dynamic(() => import('@/components/charts/pipeline-charts').then(m => m.RoleVelocityChart),   { ssr: false });
 
 const F      = "'Helvetica Neue',Helvetica,Arial,sans-serif";
@@ -103,7 +103,7 @@ function SL({ label, color = TEAL, children }: { label: string; color?: string; 
 }
 
 function Panel({ children, style = {} }: { children: any; style?: any }) {
-  return <div style={{ background: '#FFFFFF', border: '1px solid ' + BORDER, ...style }}><div style={{ padding: '18px 22px' }}>{children}</div></div>;
+  return <div style={{ background: '#FFFFFF', border: '1px solid ' + BORDER, overflow: 'hidden', ...style }}>{children}</div>;
 }
 
 // SVG Trapezoid Funnel
@@ -199,9 +199,11 @@ export default function PipelinePage() {
 
         {/* Gauge + Match Distribution */}
         <Panel>
-          <SL label="Conversion Rate" color="#F5A623" />
-          <ConversionGauge value={14.3} />
-          <div style={{ marginTop: 22, paddingTop: 22, borderTop: '1px solid ' + BORDER }}>
+          <div style={{ padding: '18px 22px 0' }}>
+            <SL label="Conversion Rate" color="#F5A623" />
+            <ConversionGauge value={14.3} />
+          </div>
+          <div style={{ borderTop: '1px solid ' + BORDER, padding: '18px 22px 18px' }}>
             <SL label="Match Distribution" color={BLUE} />
             <MatchDistribution data={MOCK_MATCH_DIST} />
           </div>
@@ -209,11 +211,13 @@ export default function PipelinePage() {
 
         {/* Stage Velocity + Pipeline Trend */}
         <Panel>
-          <SL label="Stage Velocity" color="#F5A623">
-            <span style={{ fontSize: 9, color: MUTED }}>Avg days</span>
-          </SL>
-          <StageVelocityChart data={MOCK_STAGE_VEL} />
-          <div style={{ marginTop: 24, paddingTop: 24, borderTop: '1px solid ' + BORDER }}>
+          <div style={{ padding: '18px 22px 0' }}>
+            <SL label="Stage Velocity" color="#F5A623">
+              <span style={{ fontSize: 9, color: MUTED }}>Avg days</span>
+            </SL>
+            <StageVelocityChart data={MOCK_STAGE_VEL} />
+          </div>
+          <div style={{ borderTop: '1px solid ' + BORDER, padding: '18px 22px 18px' }}>
             <PipelineTrend />
           </div>
         </Panel>
