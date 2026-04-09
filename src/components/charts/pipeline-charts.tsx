@@ -24,8 +24,8 @@ export function RadarChart({ dims }: { dims: { name: string; value: number; targ
         animation: true,
         legend: {
           data: ['Explorer Candidates', 'ATS-Only'],
-          top: 0, right: 0, orient: 'vertical',
-          itemWidth: 10, itemHeight: 2,
+          top: 4, right: 4, orient: 'vertical',
+          itemWidth: 16, itemHeight: 8,
           textStyle: { fontSize: 9, color: MUTED, fontFamily: F }
         },
         radar: {

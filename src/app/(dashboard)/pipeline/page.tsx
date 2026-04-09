@@ -109,33 +109,34 @@ function Panel({ children, style = {} }: { children: any; style?: any }) {
 // SVG Trapezoid Funnel
 const SVGFunnel = memo(function SVGFunnel({ stages }: { stages: typeof MOCK_STAGES }) {
   const maxN = Math.max(...stages.map(s => s.n));
-  const W = 300, H = 40, GAP = 3;
-  const svgH = stages.length * (H + GAP);
-
   return (
-    <div style={{ width: '100%', overflow: 'hidden' }}>
-      <svg width="100%" height={svgH} viewBox={`0 0 ${W} ${svgH}`} xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" style={{ display: 'block' }}>
-        {stages.map((s, i) => {
-          const pct = s.n / maxN;
-          const nextPct = i < stages.length - 1 ? stages[i + 1].n / maxN : pct * 0.8;
-          const topW = Math.round(pct * W);
-          const botW = Math.round(nextPct * W);
-          const topX = (W - topW) / 2;
-          const botX = (W - botW) / 2;
-          const y = i * (H + GAP);
-          const drop = i > 0 ? Math.round((1 - s.n / stages[i - 1].n) * 100) : null;
-          return (
-            <g key={s.stage}>
-              <polygon points={`${topX},${y} ${topX + topW},${y} ${botX + botW},${y + H} ${botX},${y + H}`} fill={s.color} opacity="0.92" />
-              <text x={W / 2} y={y + H / 2 - 3} textAnchor="middle" fontFamily={F} fontSize="9" fill="white" fontWeight="300">{s.stage}</text>
-              <text x={W / 2} y={y + H / 2 + 10} textAnchor="middle" fontFamily={F} fontSize="11" fill="rgba(255,255,255,0.9)" fontWeight="300">{s.n}</text>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 3, padding: '4px 0' }}>
+      {stages.map((s, i) => {
+        const pct = s.n / maxN;
+        const drop = i > 0 ? Math.round((1 - s.n / stages[i-1].n) * 100) : null;
+        const leftPad = `${((1 - pct) / 2) * 100}%`;
+        const width = `${pct * 100}%`;
+        return (
+          <div key={s.stage} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <div style={{ width: 32, textAlign: 'right', flexShrink: 0 }}>
               {drop !== null && drop > 0 && (
-                <text x={6} y={y + H / 2 + 4} textAnchor="start" fontFamily={F} fontSize="9" fill="#CC3300" fontWeight="400">-{drop}%</text>
+                <span style={{ fontSize: 9, color: '#CC3300', fontWeight: 400, fontFamily: F }}>-{drop}%</span>
               )}
-            </g>
-          );
-        })}
-      </svg>
+            </div>
+            <div style={{ flex: 1, position: 'relative', height: 38 }}>
+              <div style={{
+                position: 'absolute', left: leftPad, width,
+                height: '100%', background: s.color, opacity: 0.92,
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                padding: '0 10px', transition: 'width .3s'
+              }}>
+                <span style={{ fontSize: 11, color: 'white', fontWeight: 300, fontFamily: F, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{s.stage}</span>
+                <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.9)', fontWeight: 300, fontFamily: F, flexShrink: 0, marginLeft: 8 }}>{s.n}</span>
+              </div>
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 });
