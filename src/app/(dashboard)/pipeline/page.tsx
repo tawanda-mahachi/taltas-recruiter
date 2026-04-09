@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 // cache-bust: chart-heights-v2
 'use client';
 import { useState, useRef, useEffect, memo } from 'react';
@@ -179,7 +179,7 @@ export default function PipelinePage() {
           </SL>
           <SVGFunnel stages={stages} />
           {/* Stats */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', borderTop: '1px solid ' + BORDER, marginTop: 14, marginLeft: -22, marginRight: -22 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', borderTop: '1px solid ' + BORDER, marginTop: 14, }}>
             {[
               { label: 'Conversion', value: '14.3%', sub: 'Applied to Offer', col: BLUE },
               { label: 'Avg Velocity', value: '4.2', sub: 'Days per stage', col: DARK },
@@ -198,26 +198,26 @@ export default function PipelinePage() {
         </Panel>
 
         {/* Gauge + Match Distribution */}
-        <Panel style={{ padding: 0 }}>
-          <div style={{ padding: '18px 22px' }}>
+        <Panel style={{ padding: 0, display: 'flex', flexDirection: 'column' }}>
+          <div style={{ padding: '18px 22px', height: 300, flexShrink: 0 }}>
             <SL label="Conversion Rate" color="#F5A623" />
             <ConversionGauge value={14.3} />
           </div>
-          <div style={{ borderTop: '1px solid ' + BORDER, padding: '18px 22px' }}>
+          <div style={{ borderTop: '1px solid ' + BORDER, padding: '18px 22px', flex: 1 }}>
             <SL label="Match Distribution" color={BLUE} />
             <MatchDistribution data={MOCK_MATCH_DIST} />
           </div>
         </Panel>
 
         {/* Stage Velocity + Pipeline Trend */}
-        <Panel style={{ padding: 0 }}>
-          <div style={{ padding: '18px 22px' }}>
+        <Panel style={{ padding: 0, display: 'flex', flexDirection: 'column' }}>
+          <div style={{ padding: '18px 22px', height: 300, flexShrink: 0 }}>
             <SL label="Stage Velocity" color="#F5A623">
               <span style={{ fontSize: 9, color: MUTED }}>Avg days</span>
             </SL>
             <StageVelocityChart data={MOCK_STAGE_VEL} />
           </div>
-          <div style={{ borderTop: '1px solid ' + BORDER, padding: '18px 22px' }}>
+          <div style={{ borderTop: '1px solid ' + BORDER, padding: '18px 22px', flex: 1 }}>
             <PipelineTrend />
           </div>
         </Panel>
