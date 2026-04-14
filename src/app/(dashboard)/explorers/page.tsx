@@ -134,10 +134,10 @@ export default function ExplorersPage() {
           { v: totalA2A,     l: 'Agent-to-Agent',      sub: 'Candidate agents negotiating' },
           { v: totalIV,      l: 'Interviews Booked',   sub: '+2 this week' },
         ].map((m, i) => (
-          <div key={i} style={{ padding: '20px 28px', borderRight: i < 3 ? '1px solid rgba(255,255,255,.15)' : 'none', cursor: 'default' }}>
-            <div style={{ fontSize: 9.5, color: 'rgba(255,255,255,.55)', letterSpacing: '.1em', textTransform: 'uppercase', marginBottom: 10, fontFamily: F }}>{m.l}</div>
-            <div style={{ fontSize: 40, fontWeight: 300, letterSpacing: '-0.03em', lineHeight: 1, color: '#fff' }}>{m.v}</div>
-            <div style={{ fontSize: 11, color: 'rgba(255,255,255,.5)', fontWeight: 300, marginTop: 8 }}>{m.sub}</div>
+          <div key={i} style={{ padding: '18px 24px', borderRight: i < 3 ? '1px solid rgba(255,255,255,.1)' : 'none' }}>
+            <div style={{ fontSize: 36, fontWeight: 300, color: '#fff', letterSpacing: '-0.03em', lineHeight: 1, marginBottom: 4 }}>{m.v}</div>
+            <div style={{ fontSize: 11, color: 'rgba(255,255,255,.7)', fontWeight: 300, marginBottom: 2 }}>{m.l}</div>
+            <div style={{ fontSize: 10, color: 'rgba(255,255,255,.4)', fontWeight: 300 }}>{m.sub}</div>
           </div>
         ))}
       </div>
