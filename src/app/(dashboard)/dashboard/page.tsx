@@ -251,12 +251,17 @@ export default function DashboardPage() {
                   <div style={{ fontSize: 9.5, color: MUTED, marginTop: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{c.source || 'Taltas Network'}</div>
                 </div>
 
-                <div style={{ display: 'flex', gap: 8, alignItems: 'center', whiteSpace: 'nowrap' }}>
+                <div style={{ display: 'flex', gap: 5 }}>
                   <button onClick={e => { e.stopPropagation(); setProfileOpen(c); }}
-                    style={{ fontSize: 11, color: BLUE, background: 'none', border: 'none', cursor: 'pointer', fontFamily: F, padding: 0 }}>Sentiment Map</button>
-                  <span style={{ color: BORDER }}>-</span>
+                    style={{ fontSize: 10, color: '#fff', background: '#7C3AED', border: 'none', padding: '4px 10px', cursor: 'pointer', fontFamily: F, display: 'flex', alignItems: 'center', gap: 4 }}>
+                    <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zM2 12h20"/></svg>
+                    Sentiment Map
+                  </button>
                   <button onClick={e => { e.stopPropagation(); router.push('/candidates/' + (c.id || '')); }}
-                    style={{ fontSize: 11, color: DARK, background: 'none', border: 'none', cursor: 'pointer', fontFamily: F, padding: 0, fontWeight: 400 }}>View Profile</button>
+                    style={{ fontSize: 10, color: '#fff', background: BLUE, border: 'none', padding: '4px 10px', cursor: 'pointer', fontFamily: F, display: 'flex', alignItems: 'center', gap: 4 }}>
+                    <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    Profile
+                  </button>
                 </div>
               </div>
             ))}
