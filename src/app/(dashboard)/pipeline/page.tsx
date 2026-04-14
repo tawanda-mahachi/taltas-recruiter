@@ -166,7 +166,7 @@ export default function PipelinePage() {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16, fontFamily: F, overflowY: 'auto', height: '100%', boxSizing: 'border-box' as 'border-box' }}>
 
             {/* PAGE HEADER */}
-      <div style={{ height: 68, paddingLeft: 32, paddingRight: 32, borderBottom: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>  
+      <div style={{ height: 68, paddingLeft: 24, paddingRight: 24, borderBottom: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>  
         <div>
           <div style={{ fontSize: 15, fontWeight: 400, letterSpacing: '-0.01em', color: DARK }}>Pipeline</div>
           <div style={{ fontSize: 11, color: MUTED, fontWeight: 300, marginTop: 1 }}>Hiring Analytics · Feb 2026 <DataSourceBadge fromApi={fromApi} /></div>
@@ -193,7 +193,7 @@ export default function PipelinePage() {
       </div>
 
       {/* ROW 1: Funnel + Gauge/Match + Velocity/Trend */}
-      <div style={{ display: 'grid', gridTemplateColumns: '420px 1fr 1fr', gap: 16, padding: '0 32px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '420px 1fr 1fr', gap: 16, padding: '0 24px' }}>
 
         {/* SVG Funnel */}
         <Panel style={{ minHeight: 420 }}>
@@ -247,7 +247,7 @@ export default function PipelinePage() {
       </div>
 
       {/* ROW 2: Time in Stage + Source Effectiveness */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, padding: '0 24px' }}>
 
         {/* Time in Stage */}
         <Panel>
@@ -302,7 +302,7 @@ export default function PipelinePage() {
       </div>
 
       {/* ROW 3: Role Velocity (stretch) + Radar & Pareto stacked */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, padding: '0 24px' }}>
 
         {/* Role Velocity - scrollable full height */}
         <Panel style={{ display: 'flex', flexDirection: 'column' }}>

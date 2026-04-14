@@ -112,16 +112,14 @@ export default function JobsPage() {
       </div>
 
       {/* METRICS STRIP */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6,1fr)', background: BLUE, flexShrink: 0 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', background: BLUE, flexShrink: 0 }}>
         {[
-          { v: totalActive.toString(),        l: 'Active Roles',   sub: `${apiLive.length} total` },
-          { v: MOCK_BANK.length.toString(),    l: 'In Job Bank',    sub: '3 imported' },
-          { v: totalCands.toString(),          l: 'Total Candidates',sub: 'across all roles' },
+          { v: totalActive.toString(),        l: 'Active Roles',      sub: `${apiLive.length} total` },
+          { v: totalCands.toString(),          l: 'Total Candidates',  sub: 'across all roles' },
           { v: apiLive.filter((j:any)=>j.urg==='HOT').length.toString(), l: 'Hot Roles', sub: 'urgent priority' },
-          { v: totalOffers.toString(),         l: 'Offers Extended', sub: 'this period' },
-          { v: '18d',                          l: 'Avg. Time to Hire',sub: '26d faster than avg' },
+          { v: '18d',                          l: 'Avg. Time to Hire', sub: '26d faster than avg' },
         ].map((m, i) => (
-          <div key={i} style={{ padding: '18px 22px', borderRight: i < 5 ? '1px solid rgba(255,255,255,.1)' : 'none', cursor: 'default' }}>
+          <div key={i} style={{ padding: '18px 24px', borderRight: i < 3 ? '1px solid rgba(255,255,255,.1)' : 'none', cursor: 'default' }}>
             <div style={{ fontSize: 26, fontWeight: 300, color: '#fff', letterSpacing: '-0.02em', lineHeight: 1, marginBottom: 4 }}>{m.v}</div>
             <div style={{ fontSize: 11, color: 'rgba(255,255,255,.7)', fontWeight: 300, marginBottom: 2 }}>{m.l}</div>
             <div style={{ fontSize: 10, color: 'rgba(255,255,255,.4)', fontWeight: 300 }}>{m.sub}</div>

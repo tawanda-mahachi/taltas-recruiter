@@ -156,10 +156,12 @@ export default function ReportsPage() {
         ))}
       </div>
 
-      <div style={{ display:'flex', gap:1, marginLeft:16 }}>
+      {/* TOOLBAR */}
+      <div style={{ display:'flex', alignItems:'center', padding:'0 24px', borderBottom:'1px solid '+BORDER, height:44, flexShrink:0, background:'#fff' }}>
+        <div style={{ display:'flex', gap:1 }}>
           {[{k:'1m',l:'1M'},{k:'3m',l:'3M'},{k:'6m',l:'6M'},{k:'12m',l:'12M'}].map(({k,l})=>(
             <button key={k} onClick={()=>setDateRange(k)}
-              style={{ background:'none', border:'none', borderBottom: dateRange===k ? `2px solid ${BLUE}` : '2px solid transparent', padding:'0 14px', height:36, fontSize:12, color:dateRange===k?DARK:MUTED, fontFamily:F, fontWeight:dateRange===k?400:300, cursor:'pointer' }}>{l}</button>
+              style={{ background:'none', border:'none', borderBottom: dateRange===k ? `2px solid ${BLUE}` : '2px solid transparent', padding:'0 14px', height:44, fontSize:12, color:dateRange===k?DARK:MUTED, fontFamily:F, fontWeight:dateRange===k?400:300, cursor:'pointer' }}>{l}</button>
           ))}
         </div>
         <div style={{ display:'flex', gap:8, alignItems:'center', marginLeft:8 }}>
