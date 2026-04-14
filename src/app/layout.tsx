@@ -13,6 +13,11 @@ const robotoSlab = Roboto_Slab({ subsets: ['latin'], weight: ['400','700'], vari
 export const metadata: Metadata = {
   title: 'Taltas · Recruiter Portal',
   description: 'Recruitment Intelligence Platform',
+  icons: {
+    icon: '/favicon.svg',
+    shortcut: '/favicon.svg',
+    apple: '/favicon.svg',
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
