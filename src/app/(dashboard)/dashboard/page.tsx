@@ -209,7 +209,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Table header */}
-          <div style={{ display: 'grid', gridTemplateColumns: '150px 95px 125px 70px 70px 85px 95px 145px', padding: '0 16px', height: 30, alignItems: 'center', gap: 8, flexShrink: 0 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '140px 80px 105px 60px 60px 75px 80px 210px', padding: '0 16px', height: 30, alignItems: 'center', gap: 8, flexShrink: 0 }}>
             {['Candidate','Role','Stage','AI Match','Deep','Sentiment','Fit','Actions'].map(h => (
               <div key={h} style={{ fontSize: 9, color: MUTED, textTransform: 'uppercase', letterSpacing: '.08em', fontWeight: 400 }}>{h}</div>
             ))}
@@ -219,7 +219,7 @@ export default function DashboardPage() {
           <div style={{ flex: 1, overflowY: 'auto' }}>
             {filtered.map((c: any, i: number) => (
               <div key={c.id || i} onClick={() => setProfileOpen(c)}
-                style={{ display: 'grid', gridTemplateColumns: '150px 95px 125px 70px 70px 85px 95px 145px', padding: '0 16px', height: 56, alignItems: 'center', gap: 8, cursor: 'pointer', transition: 'background .1s', borderBottom: '1px solid ' + BLIGHT }}
+                style={{ display: 'grid', gridTemplateColumns: '140px 80px 105px 60px 60px 75px 80px 210px', padding: '0 16px', height: 56, alignItems: 'center', gap: 8, cursor: 'pointer', transition: 'background .1s', borderBottom: '1px solid ' + BLIGHT }}
                 onMouseEnter={e => (e.currentTarget.style.background = 'rgba(37,99,235,.016)')}
                 onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
 
@@ -251,14 +251,14 @@ export default function DashboardPage() {
                   <div style={{ fontSize: 9.5, color: MUTED, marginTop: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{c.source || 'Taltas Network'}</div>
                 </div>
 
-                <div style={{ display: 'flex', gap: 5 }}>
+                <div style={{ display: 'flex', gap: 5, whiteSpace: 'nowrap', alignItems: 'center' }}>
                   <button onClick={e => { e.stopPropagation(); setProfileOpen(c); }}
-                    style={{ fontSize: 10, color: '#fff', background: '#7C3AED', border: 'none', padding: '4px 10px', cursor: 'pointer', fontFamily: F, display: 'flex', alignItems: 'center', gap: 4 }}>
+                    style={{ fontSize: 10, color: '#fff', background: '#7C3AED', border: 'none', padding: '4px 10px', cursor: 'pointer', fontFamily: F, display: 'flex', alignItems: 'center', gap: 4, whiteSpace: 'nowrap', flexShrink: 0 }}>
                     <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zM2 12h20"/></svg>
                     Sentiment Map
                   </button>
                   <button onClick={e => { e.stopPropagation(); router.push('/candidates/' + (c.id || '')); }}
-                    style={{ fontSize: 10, color: '#fff', background: BLUE, border: 'none', padding: '4px 10px', cursor: 'pointer', fontFamily: F, display: 'flex', alignItems: 'center', gap: 4 }}>
+                    style={{ fontSize: 10, color: '#fff', background: BLUE, border: 'none', padding: '4px 10px', cursor: 'pointer', fontFamily: F, display: 'flex', alignItems: 'center', gap: 4, whiteSpace: 'nowrap', flexShrink: 0 }}>
                     <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                     Profile
                   </button>
