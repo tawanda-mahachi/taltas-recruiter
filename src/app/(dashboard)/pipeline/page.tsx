@@ -163,9 +163,9 @@ export default function PipelinePage() {
   const roleVelocity = pipeData?.roleVelocity?.length ? pipeData.roleVelocity : MOCK_VELOCITY;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 16, fontFamily: F, overflowY: 'auto', height: '100%', boxSizing: 'border-box' as 'border-box' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, fontFamily: F, overflow: 'hidden' }}>
 
-            {/* PAGE HEADER */}
+      {/* PAGE HEADER */}
       <div style={{ height: 68, paddingLeft: 24, paddingRight: 24, borderBottom: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>  
         <div>
           <div style={{ fontSize: 15, fontWeight: 400, letterSpacing: '-0.01em', color: DARK }}>Pipeline</div>
@@ -191,6 +191,9 @@ export default function PipelinePage() {
           </div>
         ))}
       </div>
+
+      {/* SCROLLABLE CONTENT */}
+      <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 16, padding: '0 0 24px' }}>
 
       {/* ROW 1: Funnel + Gauge/Match + Velocity/Trend */}
       <div style={{ display: 'grid', gridTemplateColumns: '420px 1fr 1fr', gap: 16, padding: '0 24px' }}>
@@ -327,6 +330,7 @@ export default function PipelinePage() {
         </div>
       </div>
 
+      </div>
     </div>
   );
 }

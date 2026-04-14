@@ -131,10 +131,10 @@ export default function DashboardPage() {
   });
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', fontFamily: F, color: DARK, background: '#FFFFFF', overflow: 'hidden' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, fontFamily: F, color: DARK, background: '#FFFFFF', overflow: 'hidden' }}>
 
       {/* TOPBAR */}
-      <div style={{ padding: '12px 28px', borderBottom: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
+      <div style={{ height: 68, paddingLeft: 24, paddingRight: 24, borderBottom: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
         <div>
           <div style={{ fontSize: 15, fontWeight: 400, letterSpacing: '-0.01em', color: DARK }}>Dashboard</div>
           <div style={{ fontSize: 11, color: MUTED, fontWeight: 300 }}>Overview - Today</div>
