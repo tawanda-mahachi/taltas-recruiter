@@ -69,6 +69,7 @@ export default function JobsPage() {
     loc: r.location || r.loc || 'Remote',
     status: r.status || 'Active',
     urg: 'NORMAL', cands: r.candidateCount ?? 0, screen: 0, iv: 0, offers: 0, expl: 0, posted: '',
+    applyLink: r.applyLink || `https://candidates.taltas.ai/apply/${r.id}`,
   })) : MOCK_LIVE;
 
   const allDepts = [...new Set([...apiLive.map((j: any) => j.dept), ...MOCK_BANK.map(j => j.dept)].filter(Boolean))].sort();
@@ -178,14 +179,14 @@ export default function JobsPage() {
             )}
             <table style={{ width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed' }}>
               <colgroup>
-                <col style={{ width: '22%' }} /><col style={{ width: '11%' }} /><col style={{ width: '10%' }} />
-                <col style={{ width: '8%' }} /><col style={{ width: '7%' }} /><col style={{ width: '8%' }} />
-                <col style={{ width: '6%' }} /><col style={{ width: '6%' }} /><col style={{ width: '6%' }} />
-                <col style={{ width: '8%' }} /><col style={{ width: '8%' }} />
+                <col style={{ width: '20%' }} /><col style={{ width: '10%' }} /><col style={{ width: '9%' }} />
+                <col style={{ width: '7%' }} /><col style={{ width: '6%' }} /><col style={{ width: '7%' }} />
+                <col style={{ width: '5%' }} /><col style={{ width: '5%' }} /><col style={{ width: '5%' }} />
+                <col style={{ width: '6%' }} /><col style={{ width: '6%' }} /><col style={{ width: '14%' }} />
               </colgroup>
               <thead style={{ position: 'sticky', top: 0, zIndex: 5 }}>
                 <tr style={{ background: BLIGHT, borderBottom: '1px solid ' + BORDER }}>
-                  {['Job Title','Compensation','Department','Location','Status','Priority','Cands','Screen','Offers','Explorer','Posted'].map(h => (
+                  {['Job Title','Compensation','Department','Location','Status','Priority','Cands','Screen','Offers','Explorer','Posted','Apply Link'].map(h => (
                     <th key={h} style={{ fontSize: 9, color: MUTED, textTransform: 'uppercase', letterSpacing: '.08em', fontWeight: 400, padding: '0 12px', height: 34, textAlign: 'left', whiteSpace: 'nowrap' }}>{h}</th>
                   ))}
                 </tr>
@@ -214,6 +215,20 @@ export default function JobsPage() {
                       </div>
                     </td>
                     <td style={{ padding: '0 12px', fontSize: 11, color: MUTED, fontWeight: 300 }}>{j.posted}</td>
+                    <td style={{ padding: '0 8px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                        <span style={{ fontSize: 10, color: BLUE, fontWeight: 300, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 80 }}>
+                          {j.applyLink ? '/apply/' + (j.id || '…') : '—'}
+                        </span>
+                        {j.applyLink && (
+                          <button
+                            onClick={e => { e.stopPropagation(); navigator.clipboard.writeText(j.applyLink); (e.currentTarget as any).innerText = '✓'; setTimeout(() => { try { (e.currentTarget as any).innerText = 'Copy'; } catch {} }, 1500); }}
+                            style={{ fontSize: 9, color: '#fff', background: BLUE, border: 'none', padding: '2px 6px', cursor: 'pointer', fontFamily: F, flexShrink: 0 }}>
+                            Copy
+                          </button>
+                        )}
+                      </div>
+                    </td>
                   </tr>
                 ))}
               </tbody>
