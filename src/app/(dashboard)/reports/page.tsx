@@ -467,6 +467,104 @@ export default function ReportsPage() {
           </Cell>
         </div>
 
+        {/* ROW 5: Apply Link Analytics */}
+        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:16 }}>
+
+          {/* Apply Link Performance */}
+          <Cell>
+            <div style={{ display:'flex', alignItems:'center', gap:7, marginBottom:14 }}>
+              <div style={{ width:7, height:7, borderRadius:'50%', background:TEAL, flexShrink:0 }} />
+              <span style={{ fontSize:9, color:MUTED, letterSpacing:'.1em', textTransform:'uppercase', fontWeight:400, flex:1 }}>Apply Link Performance</span>
+            </div>
+            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:0, borderTop:'1px solid '+BORDER, borderBottom:'1px solid '+BORDER, marginBottom:14 }}>
+              {[
+                { l:'Total Clicks',     v:'847',   sub:'Last 30 days',     col:BLUE },
+                { l:'Unique Visitors',  v:'612',   sub:'Distinct sessions', col:DARK },
+                { l:'Registrations',    v:'184',   sub:'21.7% click→reg',  col:TEAL },
+                { l:'SNAP Sessions',    v:'97',    sub:'52.7% reg→session',col:TEAL },
+              ].map((m,i) => (
+                <div key={m.l} style={{ padding:'10px 12px', borderRight:i%2===0?'1px solid '+BORDER:'none', borderBottom:i<2?'1px solid '+BORDER:'none', textAlign:'center' }}>
+                  <div style={{ fontSize:22, fontWeight:300, color:m.col, letterSpacing:'-0.02em', lineHeight:1 }}>{m.v}</div>
+                  <div style={{ fontSize:9, color:MUTED, textTransform:'uppercase', letterSpacing:'.06em', marginTop:3 }}>{m.l}</div>
+                  <div style={{ fontSize:9, color:MUTED, fontWeight:300, marginTop:2 }}>{m.sub}</div>
+                </div>
+              ))}
+            </div>
+            <div style={{ fontSize:11, color:MID, fontWeight:300, lineHeight:1.6 }}>
+              Apply links converting at <strong style={{ color:TEAL }}>11.5%</strong> click-to-session — 3.2× industry average for job boards.
+            </div>
+          </Cell>
+
+          {/* Top Performing Links */}
+          <Cell>
+            <div style={{ display:'flex', alignItems:'center', gap:7, marginBottom:14 }}>
+              <div style={{ width:7, height:7, borderRadius:'50%', background:BLUE, flexShrink:0 }} />
+              <span style={{ fontSize:9, color:MUTED, letterSpacing:'.1em', textTransform:'uppercase', fontWeight:400, flex:1 }}>Top Apply Links by Clicks</span>
+            </div>
+            <table style={{ width:'100%', borderCollapse:'collapse' }}>
+              <thead>
+                <tr style={{ background:BLIGHT }}>
+                  {['Role','Clicks','Conv %'].map(h => (
+                    <th key={h} style={{ padding:'6px 10px', textAlign:'left', fontSize:9, color:MUTED, textTransform:'uppercase', letterSpacing:'.06em', borderBottom:'1px solid '+BORDER, fontWeight:400 }}>{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { role:'Staff ML Engineer',   clicks:183, conv:'14.2%' },
+                  { role:'Principal Engineer',  clicks:142, conv:'12.7%' },
+                  { role:'DevRel Engineer',     clicks:118, conv:'9.3%'  },
+                  { role:'Sr. Data Engineer',   clicks:97,  conv:'11.3%' },
+                  { role:'Frontend Lead',       clicks:84,  conv:'13.1%' },
+                ].map((r,i) => (
+                  <tr key={r.role} style={{ background:i%2===0?'#fff':BLIGHT }}>
+                    <td style={{ padding:'7px 10px', fontSize:11, color:MID, fontWeight:300, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis', maxWidth:130 }}>{r.role}</td>
+                    <td style={{ padding:'7px 10px', fontSize:11, color:DARK, fontWeight:400, textAlign:'center' }}>{r.clicks}</td>
+                    <td style={{ padding:'7px 10px' }}>
+                      <span style={{ fontSize:10, color:TEAL, background:'rgba(29,158,117,.06)', padding:'2px 7px' }}>{r.conv}</span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </Cell>
+
+          {/* Conversion Funnel */}
+          <Cell>
+            <div style={{ display:'flex', alignItems:'center', gap:7, marginBottom:14 }}>
+              <div style={{ width:7, height:7, borderRadius:'50%', background:BLUE, flexShrink:0 }} />
+              <span style={{ fontSize:9, color:MUTED, letterSpacing:'.1em', textTransform:'uppercase', fontWeight:400, flex:1 }}>Apply → Session Funnel</span>
+            </div>
+            <div style={{ display:'flex', flexDirection:'column', gap:6 }}>
+              {[
+                { stage:'Link Clicks',    n:847, pct:100, col:'#1e3a8a' },
+                { stage:'Page Views',     n:791, pct:93,  col:'#1e40af' },
+                { stage:'Registrations',  n:184, pct:22,  col:BLUE      },
+                { stage:'SNAP Sessions',  n:97,  pct:11,  col:TEAL      },
+                { stage:'Matches',        n:24,  pct:3,   col:'#15803d' },
+              ].map((s,i) => {
+                const drop = i > 0 ? Math.round((1 - s.n/[847,791,184,97][i-1]) * 100) : null;
+                return (
+                  <div key={s.stage} style={{ display:'flex', alignItems:'center', gap:8 }}>
+                    <div style={{ width:32, textAlign:'right', flexShrink:0 }}>
+                      {drop !== null && drop > 0 && <span style={{ fontSize:9, color:'#CC3300' }}>-{drop}%</span>}
+                    </div>
+                    <div style={{ flex:1, height:32, position:'relative', background:s.col, opacity:0.9 }}>
+                      <div style={{ position:'absolute', inset:0, display:'flex', alignItems:'center', justifyContent:'space-between', padding:'0 10px' }}>
+                        <span style={{ fontSize:10, color:'#fff', fontWeight:300 }}>{s.stage}</span>
+                        <span style={{ fontSize:12, color:'#fff', fontWeight:300 }}>{s.n}</span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            <div style={{ marginTop:12, fontSize:11, color:MID, fontWeight:300, lineHeight:1.6 }}>
+              <strong style={{ color:TEAL }}>24 matches</strong> from 847 clicks — end-to-end conversion of 2.8%.
+            </div>
+          </Cell>
+        </div>
+
         {/* Available Reports */}
         <div>
           <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:12 }}>
