@@ -94,8 +94,8 @@ export default function LoginPage() {
       <div style={{display:'grid',gridTemplateColumns:'1fr 460px',flex:1,position:'relative',zIndex:1}}>
         <div style={{padding:'48px 72px',display:'flex',flexDirection:'column',justifyContent:'center',overflowY:'auto'}}>
           <h1 style={{fontSize:'clamp(32px,3.5vw,50px)',fontWeight:300,letterSpacing:'-0.03em',lineHeight:1.05,color:'#0A0A0A',marginBottom:16}}>Hire with depth.<br/>Not just keywords.</h1>
-          <p style={{fontSize:15,fontWeight:300,color:'#6B6B6B',lineHeight:1.8,marginBottom:40,maxWidth:480}}>Stop reading resumes. Your Explorer Agent conducts structured conversations with candidates and surfaces what a two-page document was never designed to carry � motivation, working style, career context, and real fit across six dimensions.</p>
-          <div style={{border:'1px solid #E8E8E5',marginBottom:40}}>
+          <p style={{fontSize:15,fontWeight:300,color:'#6B6B6B',lineHeight:1.8,marginBottom:40,maxWidth:480}}>Stop reading resumes. Your Explorer Agent conducts structured conversations with candidates and surfaces what a two-page document was never designed to carry ï¿½ motivation, working style, career context, and real fit across six dimensions.</p>
+          <div style={{border:"1px solid #E8E8E5",marginBottom:40,maxWidth:480}}>
             {METRICS.map((m,i) => (
               <div key={i} style={{display:'flex',alignItems:'center',gap:24,padding:'8px 16px',borderBottom:i<METRICS.length-1?'1px solid #E8E8E5':'none'}}>
                 <div style={{fontSize:26,fontWeight:300,letterSpacing:'-2px',color:'#2563eb',lineHeight:1,flexShrink:0,width:72}}>{m.num}</div>
