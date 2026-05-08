@@ -708,3 +708,114 @@ export function useSessionMessages(sessionId: string | null) {
     staleTime: 10_000,
   });
 }
+
+// ╔══════════════════════════════════════════════════════════════════════
+// SNAP SESSION ACTIONS — Pause / Resume (Explorer side)
+// ╚══════════════════════════════════════════════════════════════════════
+
+export function usePauseSession() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (sessionId: string) => {
+      const { data } = await api.post(`/snap-sessions/${sessionId}/pause`);
+      return data;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['snap-sessions'] });
+      qc.invalidateQueries({ queryKey: ['session'] });
+      qc.invalidateQueries({ queryKey: ['messages'] });
+      qc.invalidateQueries({ queryKey: ['session-messages'] });
+      qc.invalidateQueries({ queryKey: ['dashboard'] });
+    },
+  });
+}
+
+export function useResumeSession() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (sessionId: string) => {
+      const { data } = await api.post(`/snap-sessions/${sessionId}/resume`);
+      return data;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['snap-sessions'] });
+      qc.invalidateQueries({ queryKey: ['session'] });
+      qc.invalidateQueries({ queryKey: ['messages'] });
+      qc.invalidateQueries({ queryKey: ['session-messages'] });
+      qc.invalidateQueries({ queryKey: ['dashboard'] });
+    },
+  });
+}
+
+// ╔══════════════════════════════════════════════════════════════════════
+// ACTIVITY FEED — GET /activity
+// ╚══════════════════════════════════════════════════════════════════════
+
+export interface ActivityItem {
+  id: string;
+  kind: string;
+  eventType: string;
+  title: string;
+  preview?: string;
+  refType?: string;
+  refId?: string;
+  read: boolean;
+  count: number;
+  createdAt: string;
+}
+
+export interface ActivityResponse {
+  items: ActivityItem[];
+  unreadCount: number;
+}
+
+export function useActivity(kind?: string, opts?: { unreadOnly?: boolean; limit?: number }) {
+  return useQuery({
+    queryKey: ['activity', kind || 'all', opts?.unreadOnly || false, opts?.limit || 50],
+    queryFn: async (): Promise<DataResult<ActivityResponse>> => {
+      try {
+        const params: Record<string, any> = {};
+        if (kind && kind !== 'all') params.kind = kind;
+        if (opts?.unreadOnly) params.unreadOnly = true;
+        if (opts?.limit) params.limit = opts.limit;
+        const { data } = await api.get('/activity', { params });
+        return {
+          data: { items: data.items || [], unreadCount: data.unreadCount || 0 },
+          fromApi: true,
+        };
+      } catch {
+        return { data: { items: [], unreadCount: 0 }, fromApi: false };
+      }
+    },
+    staleTime: 15_000,
+    refetchInterval: 60_000,
+  });
+}
+
+export function useMarkActivityRead() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const { data } = await api.patch(`/activity/${id}/read`);
+      return data;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['activity'] });
+      qc.invalidateQueries({ queryKey: ['unread-count'] });
+    },
+  });
+}
+
+export function useMarkAllActivityRead() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async () => {
+      const { data } = await api.patch('/activity/read-all');
+      return data;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['activity'] });
+      qc.invalidateQueries({ queryKey: ['unread-count'] });
+    },
+  });
+}
