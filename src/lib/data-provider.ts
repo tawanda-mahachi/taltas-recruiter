@@ -819,3 +819,30 @@ export function useMarkAllActivityRead() {
     },
   });
 }
+
+// ====================================================================
+// WORKSPACE MEMBERS - GET /principals/workspace/members
+// ====================================================================
+
+export interface WorkspaceMember {
+  id: string;
+  recruiterRole: 'hiring_manager' | 'senior_recruiter' | 'recruiter' | 'coordinator' | null;
+  profile: { name?: string; firstName?: string; lastName?: string; [k: string]: any };
+  createdAt: string;
+  user: { email: string; lastLoginAt: string | null };
+}
+
+export function useWorkspaceMembers() {
+  return useQuery({
+    queryKey: ['workspace-members'],
+    queryFn: async (): Promise<WorkspaceMember[]> => {
+      try {
+        const { data } = await api.get<WorkspaceMember[]>('/principals/workspace/members');
+        return Array.isArray(data) ? data : [];
+      } catch (e) {
+        return [];
+      }
+    },
+    staleTime: 30_000,
+  });
+}

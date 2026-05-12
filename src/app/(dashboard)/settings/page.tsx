@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from 'react';
 import { useToast } from '@/components/ui/toast';
-import { useCreditSummary, useApiHealth } from '@/lib/data-provider';
+import { useCreditSummary, useApiHealth, useWorkspaceMembers } from '@/lib/data-provider';
 import { ApiStatusPanel, DataSourceBadge } from '@/components/shared/api-status';
 import { Modal } from '@/components/ui/modal';
 
@@ -114,7 +114,29 @@ function Avatar({ ini, size=28 }: any) {
 export default function SettingsPage() {
   const toast = useToast();
   const [section, setSection] = useState<Section>('general');
-  const [members, setMembers] = useState(INITIAL_MEMBERS);
+  const { data: rawMembers, isLoading: membersLoading } = useWorkspaceMembers();
+  const [memberOverrides, setMemberOverrides] = useState<Record<string, string>>({});
+  const [searchQuery, setSearchQuery] = useState('');
+  const mapBackendRole = (r: any): string => (({ hiring_manager: 'manager', senior_recruiter: 'admin', recruiter: 'recruiter', coordinator: 'viewer' } as any)[r] || 'recruiter');
+  const initialsOf = (s: string): string => (s || 'XX').toString().replace(/[^A-Za-z0-9 ]/g, '').split(' ').filter(Boolean).map((x: string) => x[0] || '').join('').toUpperCase().slice(0, 2) || 'XX';
+  const members = ((rawMembers as any[]) || [])
+    .map((m: any) => {
+      const fullName = m?.profile?.name || [m?.profile?.firstName, m?.profile?.lastName].filter(Boolean).join(' ') || (m?.user?.email ? m.user.email.split('@')[0] : 'Unknown');
+      const emailVal = m?.user?.email || '';
+      return {
+        id: m?.id,
+        name: fullName,
+        email: emailVal,
+        role: memberOverrides[emailVal] || mapBackendRole(m?.recruiterRole),
+        status: m?.user?.lastLoginAt ? 'Active' : 'Invited',
+        avatar: initialsOf(fullName) || initialsOf(emailVal),
+      };
+    })
+    .filter((m: any) => {
+      if (!searchQuery) return true;
+      const q = searchQuery.toLowerCase();
+      return (m.name || '').toLowerCase().includes(q) || (m.email || '').toLowerCase().includes(q);
+    });
   const [rolePerms, setRolePerms] = useState<Record<string, Record<string, boolean>>>(JSON.parse(JSON.stringify(DEFAULT_PERMS)));
   const [showCardModal, setShowCardModal] = useState(false);
   const [cardForm, setCardForm] = useState({ number:'', expiry:'', cvc:'', name:'', zip:'' });
@@ -157,7 +179,7 @@ export default function SettingsPage() {
     toast.show('Permission updated for ' + (ROLE_META[role]?.label || role));
   };
   const updateMemberRole = (email: string, newRole: string) => {
-    setMembers(prev => prev.map(m => m.email === email ? { ...m, role: newRole } : m));
+    setMemberOverrides(prev => ({ ...prev, [email]: newRole }));
     toast.show('Role updated to ' + (ROLE_META[newRole]?.label || newRole));
   };
   const handleSaveCard = () => {
@@ -213,7 +235,7 @@ export default function SettingsPage() {
       {/* METRICS STRIP */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', background: BLUE, flexShrink: 0 }}>
         {[
-          { v: '4', l: 'Team Members', sub: '2 admin · 2 recruiter' },
+          { v: String(((rawMembers as any[]) || []).length), l: 'Team Members', sub: '2 admin · 2 recruiter' },
           { v: '2', l: 'API Keys', sub: '1 active · 1 test' },
           { v: '5', l: 'Integrations', sub: '3 connected' },
           { v: 'Pro', l: 'Current Plan', sub: '$299/month' },
@@ -299,13 +321,27 @@ export default function SettingsPage() {
                 <SL label="Team Members" color={BLUE} />
                 <button style={btnPrimary} onClick={()=>toast.show('Invitation email sent!')}>+ Invite Member</button>
               </div>
+
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                placeholder="Search by name or email..."
+                style={{ width:'100%', padding:'8px 12px', border:'1px solid '+BORDER, fontFamily:F, fontSize:12, color:DARK, outline:'none', marginBottom:12, boxSizing:'border-box' }}
+              />
               <div style={{ border:'1px solid '+BORDER, marginBottom:24 }}>
                 <div style={{ display:'grid', gridTemplateColumns:'1fr 160px 110px 100px 110px', padding:'7px 16px', background:BLIGHT, borderBottom:'1px solid '+BORDER }}>
                   {['Member','Email','Role','Status','Actions'].map(h=>(
                     <div key={h} style={{ fontSize:9, color:MUTED, letterSpacing:'.09em', textTransform:'uppercase', fontWeight:400 }}>{h}</div>
                   ))}
                 </div>
-                {members.map(m=>(
+                {membersLoading ? (
+                  <div style={{ padding:'24px 16px', textAlign:'center', fontSize:12, color:MUTED, fontWeight:300 }}>Loading team members...</div>
+                ) : (!rawMembers || rawMembers.length === 0) ? (
+                  <div style={{ padding:'24px 16px', textAlign:'center', fontSize:12, color:MUTED, fontWeight:300 }}>You are not part of a team workspace yet. Contact your administrator to be added.</div>
+                ) : members.length === 0 ? (
+                  <div style={{ padding:'24px 16px', textAlign:'center', fontSize:12, color:MUTED, fontWeight:300 }}>No teammates match &quot;{searchQuery}&quot;.</div>
+                ) : members.map(m=>(
                   <div key={m.email} style={{ display:'grid', gridTemplateColumns:'1fr 160px 110px 100px 110px', padding:'10px 16px', alignItems:'center', borderBottom:'1px solid '+BLIGHT }}>
                     <div style={{ display:'flex', alignItems:'center', gap:9 }}>
                       <Avatar ini={m.avatar} />
