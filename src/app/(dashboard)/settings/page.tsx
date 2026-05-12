@@ -235,7 +235,7 @@ export default function SettingsPage() {
       {/* METRICS STRIP */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', background: BLUE, flexShrink: 0 }}>
         {[
-          { v: String(((rawMembers as any[]) || []).length), l: 'Team Members', sub: (((rawMembers as any[]) || []).length === 0 ? '' : ((rawMembers as any[]) || []).filter((m: any) => m?.user?.lastLoginAt).length + ' active, ' + ((rawMembers as any[]) || []).filter((m: any) => !m?.user?.lastLoginAt).length + ' invited') },
+          { v: String(((rawMembers as any[]) || []).length), l: 'Team Members', sub: (((rawMembers as any[]) || []).length === 0 ? 'Invite your first member' : ((rawMembers as any[]) || []).filter((m: any) => m?.user?.lastLoginAt).length + ' active, ' + ((rawMembers as any[]) || []).filter((m: any) => !m?.user?.lastLoginAt).length + ' invited') },
           { v: '2', l: 'API Keys', sub: '1 active · 1 test' },
           { v: '5', l: 'Integrations', sub: '3 connected' },
           { v: 'Pro', l: 'Current Plan', sub: '$299/month' },
@@ -319,8 +319,8 @@ export default function SettingsPage() {
             <div style={{ padding:'24px 32px' }}>
               <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:16 }}>
                 <SL label="Team Members" color={BLUE} />
-                <input type="text" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} placeholder="Search..." style={{ width:220, padding:'6px 10px', border:'1px solid '+BORDER, fontFamily:F, fontSize:12, color:DARK, outline:'none', boxSizing:'border-box', marginRight:8 }} />
-                <button style={btnPrimary} onClick={()=>toast.show('Invitation email sent!')}>+ Invite Member</button>
+                <div style={{ display:'flex', alignItems:'center', gap:8 }}><input type="text" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} placeholder="Search..." style={{ width:220, padding:'6px 10px', border:'1px solid '+BORDER, fontFamily:F, fontSize:12, color:DARK, outline:'none', boxSizing:'border-box' }} />
+                <button style={btnPrimary} onClick={()=>toast.show('Invitation email sent!')}>+ Invite Member</button></div>
               </div>
               <div style={{ border:'1px solid '+BORDER, marginBottom:24 }}>
                 <div style={{ display:'grid', gridTemplateColumns:'1fr 160px 110px 100px 110px', padding:'7px 16px', background:BLIGHT, borderBottom:'1px solid '+BORDER }}>
