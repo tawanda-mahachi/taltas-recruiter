@@ -2,7 +2,8 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { authApi } from '@/lib/api/auth';
 import { useAuthStore } from '@/lib/stores/auth-store';
-import type { LoginPayload, RegisterPayload } from '@/types/api';
+import { isMfaChallenge } from '@/types/api';
+import type { LoginPayload, LoginResponse, RegisterPayload } from '@/types/api';
 
 export function useMe() {
   const { isAuthenticated } = useAuthStore();
@@ -16,28 +17,39 @@ export function useMe() {
 }
 
 export function useLogin() {
-  const router = useRouter();
   const { setTokens, setUser, setLoading } = useAuthStore();
   const qc = useQueryClient();
 
   return useMutation({
-    mutationFn: async (payload: LoginPayload) => {
+    mutationFn: async (payload: LoginPayload): Promise<LoginResponse> => {
       setLoading(true);
-      const tokens = await authApi.login(payload);
-      setTokens(tokens.accessToken, tokens.refreshToken);
-      const me = await authApi.getMe();
-      setUser(me);
-      qc.setQueryData(['me'], me);
-      return me;
-    },
-    onSuccess: () => {
-      setLoading(false);
-      router.push('/dashboard');
-    },
-    onError: () => {
-      setLoading(false);
+      try {
+        const result = await authApi.login(payload);
+        if (!isMfaChallenge(result)) {
+          // Non-MFA path: persist tokens + principal immediately
+          setTokens(result.accessToken, result.refreshToken);
+          const me = await authApi.getMe();
+          setUser(me);
+          qc.setQueryData(['me'], me);
+        }
+        return result;
+      } finally {
+        setLoading(false);
+      }
     },
   });
+}
+
+export function useFinalizeAuth() {
+  const { setTokens, setUser } = useAuthStore();
+  const qc = useQueryClient();
+
+  return async (accessToken: string, refreshToken: string) => {
+    setTokens(accessToken, refreshToken);
+    const me = await authApi.getMe();
+    setUser(me);
+    qc.setQueryData(['me'], me);
+  };
 }
 
 export function useRegister() {

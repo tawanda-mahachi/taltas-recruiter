@@ -1,7 +1,12 @@
 // @ts-nocheck
 'use client';
 import { useState } from 'react';
-import { useLogin } from '@/lib/hooks/use-auth';
+import { useRouter } from 'next/navigation';
+import { useLogin, useFinalizeAuth } from '@/lib/hooks/use-auth';
+import { isMfaChallenge } from '@/types/api';
+import MfaSetupCard from '@/components/auth/mfa-setup-card';
+import MfaChallengeCard from '@/components/auth/mfa-challenge-card';
+import BackupCodesScreen from '@/components/auth/backup-codes-screen';
 
 const STEPS = [
   { letter:'S', icon:'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z', title:'Screen with structure', desc:'Every candidate is assessed across six dimensions: skills, motivation, working style, culture, compensation fit, and timeline.' },
@@ -12,6 +17,9 @@ const STEPS = [
 
 export default function LoginPage() {
   const loginMutation = useLogin();
+  const finalizeAuth = useFinalizeAuth();
+  const router = useRouter();
+  const [phase, setPhase] = useState({ kind: 'idle' });
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPw, setShowPw] = useState(false);
@@ -23,7 +31,16 @@ export default function LoginPage() {
     setError('');
     if (!email.trim() || !password.trim()) { setError('Email and password are required.'); return; }
     try {
-      await loginMutation.mutateAsync({ email: email.trim(), password: password.trim() });
+      const result = await loginMutation.mutateAsync({ email: email.trim(), password: password.trim() });
+      if (isMfaChallenge(result)) {
+        if (result.mfaSetupRequired) {
+          setPhase({ kind: 'mfa_setup', mfaToken: result.mfaToken });
+        } else {
+          setPhase({ kind: 'mfa_challenge', mfaToken: result.mfaToken, hasPhone: result.hasPhone });
+        }
+        return;
+      }
+      router.push('/dashboard');
     } catch (e) {
       setError(e?.response?.data?.message || e?.message || 'Login failed.');
     }
@@ -123,6 +140,8 @@ export default function LoginPage() {
           <div style={{position:'relative',zIndex:1}}>
 
             <div style={{fontSize:22,fontWeight:300,letterSpacing:'.08em',color:'rgba(255,255,255,.95)',marginBottom:6,textTransform:'uppercase'}}>Recruiter Portal</div>
+            {phase.kind === 'idle' ? (
+            <>
             <div style={{fontSize:13,fontWeight:300,color:'rgba(255,255,255,.45)',marginBottom:32}}>Sign in to your account</div>
 
             {error && <div style={{background:'rgba(255,255,255,.12)',border:'1px solid rgba(255,100,100,.4)',padding:'10px 14px',fontSize:12,fontWeight:300,color:'#fca5a5',marginBottom:16,lineHeight:1.5}}>{error}</div>}
@@ -164,6 +183,14 @@ export default function LoginPage() {
             <div style={{textAlign:'center',fontSize:13,fontWeight:300,color:'rgba(255,255,255,.5)'}}>
               New to Taltas? <a href="/register" style={{color:'#fff',textDecoration:'none',fontWeight:400}}>Create account</a>
             </div>
+            </>
+            ) : phase.kind === 'mfa_setup' ? (
+            <MfaSetupCard mfaToken={phase.mfaToken} onSuccess={(resp) => setPhase({ kind: 'backup_codes', codes: resp.backupCodes, accessToken: resp.accessToken, refreshToken: resp.refreshToken })} onCancel={() => setPhase({ kind: 'idle' })} />
+            ) : phase.kind === 'mfa_challenge' ? (
+            <MfaChallengeCard mfaToken={phase.mfaToken} hasPhone={phase.hasPhone} onSuccess={async (resp) => { await finalizeAuth(resp.accessToken, resp.refreshToken); router.push('/dashboard'); }} onCancel={() => setPhase({ kind: 'idle' })} />
+            ) : phase.kind === 'backup_codes' ? (
+            <BackupCodesScreen codes={phase.codes} onContinue={async () => { await finalizeAuth(phase.accessToken, phase.refreshToken); router.push('/dashboard'); }} />
+            ) : null}
           </div>
         </div>
       </div>

@@ -46,13 +46,14 @@ api.interceptors.response.use(
       }
 
       originalRequest._retry = true;
-      isRefreshing = true;
 
       const refreshToken = useAuthStore.getState().refreshToken;
       if (!refreshToken) {
         useAuthStore.getState().logout();
         return Promise.reject(error);
       }
+
+      isRefreshing = true;
 
       try {
         const { data } = await axios.post(`${API_URL}/auth/refresh`, { refreshToken });

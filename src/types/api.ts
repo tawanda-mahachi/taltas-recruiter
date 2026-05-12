@@ -32,6 +32,43 @@ export interface AuthTokens {
   refreshToken: string;
 }
 
+// MFA response types (added for forced-setup + challenge flows)
+export interface MfaChallengeResponse {
+  mfaRequired: true;
+  mfaSetupRequired?: boolean;
+  mfaToken: string;
+  hasPhone: boolean;
+}
+
+export type LoginResponse = AuthTokens | MfaChallengeResponse;
+
+export interface MfaSetupData {
+  secret: string;
+  otpauthUrl: string;
+  qrDataUrl: string;
+}
+
+export interface MfaEnableResponse extends AuthTokens {
+  principalId: string;
+  principalType: string;
+  backupCodes: string[];
+}
+
+export interface MfaVerifyResponse extends AuthTokens {
+  principalId: string;
+  principalType: string;
+}
+
+export interface MfaSmsResponse {
+  mfaToken: string;
+  sent: boolean;
+}
+
+// Type guard: distinguish MFA challenge from successful login
+export function isMfaChallenge(r: LoginResponse): r is MfaChallengeResponse {
+  return (r as MfaChallengeResponse).mfaRequired === true;
+}
+
 // ── Principal ──
 export interface Principal {
   id: string;
