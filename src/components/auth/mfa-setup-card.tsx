@@ -42,7 +42,9 @@ export default function MfaSetupCard({ mfaToken, onSuccess, onCancel }: Props) {
       const resp = await authApi.mfaEnablePending(mfaToken, code);
       onSuccess(resp);
     } catch (e: any) {
-      const msg = e?.response?.data?.message || e?.message || '';
+      let msg: any = e?.response?.data?.message ?? e?.message ?? '';
+      if (Array.isArray(msg)) msg = msg.join('; ');
+      if (typeof msg !== 'string') msg = String(msg);
       if (msg.toLowerCase().includes('invalid or expired')) {
         setError('Setup session expired or code rejected. Please log in again.');
       } else {

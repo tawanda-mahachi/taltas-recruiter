@@ -25,8 +25,8 @@ export const authApi = {
     api.post<MfaEnableResponse>('/auth/mfa/enable-pending', { mfaToken, code }).then((r) => r.data),
 
   // MFA: returning-user challenge flow
-  mfaVerify: (mfaToken: string, code: string, method: 'totp' | 'sms' | 'backup' = 'totp') =>
-    api.post<MfaVerifyResponse>('/auth/mfa/verify', { mfaToken, code, method }).then((r) => r.data),
+  mfaVerify: (mfaToken: string, code: string) =>
+    api.post<MfaVerifyResponse>('/auth/mfa/verify', { mfaToken, code }).then((r) => r.data),
 
   // MFA: trigger SMS OTP (re-issues mfaToken)
   mfaSendSms: (mfaToken: string) =>
