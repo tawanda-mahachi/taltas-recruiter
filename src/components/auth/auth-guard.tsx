@@ -11,7 +11,7 @@ export function AuthGuard({ children }) {
     setHasHydrated(true);
   }, []);
   useEffect(() => {
-    if (hasHydrated && !isAuthenticated) router.replace('/login');
+    if (hasHydrated && !isAuthenticated) router.replace('/');
   }, [hasHydrated, isAuthenticated, router]);
   if (!hasHydrated) {
     return (

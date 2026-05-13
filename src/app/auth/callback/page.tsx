@@ -26,7 +26,7 @@ function Inner() {
         <div style={{textAlign:'center',padding:32}}>
           <div style={{fontSize:18,fontWeight:300,color:'#0A0A0A',marginBottom:8}}>Authentication Error</div>
           <div style={{fontSize:13,fontWeight:300,color:'#AAAAAA',marginBottom:24}}>{err}</div>
-          <a href='/login' style={{padding:'10px 20px',background:'#2563eb',color:'#fff',textDecoration:'none',fontSize:13}}>Back to Login</a>
+          <a href='/' style={{padding:'10px 20px',background:'#2563eb',color:'#fff',textDecoration:'none',fontSize:13}}>Back to Login</a>
         </div>
       ) : (
         <div style={{textAlign:'center'}}>
