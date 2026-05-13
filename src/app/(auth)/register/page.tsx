@@ -144,7 +144,7 @@ export default function RegisterPage() {
             </button>
 
             <div style={{textAlign:'center',fontSize:13,fontWeight:300,color:'rgba(255,255,255,.5)',marginTop:20}}>
-              Already have an account? <a href="/login" style={{color:'#fff',textDecoration:'none',fontWeight:400}}>Sign in</a>
+              Already have an account? <a href="/" style={{color:'#fff',textDecoration:'none',fontWeight:400}}>Sign in</a>
             </div>
           </div>
         </div>
@@ -166,7 +166,7 @@ export default function RegisterPage() {
               Resend verification email
             </button>
             <div style={{borderTop:'1px solid #E8E8E5',paddingTop:20}}>
-              <a href="/login" style={{fontSize:13,color:'#6B6B6B',textDecoration:'none',fontWeight:300}}>Back to sign in</a>
+              <a href="/" style={{fontSize:13,color:'#6B6B6B',textDecoration:'none',fontWeight:300}}>Back to sign in</a>
             </div>
           </div>
         </div>

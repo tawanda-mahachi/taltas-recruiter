@@ -55,7 +55,7 @@ function VerifyInner() {
             <div style={{fontSize:9,color:'#AAAAAA',letterSpacing:'.1em',textTransform:'uppercase',fontFamily:'Courier New,monospace',marginBottom:12}}>Verified</div>
             <div style={{fontSize:22,fontWeight:300,color:'#0A0A0A',marginBottom:12}}>Email confirmed</div>
             <p style={{fontSize:13,fontWeight:300,color:'#6B6B6B',lineHeight:1.7,marginBottom:32}}>Your email address has been verified. You can now sign in to your Taltas recruiter account.</p>
-            <a href="/login" style={{display:'inline-block',padding:'13px 32px',background:BLUE,color:'#fff',fontSize:14,fontWeight:500,fontFamily:font,textDecoration:'none'}}>
+            <a href="/" style={{display:'inline-block',padding:'13px 32px',background:BLUE,color:'#fff',fontSize:14,fontWeight:500,fontFamily:font,textDecoration:'none'}}>
               Sign in to your account
             </a>
           </>
@@ -70,7 +70,7 @@ function VerifyInner() {
             <div style={{fontSize:22,fontWeight:300,color:'#0A0A0A',marginBottom:12}}>Verification failed</div>
             <p style={{fontSize:13,fontWeight:300,color:'#6B6B6B',lineHeight:1.7,marginBottom:32}}>{message}</p>
             <div style={{display:'flex',gap:12,justifyContent:'center'}}>
-              <a href="/login" style={{fontSize:13,color:'#6B6B6B',textDecoration:'none',fontWeight:300,padding:'10px 20px',border:'1px solid #E8E8E5'}}>Back to sign in</a>
+              <a href="/" style={{fontSize:13,color:'#6B6B6B',textDecoration:'none',fontWeight:300,padding:'10px 20px',border:'1px solid #E8E8E5'}}>Back to sign in</a>
               <a href="/register" style={{fontSize:13,color:'#fff',background:BLUE,textDecoration:'none',fontWeight:400,padding:'10px 20px',border:'none'}}>Register again</a>
             </div>
           </>
