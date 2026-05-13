@@ -188,7 +188,7 @@ export default function RecruiterPage() {
             <div className="r-ri">
               <div className="r-f-tag">Recruiter Portal</div>
               <div className="r-f-title">{isReturning ? 'Welcome back' : 'Sign in to get started'}</div>
-              <div className="r-f-sub">{isReturning ? 'Sign in to your workspace' : 'New here? Create an account below'}</div>
+              <div className="r-f-sub">{isReturning ? 'Sign in to your company' : 'New here? Create an account below'}</div>
               {error && <div className="r-err">{error}</div>}
               <div className="r-field">
                 <label className="r-lbl">Email</label>

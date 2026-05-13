@@ -131,7 +131,7 @@ export function ExplorerDetailModal({ open, onClose, explorerId }: { open: boole
             Input tokens (system prompt + history): <strong>~60%</strong><br />
             Output tokens (Explorer responses): <strong>~30%</strong><br />
             Agent-to-agent routing overhead: <strong>~10%</strong><br /><br />
-            <span className="font-mono text-[9px]" style={{ color: 'var(--muted)' }}>Priced at claude-sonnet-4-6 API rates. Billed monthly to workspace.</span>
+            <span className="font-mono text-[9px]" style={{ color: 'var(--muted)' }}>Priced at claude-sonnet-4-6 API rates. Billed monthly to company.</span>
           </div>
         </div>)}
       </div>

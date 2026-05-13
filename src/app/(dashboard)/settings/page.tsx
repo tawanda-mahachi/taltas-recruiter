@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from 'react';
 import { useToast } from '@/components/ui/toast';
-import { useCreditSummary, useApiHealth, useWorkspaceMembers } from '@/lib/data-provider';
+import { useCreditSummary, useApiHealth, useCompanyMembers } from '@/lib/data-provider';
 import { ApiStatusPanel, DataSourceBadge } from '@/components/shared/api-status';
 import { Modal } from '@/components/ui/modal';
 
@@ -114,7 +114,7 @@ function Avatar({ ini, size=28 }: any) {
 export default function SettingsPage() {
   const toast = useToast();
   const [section, setSection] = useState<Section>('general');
-  const { data: rawMembers, isLoading: membersLoading } = useWorkspaceMembers();
+  const { data: rawMembers, isLoading: membersLoading } = useCompanyMembers();
   const [memberOverrides, setMemberOverrides] = useState<Record<string, string>>({});
   const [searchQuery, setSearchQuery] = useState('');
   const mapBackendRole = (r: any): string => (({ hiring_manager: 'manager', senior_recruiter: 'admin', recruiter: 'recruiter', coordinator: 'viewer' } as any)[r] || 'recruiter');
@@ -223,7 +223,7 @@ export default function SettingsPage() {
       <div style={{ height: 68, paddingLeft: 24, paddingRight: 24, borderBottom: '1px solid ' + BORDER, display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>  
         <div>
           <div style={{ fontSize:15, fontWeight:400, letterSpacing:'-0.01em', color:DARK }}>Settings</div>
-          <div style={{ fontSize:11, color:MUTED, fontWeight:300, marginTop:1 }}>Account, workspace and platform configuration</div>
+          <div style={{ fontSize:11, color:MUTED, fontWeight:300, marginTop:1 }}>Account, company and platform configuration</div>
         </div>
         <div style={{ marginLeft:'auto', display:'flex', gap:8 }}>
           <button style={btnSecondary} onClick={()=>toast.show('Changes discarded')}>Discard</button>
@@ -278,7 +278,7 @@ export default function SettingsPage() {
           {/* ── GENERAL ── */}
           {section === 'general' && (
             <div style={{ padding:'24px 32px', display:'flex', flexDirection:'column', gap:0 }}>
-              <SL label="Workspace" color={BLUE} />
+              <SL label="Company" color={BLUE} />
               <FieldRow label="Company Name" hint="Used across the platform and candidate-facing pages.">
                 <input style={inputStyle} value={settings.companyName} onChange={e=>set('companyName',e.target.value)} />
               </FieldRow>
@@ -331,7 +331,7 @@ export default function SettingsPage() {
                 {membersLoading ? (
                   <div style={{ padding:'24px 16px', textAlign:'center', fontSize:12, color:MUTED, fontWeight:300 }}>Loading team members...</div>
                 ) : (!rawMembers || rawMembers.length === 0) ? (
-                  <div style={{ padding:'24px 16px', textAlign:'center', fontSize:12, color:MUTED, fontWeight:300 }}>You are not part of a team workspace yet. Contact your administrator to be added.</div>
+                  <div style={{ padding:'24px 16px', textAlign:'center', fontSize:12, color:MUTED, fontWeight:300 }}>You are not part of a team yet. Contact your administrator to be added.</div>
                 ) : members.length === 0 ? (
                   <div style={{ padding:'24px 16px', textAlign:'center', fontSize:12, color:MUTED, fontWeight:300 }}>No teammates match &quot;{searchQuery}&quot;.</div>
                 ) : members.map(m=>(

@@ -23,7 +23,7 @@ export interface RegisterPayload {
   password: string;
   principalType: PrincipalType;
   recruiterRole?: RecruiterRole;
-  workspaceName?: string;
+  companyName?: string;
   profile?: Record<string, any>;
 }
 
@@ -74,7 +74,7 @@ export interface Principal {
   id: string;
   userId: string;
   type: PrincipalType;
-  workspaceId: string | null;
+  companyId: string | null;
   recruiterRole: RecruiterRole | null;
   profile: Record<string, any>;
   constraints: Record<string, any>;

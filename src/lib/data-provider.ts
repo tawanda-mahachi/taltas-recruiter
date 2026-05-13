@@ -589,7 +589,7 @@ const MOCK_NOTIFICATIONS: TaltasNotification[] = [
   { id: 'n1', type: 'pipeline', title: 'New Deep Match', body: 'Sara Kim scored 96% fit for Staff ML Engineer role.', read: false, time: '2h ago' },
   { id: 'n2', type: 'agent', title: 'Explorer Completed Session', body: 'StaffML-Agent finished A2A session with Marcus Peterson.', read: false, time: '4h ago' },
   { id: 'n3', type: 'system', title: 'Credits Running Low', body: 'Your credit balance is below 1,000. Consider purchasing more.', read: true, time: '1d ago' },
-  { id: 'n4', type: 'team', title: 'New Team Member', body: 'Julia Chen accepted your workspace invitation.', read: true, time: '2d ago' },
+  { id: 'n4', type: 'team', title: 'New Team Member', body: 'Julia Chen accepted your company invitation.', read: true, time: '2d ago' },
 ];
 
 export function useNotifications() {
@@ -821,10 +821,10 @@ export function useMarkAllActivityRead() {
 }
 
 // ====================================================================
-// WORKSPACE MEMBERS - GET /principals/workspace/members
+// COMPANY MEMBERS - GET /principals/company/members
 // ====================================================================
 
-export interface WorkspaceMember {
+export interface CompanyMember {
   id: string;
   recruiterRole: 'hiring_manager' | 'senior_recruiter' | 'recruiter' | 'coordinator' | null;
   profile: { name?: string; firstName?: string; lastName?: string; [k: string]: any };
@@ -832,12 +832,12 @@ export interface WorkspaceMember {
   user: { email: string; lastLoginAt: string | null };
 }
 
-export function useWorkspaceMembers() {
+export function useCompanyMembers() {
   return useQuery({
-    queryKey: ['workspace-members'],
-    queryFn: async (): Promise<WorkspaceMember[]> => {
+    queryKey: ['company-members'],
+    queryFn: async (): Promise<CompanyMember[]> => {
       try {
-        const { data } = await api.get<WorkspaceMember[]>('/principals/workspace/members');
+        const { data } = await api.get<CompanyMember[]>('/principals/company/members');
         return Array.isArray(data) ? data : [];
       } catch (e) {
         return [];

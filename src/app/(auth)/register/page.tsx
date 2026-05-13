@@ -178,7 +178,7 @@ export default function RegisterPage() {
           <div style={{background:'#FFFFFF',maxWidth:480,width:'90vw',padding:40}}>
             <div style={{fontSize:11,color:'#AAAAAA',letterSpacing:'.1em',textTransform:'uppercase',fontFamily:'Courier New,monospace',marginBottom:12}}>Agency Attestation Required</div>
             <div style={{fontSize:22,fontWeight:300,letterSpacing:'-0.02em',color:'#0A0A0A',marginBottom:16}}>Confirm your agency status</div>
-            <p style={{fontSize:13,fontWeight:300,color:'#6B6B6B',lineHeight:1.7,marginBottom:24}}>Staffing agencies on Taltas operate under a separate set of terms covering candidate data handling, client workspace management, and billing.</p>
+            <p style={{fontSize:13,fontWeight:300,color:'#6B6B6B',lineHeight:1.7,marginBottom:24}}>Staffing agencies on Taltas operate under a separate set of terms covering candidate data handling, client company management, and billing.</p>
             <div style={{border:'1px solid #E8E8E5',padding:'16px 18px',marginBottom:24,background:'#F4F4F2'}}>
               <div style={{display:'flex',flexDirection:'column',gap:10}}>
                 {[

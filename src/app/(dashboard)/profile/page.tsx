@@ -139,7 +139,7 @@ export default function ProfilePage() {
           {[
             ['Principal ID', user?.id?.slice(0, 8) + '…' || '—'],
             ['Account Type', (user?.type || 'recruiter').charAt(0).toUpperCase() + (user?.type || 'recruiter').slice(1)],
-            ['Workspace', user?.workspaceId?.slice(0, 8) + '…' || '—'],
+            ['Company', user?.companyId?.slice(0, 8) + '…' || '—'],
             ['Billing Plan', (user?.billingPlan || 'pro').toUpperCase()],
             ['Compute Mode', user?.computeMode || 'managed'],
             ['Credit Balance', String(user?.creditBalance || 0)],
